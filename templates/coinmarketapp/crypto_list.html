@@ -38,13 +38,39 @@
                 {% for cryptocurrency in cryptocurrencies %}
                 <tr>
                     <td>{{ cryptocurrency.name }}</td>
+                    {% for key,value in crypto_rates.items %}
+
+                        {{ key }}
+                    {% endfor %}
                     <td>{{ cryptocurrency.symbol }}</td>
                     <td>${{ cryptocurrency.market_cap }}</td>
                     <td>${{ cryptocurrency.price }}</td>
+
                     <td>${{ cryptocurrency.volume_24h }}</td>
                 </tr>
+                    <tr>
+                        <td></td>
+                        <td>{% for key,value in crypto_rates.items %}
+
+                        {{ key }}
+                    {% endfor %}</td>
+                    </tr>
                 {% endfor %}
+
             </table>
+            {% for key,value in crypto_rates.items %}
+            <div class="list-group-item list-group-item-{% if coin.percent_change_1h.0 == '-'%}danger{% else %}success{% endif %}">
+                <div class="row">
+                    <div class="col-md-3">
+                        {{key}}
+                    </div>
+                    <div class="col-md-3">
+                        {{value}}
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
         </section>
     </main>
 
