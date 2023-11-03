@@ -1,0 +1,55 @@
+<!-- coinmarketapp/templates/coinmarketapp/crypto_list.html -->
+
+<!DOCTYPE html>
+{%  load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'coinmarketapp/styles.css' %}">
+    <title>CoinMarketCap Clone</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{% static 'coinmarketapp/logo.png' %}" alt="CoinMarketApp">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Cryptocurrencies</a></li>
+                <li><a href="#">Exchanges</a></li>
+                <li><a href="#">Markets</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="crypto-list">
+            <h1>Cryptocurrency Market</h1>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Symbol</th>
+                    <th>Market Cap</th>
+                    <th>Price</th>
+                    <th>24h Volume</th>
+                </tr>
+                {% for cryptocurrency in cryptocurrencies %}
+                <tr>
+                    <td>{{ cryptocurrency.name }}</td>
+                    <td>{{ cryptocurrency.symbol }}</td>
+                    <td>${{ cryptocurrency.market_cap }}</td>
+                    <td>${{ cryptocurrency.price }}</td>
+                    <td>${{ cryptocurrency.volume_24h }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 CoinMarketCap Clone</p>
+    </footer>
+</body>
+</html>
