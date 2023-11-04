@@ -1,13 +1,13 @@
 <!-- coinmarketapp/templates/coinmarketapp/crypto_list.html -->
 
 <!DOCTYPE html>
-{%  load static %}
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'coinmarketapp/styles.css' %}">
-    <title>CoinMarketCap Clone</title>
+    <title>DIGIX - Coin Market Application</title>
 </head>
 <body>
     <header>
@@ -38,44 +38,26 @@
                 {% for cryptocurrency in cryptocurrencies %}
                 <tr>
                     <td>{{ cryptocurrency.name }}</td>
-                    {% for key,value in crypto_rates.items %}
-
-                        {{ key }}
-                    {% endfor %}
                     <td>{{ cryptocurrency.symbol }}</td>
                     <td>${{ cryptocurrency.market_cap }}</td>
                     <td>${{ cryptocurrency.price }}</td>
-
                     <td>${{ cryptocurrency.volume_24h }}</td>
                 </tr>
-                    <tr>
-                        <td></td>
-                        <td>{% for key,value in crypto_rates.items %}
-
-                        {{ key }}
-                    {% endfor %}</td>
-                    </tr>
                 {% endfor %}
-
             </table>
-            {% for key,value in crypto_rates.items %}
-            <div class="list-group-item list-group-item-{% if coin.percent_change_1h.0 == '-'%}danger{% else %}success{% endif %}">
-                <div class="row">
-                    <div class="col-md-3">
-                        {{key}}
-                    </div>
-                    <div class="col-md-3">
-                        {{value}}
-                    </div>
-
-                </div>
+            <div class="crypto-rates">
+                <h2>Cryptocurrency Rates</h2>
+                <ul>
+                    {% for key, value in crypto_rates.items %}
+                    <li>{{ key }}: {{ value }}</li>
+                    {% endfor %}
+                </ul>
             </div>
-            {% endfor %}
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2023 CoinMarketCap Clone</p>
+        <p>&copy; 2023 DIGIX - All Rights Reserved</p>
     </footer>
 </body>
 </html>
