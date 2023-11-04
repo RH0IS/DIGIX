@@ -1,10 +1,38 @@
+<!-- coinmarketapp/templates/coinmarketapp/crypto_list.html -->
+
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Error Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'coinmarketapp/styles.css' %}">
+    <title>DIGIX - Coin Market Application</title>
 </head>
 <body>
-<h1>Error 404</h1>
+    <header>
+        <div class="logo">
+            <img src="{% static 'coinmarketapp/logo.png' %}" alt="CoinMarketApp">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Cryptocurrencies</a></li>
+                <li><a href="#">Exchanges</a></li>
+                <li><a href="#">Markets</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="crypto-list">
+            <h1>ERROR PAGE - Check views.py</h1>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 DIGIX - All Rights Reserved</p>
+    </footer>
 </body>
 </html>

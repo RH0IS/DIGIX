@@ -8,7 +8,7 @@ def crypto_list(request):
     api_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
 
     # Define your API key (replace with your actual CoinMarketCap API key)
-    api_key = "Y1400ea97-a782-4685-81f3-d9ad1ef83928"
+    api_key = "1400ea97-a782-4685-81f3-d9ad1ef83928"
 
     # Define parameters for the API request
     params = {
