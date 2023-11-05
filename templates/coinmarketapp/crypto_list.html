@@ -1,32 +1,8 @@
 <!-- coinmarketapp/templates/coinmarketapp/crypto_list.html -->
 
-
-<!DOCTYPE html>
+{% extends 'coinmarketapp/base.html' %}
 {%  load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'coinmarketapp/styles.css' %}">
-    <title>DIGIX - A Coin Market Application</title>
-</head>
-<body>
-    <header>
-        <div class="logo">
-            <img src="{% static 'coinmarketapp/logo.png' %}" alt="CoinMarketApp">
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Cryptocurrencies</a></li>
-                <li><a href="#">Exchanges</a></li>
-                <li><a href="#">Markets</a></li>
-            </ul>
-        </nav>
-    </header>
 
-
-{% extends "coinmarketapp/base.html" %}
 {% block content %}
 
     <main>
@@ -61,11 +37,4 @@
         </section>
     </main>
 {% endblock %}
-
-
-    <footer>
-        <p>&copy; 2023 DIGIX - A Coin Market Application</p>
-    </footer>
-</body>
-</html>
 
