@@ -66,9 +66,19 @@ table th, table td {
 
 .content {
     flex: 1;
-    max-width: 800px;
+    /*max-width: 800px;*/
+    /*margin: 0 auto;*/
+    /*padding: 2rem;*/
+    background-image: url("hero.jpg");
+    background-size: contain;
+}
+
+.u-color-white{
+    color: white;
+}
+
+.u-position-center{
     margin: 0 auto;
-    padding: 2rem;
 }
 
 footer {
