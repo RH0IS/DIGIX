@@ -77,6 +77,12 @@ table th, table td {
     background-size: contain;
 }
 
+.demo-background {
+    background-image: url("hero.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
 .u-color-white{
     color: white;
 }
