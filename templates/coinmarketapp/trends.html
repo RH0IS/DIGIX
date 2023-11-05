@@ -1,4 +1,4 @@
-<!-- coinmarketapp/templates/coinmarketapp/crypto_list.html -->
+<!-- coinmarketapp/templates/coinmarketapp/trends.html -->
 
 {% extends 'coinmarketapp/base.html' %}
 {%  load static %}
@@ -6,16 +6,12 @@
 {% block content %}
 
     <main>
-    <!-- Add a form with a button to trigger the server-side rendering -->
-            <form method="POST" action="{% url 'trends_view' %}">
-                {% csrf_token %}
-                <button type="submit" class="sign-up-btn">Highlights</button>
-            </form>
+        <h1>TRENDS PAGE</h1>
 
-            <!-- Create a container for the dynamic content -->
-            <div id="dynamic-content-container">
-            <!-- Content loaded dynamically will appear here -->
-            </div>
+             <div class="trend">
+                <img src="{% static 'coinmarketapp/trends.png' %}" alt="CoinMarketApp">
+             </div>
+
         <section class="crypto-list">
             <h1>Cryptocurrency Market</h1>
             <table>
