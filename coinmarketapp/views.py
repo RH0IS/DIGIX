@@ -54,6 +54,12 @@ def crypto_list(request):
         return render(request, 'coinmarketapp/error.html')
 
 
+def demo(request):
+    return render(request,'coinmarketapp/demo-page.html')
+
+def error(request):
+    return render(request, 'coinmarketapp/error.html')
+
 # def index(request):
 #     data = {}
 #     data["crypto_data"] = get_crypto_data()
