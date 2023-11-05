@@ -77,8 +77,15 @@ table th, table td {
     color: white;
 }
 
+.u-center-text{
+    text-align: center;
+}
+
 .u-position-center{
-    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 
 footer {
