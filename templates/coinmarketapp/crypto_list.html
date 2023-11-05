@@ -1,5 +1,6 @@
 <!-- coinmarketapp/templates/coinmarketapp/crypto_list.html -->
 
+
 <!DOCTYPE html>
 {%  load static %}
 <html lang="en">
@@ -24,6 +25,10 @@
         </nav>
     </header>
 
+
+{% extends "coinmarketapp/base.html" %}
+{% block content %}
+
     <main>
         <section class="crypto-list">
             <h1>Cryptocurrency Market</h1>
@@ -45,11 +50,22 @@
                 </tr>
                 {% endfor %}
             </table>
+            <div class="crypto-rates">
+                <h2>Cryptocurrency Rates</h2>
+                <ul>
+                    {% for key, value in crypto_rates.items %}
+                    <li>{{ key }}: {{ value }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </section>
     </main>
+{% endblock %}
+
 
     <footer>
         <p>&copy; 2023 DIGIX - A Coin Market Application</p>
     </footer>
 </body>
 </html>
+
