@@ -1,0 +1,39 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="login-container">
+        <div class="form-box">
+            <h1 id="title">Login</h1>
+        <form method="post">
+            {% csrf_token %}
+            {% if error_message %}
+                <p class="error">{{ error_message }}</p>
+            {% endif %}
+            <div class="input-group">
+
+                <div class="input-field" id="namefield">
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" required><br>
+                </div>
+
+                <div class="input-field" >
+                    <label for "password">Password:</label>
+                    <input type="password" name="password" id="password" required><br>
+                </div>
+                <div class="btn-field">
+                    <button type="submit">Login</button>
+                </div>
+<br>
+            <p>Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+            </div>
+        </form>
+    </div>
+    </div>
+</body>
+</html>
