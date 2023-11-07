@@ -17,7 +17,7 @@ body {
 .login-container {
     width: 100%;
     height: 100vh;
-    background-image: linear-gradient(rgba(0,0,50,0.9),rgba(193, 188, 54, 0.9)),url('../images/background.jpg');
+    background-image: linear-gradient(rgba(1, 23, 20, 0.841),rgba(1, 35, 18, 0.9)),url('../images/background.jpg');
     background-size: cover;
     background-position: center;
     position: relative;
@@ -30,7 +30,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    background: #bac0b564;
+    background: rgba(60, 161, 141, 0.508);
     padding: 50px 60px 70px;
     text-align: center;
 }
@@ -39,7 +39,7 @@ body {
 .form-box h1{
     font-size: 30px;
     margin-bottom: 60px;
-    color: #423798;
+    color: #01100cc4;
     position: relative;
 }
 
@@ -68,9 +68,10 @@ input {
 }
 
 label {
-    font-size: 19px;
-    color: black;
+    font-size: 15px;
+    color: #01100cc4;
     padding: 10px;
+    font-weight: bold;
 
 }
 
@@ -83,12 +84,23 @@ label {
 
 .btn-field button{
     flex-basis: 48%;
-    background:#3c00a0;
-    color: #fff;
+    background:#011711;
+    color: white;
     height: 40px;
     border-radius: 16px;
     border: 0;
     outline: 0;
     cursor: pointer;
     transition: background 1s;
+}
+
+.base-line{
+    font-size: 18px;
+    color: #000c09fd;
+    font-weight: bold;
+}
+
+.base-line > a {
+    color: #0e3228;
+    font-weight: bold;
 }

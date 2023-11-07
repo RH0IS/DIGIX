@@ -1,4 +1,7 @@
-{% load static %}
+{% extends 'coinmarketapp/base.html' %}
+{%  load static %}
+
+{% block content %}
 
 <!DOCTYPE html>
 <html>
@@ -30,10 +33,13 @@
                     <button type="submit">Login</button>
                 </div>
 <br>
-            <p>Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+            <p class="base-line">Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
             </div>
         </form>
     </div>
     </div>
 </body>
 </html>
+
+{% endblock content %}
+

@@ -1,6 +1,7 @@
+{% extends 'coinmarketapp/base.html' %}
+{%  load static %}
 
-
-{% load static %}
+{% block content %}
 
 <!DOCTYPE html>
 <html>
@@ -43,9 +44,12 @@
                         </div>
             </div>
             </form>
-            <p>Already have an account? <a href="{% url 'login' %}">Log In</a></p>
+            <p class="base-line">Already have an account? <a href="{% url 'login' %}">Log In</a></p>
         </div>
     </div>
 </body>
 </html>
+
+{% endblock content %}
+
 
