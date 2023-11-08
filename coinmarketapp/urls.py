@@ -9,4 +9,5 @@ urlpatterns = [
     path('home/',views.crypto_list, name='crypto_list' ),
     path('trends/', views.trends_view, name='trends_view'),
     path('error',views.error, name='error' ),
+    path('exchange', views.exchange, name='exchange'),
 ]

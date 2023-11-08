@@ -109,3 +109,7 @@ def trends_view(request):
     else:
         # Handle API request error
         return render(request, 'coinmarketapp/error.html')
+
+def exchange(request):
+    print("hi")
+    return render(request, 'coinmarketapp/exchange.html')
