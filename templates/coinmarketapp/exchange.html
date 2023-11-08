@@ -1,15 +1,40 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Currency Converter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'coinmarketapp/styles.css' %}">
+    <title>DIGIX - Coin Market Application</title>
 </head>
 <body>
-    {% for i in name%}
+    <header>
+       <a href="{% url 'demo' %}">
+            <div class="logo">
+                <img src="{% static 'coinmarketapp/logo.png' %}" alt="CoinMarketApp">
+            </div>
+       </a>
+        <nav>
+            <ul>
+                <li><a href="/home">Home</a></li>
+                <li><a href="#">Cryptocurrencies</a></li>
+                <li><a href="/exchange">Exchanges</a></li>
+                <li><a href="#">Markets</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+        {% for i in name%}
     {{i}}
     <br>
     {% endfor %}
+    </div>
 
 
+    <footer>
+        <p>&copy; 2023 DIGIX - All Rights Reserved</p>
+    </footer>
 </body>
 </html>
