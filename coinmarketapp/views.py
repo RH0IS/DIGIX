@@ -110,6 +110,35 @@ def trends_view(request):
         # Handle API request error
         return render(request, 'coinmarketapp/error.html')
 
+
 def exchange(request):
-    print("hi")
-    return render(request, 'coinmarketapp/exchange.html')
+    # Define the CoinMarketCap API URL
+    api_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+
+    # Define your API key (replace with your actual CoinMarketCap API key)
+    api_key = "1400ea97-a782-4685-81f3-d9ad1ef83928"
+
+    # Define parameters for the API request
+    params = {
+        'start': 1,  # Starting record
+        'limit': 10,  # Number of cryptocurrencies to retrieve
+        'convert': 'USD',  # Convert prices to USD
+    }
+
+    # Define headers with your API key
+    headers = {
+        'X-CMC_PRO_API_KEY': api_key,
+    }
+
+    # Make the API request
+    response = requests.get(api_url, params=params, headers=headers)
+
+    if response.status_code == 200:
+        # Parse the JSON response
+        data = response.json()
+    currency = []
+    for crypto in data['data']:
+        name = crypto['name']
+        currency.append(name)
+
+    return render(request, 'coinmarketapp/exchange.html', {'name': currency})
