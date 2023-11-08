@@ -35,7 +35,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('user_profile')
+            return redirect('crypto_list')
         else:
             error_message = "Invalid username or password. Please try again."
             return render(request, 'login.html', {'error_message': error_message})
