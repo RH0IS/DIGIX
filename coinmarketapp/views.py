@@ -3,6 +3,8 @@ import requests
 from django.shortcuts import render
 from .models import CryptoCurrency
 
+
+
 def crypto_list(request):
     # Define the CoinMarketCap API URL
     api_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
@@ -109,3 +111,4 @@ def trends_view(request):
     else:
         # Handle API request error
         return render(request, 'coinmarketapp/error.html')
+    
