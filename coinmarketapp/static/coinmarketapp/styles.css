@@ -87,6 +87,7 @@ nav a {
 .crypto-list{
   align-items: center;
   width: 75%;
+  margin-bottom: 2rem;
 }
 
 .crypto-list h1 {
