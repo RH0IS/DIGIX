@@ -1,5 +1,6 @@
 <!-- coinmarketapp/templates/coinmarketapp/crypto_list.html -->
 
+<<<<<<< Updated upstream
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
@@ -31,6 +32,20 @@
                 {% csrf_token %}
                 <button type="submit">Show Trends</button>
             </form>
+=======
+{% extends 'coinmarketapp/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <main>
+    <!-- Add a form with a button to trigger the server-side rendering -->
+<!--            <form method="POST" action="{% url 'trends_view' %}">-->
+<!--                {% csrf_token %}-->
+<!--                <button type="submit" class="sign-up-btn">Highlights</button>-->
+<!--            </form>-->
+
+>>>>>>> Stashed changes
 
             <!-- Create a container for the dynamic content -->
             <div id="dynamic-content-container">

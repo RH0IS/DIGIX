@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <!-- coinmarketapp/templates/coinmarketapp/crypto_list.html -->
 
 <!DOCTYPE html>
@@ -66,4 +67,75 @@
         <p>&copy; 2023 DIGIX - All Rights Reserved</p>
     </footer>
 </body>
+=======
+<!DOCTYPE html>
+{% load static %}
+<html>
+  <head>
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="styleguide.css" />
+<!--    <link rel="stylesheet" href="{% static 'coinmarketapp/styles.css'" />-->
+  <link rel="stylesheet" type="text/css" href="{% static 'coinmarketapp/styles.css' %}">
+
+  </head>
+  <body>
+    <div class="desktop">
+      <div class="div">
+        <div class="section-trending">
+          <div class="trending-box">
+            <div class="text-wrapper">Trending</div>
+            <div class="frame">
+              <div class="trending-item">
+                <img class="img" src="{% static 'coinmarketapp/img/ethereum.png' %}" />
+                <div class="text-wrapper-2">1</div>
+                <div class="text-wrapper-3">Etheruem</div>
+                <div class="text-wrapper-4">+5.04%</div>
+                <div class="text-wrapper-5">ETH</div>
+              </div>
+              <div class="trending-item">
+                <img class="img" src="{% static 'coinmarketapp/img/bitcoin.png' %}" />
+                <div class="text-wrapper-6">2</div>
+                <div class="text-wrapper-3">Bitcoin</div>
+                <div class="text-wrapper-7">-1.78%</div>
+                <div class="text-wrapper-8">BTC</div>
+              </div>
+              <div class="trending-item">
+                <img class="img" src="{% static 'coinmarketapp/img/dogecoin.png' %}" />
+                <div class="text-wrapper-9">3</div>
+                <div class="text-wrapper-3">Dogecoin</div>
+                <div class="text-wrapper-10">+1.15%</div>
+                <div class="text-wrapper-11">DOGE</div>
+              </div>
+            </div>
+          </div>
+          <div class="trending-box-2">
+            <div class="fear-greed-index">Fear &amp; Greed Index</div>
+            <img class="meter" src="{% static 'coinmarketapp/img/meter.png' %}" />
+            <img class="indicator" src="{% static 'coinmarketapp/img/indicator.png' %}" />
+            <div class="element-greed">75 <br />Greed</div>
+          </div>
+        </div>
+        <div class="navbar">
+            <img src="{% static 'coinmarketapp/logo.png' %}" alt="CoinMarketApp">
+          <div class="navbar-2">
+            <div class="text-wrapper-12">Cryptocurrencies</div>
+            <div class="text-wrapper-13">Exchanges</div>
+            <div class="text-wrapper-14">Community</div>
+            <div class="text-wrapper-15">Products</div>
+            <div class="text-wrapper-16">Learn</div>
+          </div>
+        </div>
+        <div class="latest">
+          <div class="navbar-3">
+            <p class="bitcoin"><span class="span">Bitcoin: </span> <span class="text-wrapper-17">-1.78%</span></p>
+            <p class="dogecoin"><span class="span">Dogecoin: </span> <span class="text-wrapper-18">+1.15%</span></p>
+            <p class="ethereum"><span class="span">Ethereum: </span> <span class="text-wrapper-18">+5.04%</span></p>
+            <p class="pepe"><span class="span">Pepe: </span> <span class="text-wrapper-18">+0.49%</span></p>
+            <p class="shiba-inu"><span class="span">Shiba inu: </span> <span class="text-wrapper-17">-1.36%</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+>>>>>>> Stashed changes
 </html>

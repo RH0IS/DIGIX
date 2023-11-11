@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'coinmarketapp/styles.css' %}">
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <title>DIGIX - Coin Market Application</title>
+</head>
+<body>
+    <header>
+       <a href="{% url 'demo' %}">
+            <div class="logo">
+                <img src="{% static 'coinmarketapp/logo.png' %}" alt="CoinMarketApp">
+            </div>
+       </a>
+        <nav>
+            <ul>
+                <li><a href="/home">Home</a></li>
+                <li><a href="#">Cryptocurrencies</a></li>
+                <li><a href="#">Exchanges</a></li>
+                <li><a href="#">Markets</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+
+    <footer>
+        <p>&copy; 2023 DIGIX - All Rights Reserved</p>
+    </footer>
+</body>
+</html>

@@ -103,3 +103,8 @@ def trends_view(request):
         # Handle API request error
         return render(request, 'coinmarketapp/error.html')
 
+<<<<<<< Updated upstream
+=======
+def orders(request):
+    return render(request, 'coinmarketapp/orders.html')
+>>>>>>> Stashed changes
