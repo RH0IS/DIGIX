@@ -1,5 +1,3 @@
-<!-- coinmarketapp/templates/coinmarketapp/crypto_list.html -->
-
 {% extends 'coinmarketapp/base.html' %}
 {%  load static %}
 
@@ -8,71 +6,54 @@
     <main>
     <!-- Add a form with a button to trigger the server-side rendering -->
             <form method="POST" action="{% url 'trends_view' %}">
-                {% csrf_token %}
-                <button type="submit" class="sign-up-btn">Highlights</button>
-            </form>
+      {% csrf_token %}
+      <button type="submit" class="btn-highlights-toggle">Highlights</button>
+    </form>
 
-              <h5>
-                Cryptos
-            </h5>
-            <hr>
-            <div class="card card-body">
-                <a class ="btn btn-primary btn-sm btn-block" href="">btnex</a>
-            </div>
-            <div class="container-fluid">
-              
-          
-              <div class="row">
-                <div class="col-md-5">
 
-                    <br>
-                    <form method="GET" class="form-inline">
-                      <div class="form-group">
-                          <label>Rows:</label>
-                          {{ form.number_of_rows }}
-                          <button type="submit" class="btn btn-primary "
-                          style="font-size: 12px; padding: 3px 6px;"
-                          >Select</button>
-                      </div>
-                  </form>
-                  <div class="container">
-                    <div class="row mt-3">
-                      <div class="col-md-12">
-                          <table class="table table-sm">
-                            <thead>
-                            <tr>
-                              <th class="md-2"></th>
-                                <th class="mb-2"></th>
-                                <th class="mb-5"></th>
-                                <th class="mb-5"></th>
-                                <th class="mb-5"></th>
-                                <th class="mb-5"></th>
-                            </tr>
-                          </thead>
-                            <!--<a class ="btn btn-primary btn-sm btn-block" href=""></a>-->
-                {% for cryptocurrency in cryptocurrencies %}
-                <tr>
-                    <td></td>
-                    <td>{{ cryptocurrency.name }}</td>
-                    <td>{{ cryptocurrency.symbol }}</td>
-                    <td>${{ cryptocurrency.market_cap }}</td>
-                    <td>${{ cryptocurrency.price }}</td>
-                    <td class="{% if cryptocurrency.volume_24h < 0 %}text-danger{% else %}text-success{% endif %}">
-                        {{ cryptocurrency.volume_24h }}%
-                      </td>
-                </tr>
-                {% endfor %}
-                        </table>
-                      </div>
-                    </div>
-                </div>
-                    
-                </div>
-              </div>
             <!-- Create a container for the dynamic content -->
             <div id="dynamic-content-container">
             <!-- Content loaded dynamically will appear here -->
             </div>
+        <section class="crypto-list">
+            <h1>Cryptocurrency Market</h1>
+            <form method="GET" class="form-inline">
+              <div class="form-group">
+                  <label>Rows:</label>
+                  {{ form.number_of_rows }}
+                  <button type="submit" class="btn btn-primary "
+                  style="font-size: 12px; padding: 3px 6px;"
+                  >Select</button>
+              </div>
+          </form>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Symbol</th>
+                    <th>Market Cap</th>
+                    <th>Price</th>
+                    <th>24h Volume</th>
+                </tr>
+                {% for cryptocurrency in cryptocurrencies %}
+                <tr>
+                    <td>{{ cryptocurrency.name }}</td>
+                    <td>{{ cryptocurrency.symbol }}</td>
+                    <td>${{ cryptocurrency.market_cap }}</td>
+                    <td>${{ cryptocurrency.price }}</td>
+                                        <td class="{% if cryptocurrency.volume_24h < 0 %}text-danger{% else %}text-success{% endif %}">
+                        {{ cryptocurrency.volume_24h }}%
+                      </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <div class="crypto-rates">
+                <h2>Cryptocurrency Rates</h2>
+                <ul>
+                    {% for key, value in crypto_rates.items %}
+                    <li>{{ key }}: {{ value }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
     </main>
 {% endblock %}
-
