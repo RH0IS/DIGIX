@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import CryptoCurrency
+from .forms import RowSelectionForm
 
 stripe.api_key = 'sk_test_Hrs6SAopgFPF0bZXSN3f6ELN'
 
@@ -14,6 +15,11 @@ stripe.api_key = 'sk_test_Hrs6SAopgFPF0bZXSN3f6ELN'
 
 def crypto_list(request):
     # Define the CoinMarketCap API URL
+    form = RowSelectionForm(request.GET or None)
+    number_of_rows = 10
+
+    if form.is_valid():
+        number_of_rows = form.cleaned_data['number_of_rows']
     api_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
 
     # Define your API key (replace with your actual CoinMarketCap API key)
@@ -22,7 +28,7 @@ def crypto_list(request):
     # Define parameters for the API request
     params = {
         'start': 1,  # Starting record
-        'limit': 10,  # Number of cryptocurrencies to retrieve
+        'limit': number_of_rows,  # Number of cryptocurrencies to retrieve
         'convert': 'USD',  # Convert prices to USD
     }
 
@@ -37,15 +43,16 @@ def crypto_list(request):
     if response.status_code == 200:
         # Parse the JSON response
         data = response.json()
-
+    
         # Extract relevant data from the API response
-        cryptocurrencies = []
+        CryptoCurrency.objects.all().delete()
+
         for crypto in data['data']:
             name = crypto['name']
             symbol = crypto['symbol']
             market_cap = crypto['quote']['USD']['market_cap']
             price = crypto['quote']['USD']['price']
-            volume_24h = crypto['quote']['USD']['volume_24h']
+            volume_24h = crypto['quote']['USD']['percent_change_1h']
 
             crypto_obj = CryptoCurrency(
                 name=name,
@@ -54,10 +61,13 @@ def crypto_list(request):
                 price=price,
                 volume_24h=volume_24h
             )
-            cryptocurrencies.append(crypto_obj)
+            crypto_obj.save()
 
+        cryptocurrencies = CryptoCurrency.objects.all()
         # Pass the cryptocurrency data to the template
-        return render(request, 'coinmarketapp/crypto_list.html', {'cryptocurrencies': cryptocurrencies})
+        return render(request, 'coinmarketapp/crypto_list.html', {'cryptocurrencies': cryptocurrencies,
+                                                                  'form':form
+                                                                  })
     else:
         # Handle API request error
         return render(request, 'coinmarketapp/error.html')
@@ -104,7 +114,7 @@ def trends_view(request):
             symbol = crypto['symbol']
             market_cap = crypto['quote']['USD']['market_cap']
             price = crypto['quote']['USD']['price']
-            volume_24h = crypto['quote']['USD']['volume_24h']
+            volume_24h = crypto['quote']['USD']['volume_change_24h']
 
             crypto_obj = CryptoCurrency(
                 name=name,
