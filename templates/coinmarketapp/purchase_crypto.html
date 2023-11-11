@@ -1,0 +1,17 @@
+<!-- coinmarketapp/templates/coinmarketapp/purchase_crypto.html -->
+
+{% extends 'coinmarketapp/base.html' %}
+
+{% block content %}
+    <main>
+        <section class="purchase-form">
+            <h1>Purchase {{ cryptocurrency.name }}</h1>
+            <form method="POST" action="">
+                {% csrf_token %}
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" required>
+                <button type="submit">Purchase</button>
+            </form>
+        </section>
+    </main>
+{% endblock %}

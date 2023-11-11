@@ -3,16 +3,15 @@ import json
 import requests
 import stripe
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-
 from .models import CryptoCurrency, UserWallet
 
 stripe.api_key = 'sk_test_Hrs6SAopgFPF0bZXSN3f6ELN'
 
 
-
+@login_required
 def crypto_list(request):
     # Define the CoinMarketCap API URL
     api_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
@@ -41,14 +40,15 @@ def crypto_list(request):
 
         # Extract relevant data from the API response
         cryptocurrencies = []
-        for crypto in data['data']:
-            name = crypto['name']
-            symbol = crypto['symbol']
-            market_cap = crypto['quote']['USD']['market_cap']
-            price = crypto['quote']['USD']['price']
-            volume_24h = crypto['quote']['USD']['volume_24h']
+        for crypto_data in data['data']:
+            name = crypto_data['name']
+            symbol = crypto_data['symbol']
+            market_cap = crypto_data['quote']['USD']['market_cap']
+            price = crypto_data['quote']['USD']['price']
+            volume_24h = crypto_data['quote']['USD']['volume_24h']
 
-            crypto_obj = CryptoCurrency(
+            # Create a new CryptoCurrency instance, save it to get an auto-generated ID
+            crypto_obj = CryptoCurrency.objects.create(
                 name=name,
                 symbol=symbol,
                 market_cap=market_cap,
@@ -62,7 +62,6 @@ def crypto_list(request):
     else:
         # Handle API request error
         return render(request, 'coinmarketapp/error.html')
-
 
 def demo(request):
     return render(request, 'coinmarketapp/demo-page.html')
@@ -100,14 +99,15 @@ def trends_view(request):
 
         # Extract relevant data from the API response
         cryptocurrencies = []
-        for crypto in data['data']:
-            name = crypto['name']
-            symbol = crypto['symbol']
-            market_cap = crypto['quote']['USD']['market_cap']
-            price = crypto['quote']['USD']['price']
-            volume_24h = crypto['quote']['USD']['volume_24h']
+        for crypto_data in data['data']:
+            name = crypto_data['name']
+            symbol = crypto_data['symbol']
+            market_cap = crypto_data['quote']['USD']['market_cap']
+            price = crypto_data['quote']['USD']['price']
+            volume_24h = crypto_data['quote']['USD']['volume_24h']
 
-            crypto_obj = CryptoCurrency(
+            # Create a new CryptoCurrency instance, save it to get an auto-generated ID
+            crypto_obj = CryptoCurrency.objects.create(
                 name=name,
                 symbol=symbol,
                 market_cap=market_cap,
@@ -121,6 +121,7 @@ def trends_view(request):
     else:
         # Handle API request error
         return render(request, 'coinmarketapp/error.html')
+
 
 
 @csrf_exempt
@@ -152,6 +153,33 @@ def payment_test(request) -> HttpResponse:
     return render(request, 'coinmarketapp/checkout.html')
 @login_required
 def user_profile(request):
-    user_wallet = UserWallet.objects.get_or_create(user=request.user)[0]
+    user_wallet, created = UserWallet.objects.get_or_create(user=request.user)
     cryptocurrencies = user_wallet.currencies.all()
-    return render(request, 'coinmarketapp/user_profile.html', {'user_wallet': user_wallet, 'cryptocurrencies': cryptocurrencies})
+
+    print("User Wallet:", user_wallet)
+    print("Cryptocurrencies:", cryptocurrencies)
+
+    total_balance = sum(crypto.price * crypto.quantity for crypto in cryptocurrencies)
+
+    for cryptocurrency in cryptocurrencies:
+        cryptocurrency.value = cryptocurrency.price * cryptocurrency.quantity
+
+    return render(request, 'coinmarketapp/user_profile.html', {
+        'user_wallet': user_wallet,
+        'cryptocurrencies': cryptocurrencies,
+        'total_balance': total_balance,
+    })
+@login_required
+def purchase_crypto(request, crypto_id):
+    cryptocurrency = get_object_or_404(CryptoCurrency, pk=crypto_id)
+
+    if request.method == 'POST':
+        # Handle the purchase logic and add the cryptocurrency to the user's wallet
+        user_wallet = UserWallet.objects.get_or_create(user=request.user)[0]
+        user_wallet.currencies.add(cryptocurrency)
+
+        # Redirect to the user profile page after a successful purchase
+        return redirect('user_profile')
+
+    return render(request, 'coinmarketapp/purchase_crypto.html', {'cryptocurrency': cryptocurrency})
+

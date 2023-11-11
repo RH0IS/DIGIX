@@ -16,6 +16,7 @@
             <div id="dynamic-content-container">
             <!-- Content loaded dynamically will appear here -->
             </div>
+
         <section class="crypto-list">
             <h1>Cryptocurrency Market</h1>
             <table>
@@ -25,22 +26,30 @@
                     <th>Market Cap</th>
                     <th>Price</th>
                     <th>24h Volume</th>
+                    <th>Action</th>  <!-- New column for Purchase action -->
                 </tr>
                 {% for cryptocurrency in cryptocurrencies %}
-                <tr>
-                    <td>{{ cryptocurrency.name }}</td>
-                    <td>{{ cryptocurrency.symbol }}</td>
-                    <td>${{ cryptocurrency.market_cap }}</td>
-                    <td>${{ cryptocurrency.price }}</td>
-                    <td>${{ cryptocurrency.volume_24h }}</td>
-                </tr>
+                    <tr>
+                        <td>{{ cryptocurrency.name }}</td>
+                        <td>{{ cryptocurrency.symbol }}</td>
+                        <td>${{ cryptocurrency.market_cap }}</td>
+                        <td>${{ cryptocurrency.price }}</td>
+                        <td>${{ cryptocurrency.volume_24h }}</td>
+                        <td>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'purchase_crypto' crypto_id=cryptocurrency.id %}">Purchase</a>
+                            {% else %}
+                                <a href="{% url 'login' %}">Login to Purchase</a>
+                            {% endif %}
+                        </td>
+                    </tr>
                 {% endfor %}
             </table>
             <div class="crypto-rates">
                 <h2>Cryptocurrency Rates</h2>
                 <ul>
                     {% for key, value in crypto_rates.items %}
-                    <li>{{ key }}: {{ value }}</li>
+                        <li>{{ key }}: {{ value }}</li>
                     {% endfor %}
                 </ul>
             </div>

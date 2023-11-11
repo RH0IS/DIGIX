@@ -1,22 +1,37 @@
 <!-- coinmarketapp/templates/coinmarketapp/user_profile.html -->
-
 {% extends 'coinmarketapp/base.html' %}
+
 {% block content %}
     <main>
         <section class="user-profile">
-            <h1>{{ user_wallet.user.username }}'s Profile</h1>
-            <div>
-                <h2>Wallet Information</h2>
-                <p>Total Currencies: {{ user_wallet.currencies.count }}</p>
-            </div>
-            <div>
-                <h2>Wallet Contents</h2>
-                <ul>
+            <h1>{{ user_wallet.user.username }}'s Wallet</h1>
+            <p>Total balance: ${{ total_balance }}</p>
+
+            <h2>Cryptocurrencies in your wallet:</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Symbol</th>
+                        <th>Quantity</th>
+                        <th>Market Cap</th>
+                        <th>Price</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
                     {% for cryptocurrency in cryptocurrencies %}
-                        <li>{{ cryptocurrency.name }} ({{ cryptocurrency.symbol }})</li>
+                        <tr>
+                            <td>{{ cryptocurrency.name }}</td>
+                            <td>{{ cryptocurrency.symbol }}</td>
+                            <td>{{ cryptocurrency.quantity }}</td>
+                            <td>${{ cryptocurrency.market_cap }}</td>
+                            <td>${{ cryptocurrency.price }}</td>
+                            <td>${{ cryptocurrency.value }}</td>
+                        </tr>
                     {% endfor %}
-                </ul>
-            </div>
+                </tbody>
+            </table>
         </section>
     </main>
 {% endblock %}

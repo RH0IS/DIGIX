@@ -1,0 +1,12 @@
+<!-- coinmarketapp/templates/coinmarketapp/purchase_success.html -->
+
+{% extends 'coinmarketapp/base.html' %}
+
+{% block content %}
+    <main>
+        <section class="purchase-success">
+            <h1>Success!</h1>
+            <p>You have successfully purchased {{ cryptocurrency.name }}. It has been added to your wallet.</p>
+        </section>
+    </main>
+{% endblock %}
