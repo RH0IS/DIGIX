@@ -5,8 +5,9 @@ import stripe
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
-from .models import CryptoCurrency
+from .models import CryptoCurrency, UserWallet
 
 stripe.api_key = 'sk_test_Hrs6SAopgFPF0bZXSN3f6ELN'
 
@@ -149,4 +150,8 @@ def payment_result(request):
 # Create your views here.
 def payment_test(request) -> HttpResponse:
     return render(request, 'coinmarketapp/checkout.html')
-
+@login_required
+def user_profile(request):
+    user_wallet = UserWallet.objects.get_or_create(user=request.user)[0]
+    cryptocurrencies = user_wallet.currencies.all()
+    return render(request, 'coinmarketapp/user_profile.html', {'user_wallet': user_wallet, 'cryptocurrencies': cryptocurrencies})
