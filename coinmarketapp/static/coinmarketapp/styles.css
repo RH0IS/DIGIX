@@ -46,10 +46,47 @@ nav a {
     color: white;
 }
 
-main {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
+.latest{
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  justify-content: space-between;
+
+  margin-bottom: 1rem;
+}
+
+.navbar{
+  width: 90%;
+  display: flex;
+  align-items: center;
+  /* margin: 0 auto; */
+  justify-content: space-between;
+  margin: 0rem 2rem;
+}
+
+.header{
+  display: flex;
+  flex-direction: column;
+  background-color: #303135;
+}
+
+/*main {*/
+/*    !*max-width: 800px;*!*/
+/*    !*margin: 0 auto;*!*/
+/*    !*padding: 2rem;*!*/
+/*}*/
+
+.crypto-list-container{
+  display: flex;
+  background-color: #303135;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+}
+
+.crypto-list{
+  align-items: center;
+  width: 75%;
 }
 
 .crypto-list h1 {
@@ -105,16 +142,18 @@ footer {
     padding: 1rem 0;
 }
 
-.sign-up-btn {
+.btn-highlights-toggle {
     display: inline-block;
     padding: 15px 30px;
-    background-color: #007BFF;
+    background-color: rgba(33, 167, 130, 1);
     color: #fff;
     text-decoration: none;
     font-weight: 600;
     font-size: 18px;
     border-radius: 5px;
     margin-top: 20px;
+    margin-bottom: 2rem;
+  /*float: right;*/
 }
 
 
@@ -141,5 +180,507 @@ footer {
 }
 
 
+.desktop {
+  background-color: #303135;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
 
-/*old code*/
+.desktop .div {
+  background-color: var(--variable-collection-color-grey);
+  width: 1440px;
+  height: 1024px;
+  position: relative;
+}
+
+/*.desktop .section-trending {*/
+/*  position: absolute;*/
+/*  width: 1167px;*/
+/*  height: 306px;*/
+/*  top: 241px;*/
+/*  left: 150px;*/
+/*}*/
+
+.section-trending{
+  position: absolute;
+  top: 15%;
+  left: 8%;
+  /*transform: translate(-50%,-50%);*/
+  height: 100%;
+  /*display: flex;*/
+  /*justify-content: center;*/
+  /*align-items: center;*/
+}
+
+.desktop .trending-box {
+  position: absolute;
+  width: 594px;
+  height: 306px;
+  top: 0;
+  left: 0;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 0.5px solid;
+  border-color: #21a782;
+}
+
+.desktop .text-wrapper {
+  position: absolute;
+  top: 30px;
+  left: 63px;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .frame {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 26px;
+  position: absolute;
+  top: 79px;
+  left: 20px;
+}
+
+.desktop .trending-item {
+  position: relative;
+  width: 553px;
+  height: 50px;
+}
+
+.desktop .img {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  top: 0;
+  left: 43px;
+}
+
+.desktop .text-wrapper-2 {
+  position: absolute;
+  top: 13px;
+  left: 2px;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .text-wrapper-3 {
+  position: absolute;
+  top: 12px;
+  left: 125px;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .text-wrapper-4 {
+  top: 12px;
+  left: 451px;
+  color: var(--variable-collection-color-green);
+  position: absolute;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .text-wrapper-5 {
+  position: absolute;
+  top: 12px;
+  left: 246px;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #7d7d7d;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .frame-2 {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  top: 0;
+  left: 43px;
+  background-color: #d9d9d9;
+  border-radius: 25px;
+  background-image: url(https://c.animaapp.com/tDQH8n4L/img/logos-bitcoin.svg);
+  background-size: 100% 100%;
+}
+
+.desktop .text-wrapper-6 {
+  top: 15px;
+  position: absolute;
+  left: 0;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .text-wrapper-7 {
+  top: 12px;
+  left: 461px;
+  color: #a72121;
+  position: absolute;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .text-wrapper-8 {
+  position: absolute;
+  top: 12px;
+  left: 219px;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #7d7d7d;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .text-wrapper-9 {
+  top: 12px;
+  position: absolute;
+  left: 0;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .text-wrapper-10 {
+  top: 7px;
+  left: 460px;
+  color: #21a782;
+  position: absolute;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .text-wrapper-11 {
+  position: absolute;
+  top: 12px;
+  left: 244px;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #7d7d7d;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .trending-box-2 {
+  position: absolute;
+  width: 540px;
+  height: 306px;
+  top: 0;
+  left: 627px;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 0.5px solid;
+  border-color: #21a782;
+}
+
+.desktop .fear-greed-index {
+  position: absolute;
+  top: 30px;
+  left: 63px;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .meter {
+  position: absolute;
+  width: 429px;
+  height: 19px;
+  top: 182px;
+  left: 50px;
+  object-fit: cover;
+}
+
+.desktop .indicator {
+  position: absolute;
+  width: 35px;
+  height: 30px;
+  top: 217px;
+  left: 332px;
+}
+
+.desktop .element-greed {
+  position: absolute;
+  top: 82px;
+  left: 234px;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.desktop .navbar {
+  position: absolute;
+  width: 1440px;
+  height: 125px;
+  top: 94px;
+  left: 0;
+}
+
+.desktop .logo {
+  position: absolute;
+  width: 215px;
+  height: 89px;
+  top: 18px;
+  left: 115px;
+  object-fit: cover;
+}
+
+.desktop .navbar-2 {
+  position: absolute;
+  width: 822px;
+  height: 19px;
+  top: 55px;
+  left: 391px;
+}
+
+.desktop .text-wrapper-12 {
+  left: 0;
+  position: absolute;
+  top: -1px;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .text-wrapper-13 {
+  left: 245px;
+  text-align: center;
+  position: absolute;
+  top: -1px;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .text-wrapper-14 {
+  left: 425px;
+  text-align: center;
+  position: absolute;
+  top: -1px;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .text-wrapper-15 {
+  left: 611px;
+  text-align: center;
+  position: absolute;
+  top: -1px;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .text-wrapper-16 {
+  left: 772px;
+  text-align: center;
+  position: absolute;
+  top: -1px;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .latest {
+  position: absolute;
+  width: 1440px;
+  height: 94px;
+  top: 0;
+  left: 0;
+}
+
+.desktop .navbar-3 {
+  position: relative;
+  width: 1093px;
+  height: 19px;
+  top: 37px;
+  left: 173px;
+}
+
+.desktop .bitcoin {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: transparent;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .span {
+  color: #ffffff;
+}
+
+.desktop .text-wrapper-17 {
+  color: #a72121;
+}
+
+.desktop .dogecoin {
+  position: absolute;
+  top: -1px;
+  left: 232px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: transparent;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .text-wrapper-18 {
+  color: #21a782;
+}
+
+.desktop .ethereum {
+  position: absolute;
+  top: -1px;
+  left: 484px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: transparent;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .pepe {
+  position: absolute;
+  top: -1px;
+  left: 737px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: transparent;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.desktop .shiba-inu {
+  position: absolute;
+  top: -1px;
+  left: 956px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: transparent;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+/*.latest {*/
+/*  width: 1440px;*/
+/*  height: 94px;*/
+/*}*/
+
+/*.latest .navbar {*/
+/*  position: relative;*/
+/*  width: 1093px;*/
+/*  height: 19px;*/
+/*  top: 37px;*/
+/*  left: 173px;*/
+/*}*/
+
+.latest .bitcoin {
+  /*position: absolute;*/
+  /*top: -1px;*/
+  /*left: 0;*/
+  font-family: "Inter-Regular", Helvetica;
+  font-weight: 400;
+  color: transparent;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.latest .text-wrapper {
+  color: #ffffff;
+}
+
+.latest .span {
+  color: #a72121;
+}

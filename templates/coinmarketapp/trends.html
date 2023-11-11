@@ -1,46 +1,57 @@
-<!-- coinmarketapp/templates/coinmarketapp/trends.html -->
-
 {% extends 'coinmarketapp/base.html' %}
 {%  load static %}
+<!--<!DOCTYPE html>-->
+<!--{% load static %}-->
+
+<!--<html>-->
+<!--  <head>-->
+<!--    <link rel="stylesheet" href="{% static 'coinmarketapp/globals.css' %}" />-->
+<!--    <link rel="stylesheet" href="{% static 'coinmarketapp/styleguide.css' %}" />-->
+<!--    <link rel="stylesheet" href="{% static 'coinmarketapp/styles.css' %}" />-->
+<!--  </head>-->
+<!--  <body>-->
+
 
 {% block content %}
-
-    <main>
-        <h1>TRENDS PAGE</h1>
-
-             <div class="trend">
-                <img src="{% static 'coinmarketapp/trends.png' %}" alt="CoinMarketApp">
-             </div>
-
-        <section class="crypto-list">
-            <h1>Cryptocurrency Market</h1>
-            <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Symbol</th>
-                    <th>Market Cap</th>
-                    <th>Price</th>
-                    <th>24h Volume</th>
-                </tr>
-                {% for cryptocurrency in cryptocurrencies %}
-                <tr>
-                    <td>{{ cryptocurrency.name }}</td>
-                    <td>{{ cryptocurrency.symbol }}</td>
-                    <td>${{ cryptocurrency.market_cap }}</td>
-                    <td>${{ cryptocurrency.price }}</td>
-                    <td>${{ cryptocurrency.volume_24h }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-            <div class="crypto-rates">
-                <h2>Cryptocurrency Rates</h2>
-                <ul>
-                    {% for key, value in crypto_rates.items %}
-                    <li>{{ key }}: {{ value }}</li>
-                    {% endfor %}
-                </ul>
+    <div class="desktop">
+      <div class="div">
+        <div class="section-trending">
+          <div class="trending-box">
+            <div class="text-wrapper">Trending</div>
+            <div class="frame">
+              <div class="trending-item">
+                <img class="img" src="https://c.animaapp.com/tDQH8n4L/img/frame-1.svg" />
+                <div class="text-wrapper-2">1</div>
+                <div class="text-wrapper-3">Etheruem</div>
+                <div class="text-wrapper-4">+5.04%</div>
+                <div class="text-wrapper-5">ETH</div>
+              </div>
+              <div class="trending-item">
+                <div class="frame-2"></div>
+                <div class="text-wrapper-6">2</div>
+                <div class="text-wrapper-3">Bitcoin</div>
+                <div class="text-wrapper-7">-1.78%</div>
+                <div class="text-wrapper-8">BTC</div>
+              </div>
+              <div class="trending-item">
+                <img class="img" src="https://c.animaapp.com/tDQH8n4L/img/frame-3.svg" />
+                <div class="text-wrapper-9">3</div>
+                <div class="text-wrapper-3">Dogecoin</div>
+                <div class="text-wrapper-10">+1.15%</div>
+                <div class="text-wrapper-11">DOGE</div>
+              </div>
             </div>
-        </section>
-    </main>
+          </div>
+          <div class="trending-box-2">
+            <div class="fear-greed-index">Fear &amp; Greed Index</div>
+            <img class="meter" src="https://c.animaapp.com/tDQH8n4L/img/meter.svg" />
+            <img class="indicator" src="https://c.animaapp.com/tDQH8n4L/img/indicator.svg" />
+            <div class="element-greed">75 <br />Greed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--  </body>-->
+<!--</html>-->
 {% endblock %}
 
