@@ -46,6 +46,27 @@ nav a {
     color: white;
 }
 
+.latest{
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.navbar{
+  width: 100%;
+    display: flex;
+    align-items: center;
+    /* margin: 0 auto; */
+    justify-content: center;
+}
+
+.header{
+  display: flex;
+  flex-direction: column;
+  background-color: #303135;
+}
+
 main {
     max-width: 800px;
     margin: 0 auto;
@@ -599,4 +620,38 @@ footer {
   letter-spacing: 0;
   line-height: normal;
   white-space: nowrap;
+}
+
+/*.latest {*/
+/*  width: 1440px;*/
+/*  height: 94px;*/
+/*}*/
+
+/*.latest .navbar {*/
+/*  position: relative;*/
+/*  width: 1093px;*/
+/*  height: 19px;*/
+/*  top: 37px;*/
+/*  left: 173px;*/
+/*}*/
+
+.latest .bitcoin {
+  /*position: absolute;*/
+  /*top: -1px;*/
+  /*left: 0;*/
+  font-family: "Inter-Regular", Helvetica;
+  font-weight: 400;
+  color: transparent;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.latest .text-wrapper {
+  color: #ffffff;
+}
+
+.latest .span {
+  color: #a72121;
 }

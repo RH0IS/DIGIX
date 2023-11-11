@@ -5,23 +5,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'coinmarketapp/styles.css' %}">
+      <link rel="stylesheet" type="text/css" href="{% static 'coinmarketapp/styleguide.css' %}">
     <title>DIGIX - Coin Market Application</title>
 </head>
 <body>
-    <header>
-       <a href="{% url 'demo' %}">
-            <div class="logo">
-                <img src="{% static 'coinmarketapp/logo.png' %}" alt="CoinMarketApp">
-            </div>
-       </a>
-        <nav>
-            <ul>
-                <li><a href="/home">Home</a></li>
-                <li><a href="#">Cryptocurrencies</a></li>
-                <li><a href="#">Exchanges</a></li>
-                <li><a href="#">Markets</a></li>
-            </ul>
-        </nav>
+    <header class="header">
+<!--        <div class="latest">-->
+
+      <div class="latest">
+        <p class="bitcoin"><span class="text-wrapper">Bitcoin: </span> <span class="u-color-red">-1.78%</span></p>
+        <p class="dogecoin"><span class="text-wrapper">Dogecoin: </span> <span class="u-color-green">+1.15%</span></p>
+        <p class="ethereum"><span class="text-wrapper">Ethereum: </span> <span class="u-color-green">+5.04%</span></p>
+        <p class="pepe"><span class="text-wrapper">Pepe: </span> <span class="u-color-green">+0.49%</span></p>
+        <p class="shiba-inu"><span class="text-wrapper">Shiba inu: </span> <span class="u-color-red">-1.36%</span></p>
+      </div>
+        <div class="navbar">
+            <a href="{% url 'demo' %}">
+                <div class="logo">
+                    <img src="{% static 'coinmarketapp/logo.png' %}" alt="CoinMarketApp">
+                </div>
+            </a>
+
+            <nav>
+                <ul>
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="#">Cryptocurrencies</a></li>
+                    <li><a href="#">Exchanges</a></li>
+                    <li><a href="#">Markets</a></li>
+                </ul>
+            </nav>
+        </div>
+
+
     </header>
 
     <div class="content">
