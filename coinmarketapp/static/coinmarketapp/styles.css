@@ -49,16 +49,19 @@ nav a {
 .latest{
   display: flex;
   flex-direction: row;
-  gap: 2rem;
+  gap: 3rem;
+  justify-content: space-between;
+
   margin-bottom: 1rem;
 }
 
 .navbar{
-  width: 100%;
-    display: flex;
-    align-items: center;
-    /* margin: 0 auto; */
-    justify-content: center;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  /* margin: 0 auto; */
+  justify-content: space-between;
+  margin: 0rem 2rem;
 }
 
 .header{
@@ -177,12 +180,23 @@ footer {
   position: relative;
 }
 
-.desktop .section-trending {
+/*.desktop .section-trending {*/
+/*  position: absolute;*/
+/*  width: 1167px;*/
+/*  height: 306px;*/
+/*  top: 241px;*/
+/*  left: 150px;*/
+/*}*/
+
+.section-trending{
   position: absolute;
-  width: 1167px;
-  height: 306px;
-  top: 241px;
-  left: 150px;
+  top: 15%;
+  left: 8%;
+  /*transform: translate(-50%,-50%);*/
+  height: 100%;
+  /*display: flex;*/
+  /*justify-content: center;*/
+  /*align-items: center;*/
 }
 
 .desktop .trending-box {
