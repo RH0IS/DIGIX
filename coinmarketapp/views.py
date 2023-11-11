@@ -1,7 +1,14 @@
 # coinmarketapp/views.py
+import json
 import requests
+import stripe
+from django.http import HttpResponse
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import CryptoCurrency
+
+stripe.api_key = 'sk_test_Hrs6SAopgFPF0bZXSN3f6ELN'
 
 
 
@@ -57,10 +64,12 @@ def crypto_list(request):
 
 
 def demo(request):
-    return render(request,'coinmarketapp/demo-page.html')
+    return render(request, 'coinmarketapp/demo-page.html')
+
 
 def error(request):
     return render(request, 'coinmarketapp/error.html')
+
 
 def trends_view(request):
     # Define the CoinMarketCap API URL
@@ -111,4 +120,33 @@ def trends_view(request):
     else:
         # Handle API request error
         return render(request, 'coinmarketapp/error.html')
-    
+
+
+@csrf_exempt
+def create_payment(request):
+    try:
+        # Create a PaymentIntent with the order amount and currency
+        intent = stripe.PaymentIntent.create(
+            amount=1400,
+            currency='usd',
+            automatic_payment_methods={
+                'enabled': True,
+            },
+        )
+        return HttpResponse(json.dumps({'clientSecret': intent['client_secret']}), content_type='application/json')
+        # return jsonify({
+        #     'clientSecret': intent['client_secret']
+        # })
+    except Exception as e:
+        print(e)
+        return HttpResponse(json.dumps({'code': '400', 'msg': 'fail'}), content_type='application/json')
+
+
+def payment_result(request):
+    return render(request, 'coinmarketapp/return.html')
+
+
+# Create your views here.
+def payment_test(request) -> HttpResponse:
+    return render(request, 'coinmarketapp/checkout.html')
+
