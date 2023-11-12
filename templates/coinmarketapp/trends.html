@@ -1,57 +1,61 @@
-{% extends 'coinmarketapp/base.html' %}
-{%  load static %}
-<!--<!DOCTYPE html>-->
-<!--{% load static %}-->
-
-<!--<html>-->
-<!--  <head>-->
-<!--    <link rel="stylesheet" href="{% static 'coinmarketapp/globals.css' %}" />-->
-<!--    <link rel="stylesheet" href="{% static 'coinmarketapp/styleguide.css' %}" />-->
-<!--    <link rel="stylesheet" href="{% static 'coinmarketapp/styles.css' %}" />-->
-<!--  </head>-->
-<!--  <body>-->
-
-
-{% block content %}
-  <section class="section-trending">
-    <div class="trending-box">
-      <div class="trending-header">Trending</div>
-      <div class="frame">
-        <div class="trending-item">
-          <div class="trending-item--logo-container">
-            <img class="trending-item--logo" src="https://c.animaapp.com/tDQH8n4L/img/frame-1.svg" />
-
-          </div>
-          <p class="text-wrapper">1 Ethereum ETH <span class="u-text-color-green u-float-right">+5.04%</span></p>
-
+{% extends 'coinmarketapp/crypto_list.html' %} {% extends
+'coinmarketapp/base.html' %} {% load static %} {% block trending %}
+<section class="section-trending">
+  <div class="trending-box">
+    <div class="trending-header">Trending</div>
+    <div class="frame">
+      <div class="trending-item">
+        <div class="trending-item--logo-container">
+          <img
+            class="trending-item--logo"
+            src="https://c.animaapp.com/tDQH8n4L/img/frame-1.svg"
+          />
         </div>
-        <div class="trending-item">
-          <div class="trending-item--logo-container">
-            <img class="trending-item--logo" src="https://c.animaapp.com/tDQH8n4L/img/frame-1.svg" />
-
-          </div>
-
-          <p class="text-wrapper">2 Bitcoin BTC <span class="u-text-color-red u-float-right">-1.78%</span></p>
-
+        <p class="text-wrapper">
+          1 Ethereum ETH
+          <span class="u-text-color-green u-float-right">+5.04%</span>
+        </p>
+      </div>
+      <div class="trending-item">
+        <div class="trending-item--logo-container">
+          <img
+            class="trending-item--logo"
+            src="https://c.animaapp.com/tDQH8n4L/img/frame-1.svg"
+          />
         </div>
-        <div class="trending-item">
-          <div class="trending-item--logo-container">
-            <img class="trending-item--logo" src="https://c.animaapp.com/tDQH8n4L/img/frame-3.svg" />
 
-          </div>
-          <p class="text-wrapper">3 Dogecoin DOGE <span class="u-text-color-green u-float-right">+1.15%</span></p>
-
+        <p class="text-wrapper">
+          2 Bitcoin BTC
+          <span class="u-text-color-red u-float-right">-1.78%</span>
+        </p>
+      </div>
+      <div class="trending-item">
+        <div class="trending-item--logo-container">
+          <img
+            class="trending-item--logo"
+            src="https://c.animaapp.com/tDQH8n4L/img/frame-3.svg"
+          />
         </div>
+        <p class="text-wrapper">
+          3 Dogecoin DOGE
+          <span class="u-text-color-green u-float-right">+1.15%</span>
+        </p>
       </div>
     </div>
-    <div class="trending-box">
-      <div class="trending-header">Fear &amp; Greed Index</div>
-      <img class="meter u-center" src="https://c.animaapp.com/tDQH8n4L/img/meter.svg" />
-      <img class="indicator u-center" src="https://c.animaapp.com/tDQH8n4L/img/indicator.svg" />
-      <p class="indicator-text u-center"><span class="indicator-text u-text-size-large">75</span> <br />Greed</p>
-    </div>
-  </section>
-<!--  </body>-->
-<!--</html>-->
+  </div>
+  <div class="trending-box">
+    <div class="trending-header">Fear &amp; Greed Index</div>
+    <img
+      class="meter u-center"
+      src="https://c.animaapp.com/tDQH8n4L/img/meter.svg"
+    />
+    <img
+      class="indicator u-center"
+      src="https://c.animaapp.com/tDQH8n4L/img/indicator.svg"
+    />
+    <p class="indicator-text u-center">
+      <span class="indicator-text u-text-size-large">75</span> <br />Greed
+    </p>
+  </div>
+</section>
 {% endblock %}
-

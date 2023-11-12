@@ -78,17 +78,19 @@ nav a {
 /*    !*padding: 2rem;*!*/
 /*}*/
 
-.crypto-list-container{
-  display: flex;
+.section-crypto-list{
+  /* display: flex; */
   background-color: #303135;
-  flex-direction: column;
-  align-items: center;
+  /* flex-direction: column; */
+  /* align-items: center; */
   color: white;
 }
 
 .crypto-list{
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  width: 75%;
+  /* width: 75%; */
   margin-bottom: 2rem;
 }
 
@@ -219,6 +221,10 @@ footer {
   align-items: center;
   justify-content: center;
   padding: 2rem 0;
+}
+
+.toggle-highlights{
+  margin-bottom: 2rem;
 }
 
 .trending-box{
