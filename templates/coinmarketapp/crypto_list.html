@@ -1,59 +1,61 @@
-{% extends 'coinmarketapp/base.html' %}
-{%  load static %}
+{% extends 'coinmarketapp/base.html' %} {% load static %} {% block content %}
 
-{% block content %}
+<section class="crypto-list-container">
+  <!-- Add a form with a button to trigger the server-side rendering -->
+  <form method="POST" action="{% url 'trends_view' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn-highlights-toggle">Highlights</button>
+  </form>
 
-    <main>
-    <!-- Add a form with a button to trigger the server-side rendering -->
-            <form method="POST" action="{% url 'trends_view' %}">
-      {% csrf_token %}
-      <button type="submit" class="btn-highlights-toggle">Highlights</button>
+  <!-- Create a container for the dynamic content -->
+  <div id="dynamic-content-container">
+    <!-- Content loaded dynamically will appear here -->
+  </div>
+  <div class="crypto-list">
+    <h1>Cryptocurrency Market</h1>
+    <form method="GET" class="form-inline">
+      <div class="form-group">
+        <label>Rows:</label>
+        {{ form.number_of_rows }}
+        <button
+          type="submit"
+          class="btn btn-primary"
+          style="font-size: 12px; padding: 3px 6px"
+        >
+          Select
+        </button>
+      </div>
     </form>
-
-
-            <!-- Create a container for the dynamic content -->
-            <div id="dynamic-content-container">
-            <!-- Content loaded dynamically will appear here -->
-            </div>
-        <section class="crypto-list">
-            <h1>Cryptocurrency Market</h1>
-            <form method="GET" class="form-inline">
-              <div class="form-group">
-                  <label>Rows:</label>
-                  {{ form.number_of_rows }}
-                  <button type="submit" class="btn btn-primary "
-                  style="font-size: 12px; padding: 3px 6px;"
-                  >Select</button>
-              </div>
-          </form>
-            <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Symbol</th>
-                    <th>Market Cap</th>
-                    <th>Price</th>
-                    <th>24h Volume</th>
-                </tr>
-                {% for cryptocurrency in cryptocurrencies %}
-                <tr>
-                    <td>{{ cryptocurrency.name }}</td>
-                    <td>{{ cryptocurrency.symbol }}</td>
-                    <td>${{ cryptocurrency.market_cap }}</td>
-                    <td>${{ cryptocurrency.price }}</td>
-                                        <td class="{% if cryptocurrency.volume_24h < 0 %}text-danger{% else %}text-success{% endif %}">
-                        {{ cryptocurrency.volume_24h }}%
-                      </td>
-                </tr>
-                {% endfor %}
-            </table>
-            <div class="crypto-rates">
-                <h2>Cryptocurrency Rates</h2>
-                <ul>
-                    {% for key, value in crypto_rates.items %}
-                    <li>{{ key }}: {{ value }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </section>
-    </main>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Symbol</th>
+        <th>Market Cap</th>
+        <th>Price</th>
+        <th>24h Volume</th>
+      </tr>
+      {% for cryptocurrency in cryptocurrencies %}
+      <tr>
+        <td>{{ cryptocurrency.name }}</td>
+        <td>{{ cryptocurrency.symbol }}</td>
+        <td>${{ cryptocurrency.market_cap }}</td>
+        <td>${{ cryptocurrency.price }}</td>
+        <td
+          class="{% if cryptocurrency.volume_24h < 0 %}text-danger{% else %}text-success{% endif %}"
+        >
+          {{ cryptocurrency.volume_24h }}%
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <!--            <div class="crypto-rates">-->
+    <!--                <h2>Cryptocurrency Rates</h2>-->
+    <!--                <ul>-->
+    <!--                    {% for key, value in crypto_rates.items %}-->
+    <!--                    <li>{{ key }}: {{ value }}</li>-->
+    <!--                    {% endfor %}-->
+    <!--                </ul>-->
+    <!--            </div>-->
+  </div>
+</section>
 {% endblock %}
