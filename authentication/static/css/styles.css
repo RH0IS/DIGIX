@@ -6,7 +6,7 @@
 }
 
 body {
-    background-image: url('/static/background.jpeg'); /* URL to your background image */
+    background-image: url('../images/background.jpg'); /* URL to your background image */
     background-size: cover; /* Cover the entire viewport */
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
@@ -80,6 +80,7 @@ label {
     width: 100%;
     display: flex;
     justify-content:center;
+    margin-top: 2rem;
 }
 
 .btn-field button{
