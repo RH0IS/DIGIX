@@ -65,82 +65,113 @@
 
     <script>
     const dropList = document.querySelectorAll("form select");
-    const fromCurrency = document.querySelector(".from select");
-    const toCurrency = document.querySelector(".to select");
-    const getButton = document.querySelector("form button");
+    const fromCurrency = document.getElementById("fromCurrency");
+    const toCurrency = document.getElementById("toCurrency");
+    const getExchangeRateButton = document.getElementById("getExchangeRate");
+    const exchangeRateTxt = document.querySelector(".exchange-rate");
 
-    // Fetch currency names from the Django view data
-        const currencyNames = [{% for currency_name in name %}"{{ currency_name }}",{% endfor %}];
+    const apiKey = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
+    let url = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?CMC_PRO_API_KEY=${apiKey}`;
+    const currencyNames = {};
 
-    console.log(currencyNames);
 
-
-    // Populate select options with currency names
-    for (let i = 0; i < dropList.length; i++) {
-        for (let currencyName of currencyNames) {
-            let selected = i === 0 && currencyName === "USD" ? "selected" : "";
-            let optionTag = `<option value="${currencyName}" ${selected}>${currencyName}</option>`;
-            dropList[i].insertAdjacentHTML("beforeend", optionTag);
+    // Fetch currency names from CoinMarketCap API
+    fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?CMC_PRO_API_KEY=${apiKey}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
         }
-    }
+    })
+        .then(response => response.json())
+        .then(data => {
+            data.data.forEach(currency => {
+                currencyNames[currency.symbol] = currency.name;
+            });
 
-    function loadFlag(element) {
-        // You can add flag loading logic here if needed
-    }
+            // Populate select options with currency names
+            for (let i = 0; i < dropList.length; i++) {
+                for (let currencyCode in currencyNames) {
+                    let selected = i === 0 ? currencyCode === "USD" ? "selected" : "" : currencyCode === "NPR" ? "selected" : "";
+                    let optionTag = `<option value="${currencyCode}" ${selected}>${currencyNames[currencyCode]}</option>`;
+                    dropList[i].insertAdjacentHTML("beforeend", optionTag);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching currency names: ', error);
+        });
 
-    window.addEventListener("load", () => {
-        // Call the exchange rate function on page load
-        getExchangeRate();
-    });
+    // getButton.addEventListener("click", (e) => {
+    //     e.preventDefault();
+    //     getExchangeRate();
+    // });
 
-    getButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        getExchangeRate();
-    });
+    // const exchangeIcon = document.querySelector("form .icon");
+    // exchangeIcon.addEventListener("click", () => {
+    //     let tempCode = fromCurrency.value;
+    //     fromCurrency.value = toCurrency.value;
+    //     toCurrency.value = tempCode;
+    //     loadFlag(fromCurrency);
+    //     loadFlag(toCurrency);
+    //     getExchangeRate();
+    // });
 
-    const exchangeIcon = document.querySelector("form .icon");
-    exchangeIcon.addEventListener("click", () => {
-        let tempCode = fromCurrency.value;
-        fromCurrency.value = toCurrency.value;
-        toCurrency.value = tempCode;
-        loadFlag(fromCurrency);
-        loadFlag(toCurrency);
-        getExchangeRate();
-    });
+    fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const currencyNames = data.data.map(currency => ({
+                    name: currency.name,
+                    symbol: currency.symbol,
+                }));
+
+                // Populate select options with currency names
+                currencyNames.forEach(currency => {
+                    const optionTag = `<option value="${currency.symbol}">${currency.name}</option>`;
+                    fromCurrency.insertAdjacentHTML("beforeend", optionTag);
+                    toCurrency.insertAdjacentHTML("beforeend", optionTag);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching currency names: ', error);
+            });
 
     function getExchangeRate() {
-        const amount = document.querySelector("form input");
-        const exchangeRateTxt = document.querySelector("form .exchange-rate");
-        let amountVal = amount.value;
+            const amount = document.querySelector("form input");
+            const fromCurrencyValue = fromCurrency.value;
+            const toCurrencyValue = toCurrency.value;
 
-        // Validate the amount
-        if (amountVal == "" || amountVal == "0") {
-            amount.value = "1";
-            amountVal = 1;
-        }
+            exchangeRateTxt.innerText = "Getting exchange rate...";
 
-        exchangeRateTxt.innerText = "Getting exchange rate...";
+            // Fetch exchange rate from ExchangeRate API
+            const exchangeRateUrl = `https://v6.exchangerate-api.com/v6/3ba44afda43062f9ffa4fa5a/latest/${fromCurrencyValue}`;
 
-        // Fetch exchange rate from the Django view
-        let url = `/get-exchange-rate/${fromCurrency.value}/${toCurrency.value}/${amountVal}/`;
-        fetch(url)
-            .then((response) => response.json())
-            .then((result) => {
-                if (result.success) {
-                    let totalExRate = result.exchangeRate.toFixed(2);
-                    exchangeRateTxt.innerText = `${amountVal} ${fromCurrency.value} = ${totalExRate} ${toCurrency.value}`;
-                } else {
+            console.log('a');
+            fetch(exchangeRateUrl)
+                .then(response => response.json())
+                .then(result => {
+                    const exchangeRate = result.conversion_rates[toCurrencyValue];
+                    const totalExRate = (amount.value * exchangeRate).toFixed(2);
+                    exchangeRateTxt.innerText = `${amount.value} ${fromCurrencyValue} = ${totalExRate} ${toCurrencyValue}`;
+                })
+                .catch(() => {
                     exchangeRateTxt.innerText = "Something went wrong";
-                }
-            })
-            .catch(() => {
-                exchangeRateTxt.innerText = "Something went wrong";
-            });
-    }
-</script>
+                });
+        }
+        console.log('b');
+
+        window.addEventListener("load", () => {
+            getExchangeRate();
+        });
+
+        getExchangeRateButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            getExchangeRate();
+        });
+    </script>
 
 
-
+x
     <footer>
         <p>&copy; 2023 DIGIX - All Rights Reserved</p>
     </footer>

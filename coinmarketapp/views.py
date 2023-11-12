@@ -1,5 +1,6 @@
 # coinmarketapp/views.py
 import requests
+from django.http import JsonResponse
 from django.shortcuts import render
 from .models import CryptoCurrency
 
@@ -59,6 +60,38 @@ def demo(request):
 
 def error(request):
     return render(request, 'coinmarketapp/error.html')
+
+
+def get_exchange_rate(request, from_currency):
+    try:
+        # Define your API key (replace with your actual API key)
+        api_key = "1400ea97-a782-4685-81f3-d9ad1ef83928"
+
+        # Define headers with your API key
+        headers = {
+            'X-CMC_PRO_API_KEY': api_key,
+        }
+
+        # Make the API request
+        url = f'https://v6.exchangerate-api.com/v6/{api_key}/latest/{from_currency}'
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()  # Raise an error for bad responses
+
+        # Return the response to the frontend
+        return JsonResponse(response.json())
+
+    except requests.exceptions.HTTPError as errh:
+        return JsonResponse({'error': f"HTTP Error: {errh}"}, status=500)
+
+    except requests.exceptions.ConnectionError as errc:
+        return JsonResponse({'error': f"Error Connecting: {errc}"}, status=500)
+
+    except requests.exceptions.Timeout as errt:
+        return JsonResponse({'error': f"Timeout Error: {errt}"}, status=500)
+
+    except requests.exceptions.RequestException as err:
+        return JsonResponse({'error': f"Something went wrong: {err}"}, status=500)
+
 
 def trends_view(request):
     # Define the CoinMarketCap API URL
