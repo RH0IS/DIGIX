@@ -24,13 +24,121 @@
         </nav>
     </header>
 
-    <div class="content">
-        {% block content %}{% endblock %}
-        {% for i in name%}
-    {{i}}
-    <br>
-    {% endfor %}
+
+     <div class="wrapper">
+      <header>Currency Converter</header>
+      <form action="#">
+        <div class="amount">
+          <p>Enter Amount</p>
+          <input type="text" value="1">
+        </div>
+        <div class="drop-list">
+          <div class="from">
+            <p>From</p>
+            <div class="select-box">
+              <select>
+                <!-- Iterate through currency names and create options -->
+                {% for currency_name in name %}
+                  <option value="{{ currency_name }}">{{ currency_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="icon"><i class="fas fa-exchange-alt"></i></div>
+          <div class="to">
+            <p>To</p>
+            <div class="select-box">
+              <select>
+                <!-- Iterate through currency names and create options -->
+                {% for currency_name in name %}
+                  <option value="{{ currency_name }}">{{ currency_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="exchange-rate">Getting exchange rate...</div>
+        <button>Get Exchange Rate</button>
+      </form>
     </div>
+    <br><br><br>
+
+    <script>
+    const dropList = document.querySelectorAll("form select");
+    const fromCurrency = document.querySelector(".from select");
+    const toCurrency = document.querySelector(".to select");
+    const getButton = document.querySelector("form button");
+
+    // Fetch currency names from the Django view data
+        const currencyNames = [{% for currency_name in name %}"{{ currency_name }}",{% endfor %}];
+
+    console.log(currencyNames);
+
+
+    // Populate select options with currency names
+    for (let i = 0; i < dropList.length; i++) {
+        for (let currencyName of currencyNames) {
+            let selected = i === 0 && currencyName === "USD" ? "selected" : "";
+            let optionTag = `<option value="${currencyName}" ${selected}>${currencyName}</option>`;
+            dropList[i].insertAdjacentHTML("beforeend", optionTag);
+        }
+    }
+
+    function loadFlag(element) {
+        // You can add flag loading logic here if needed
+    }
+
+    window.addEventListener("load", () => {
+        // Call the exchange rate function on page load
+        getExchangeRate();
+    });
+
+    getButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        getExchangeRate();
+    });
+
+    const exchangeIcon = document.querySelector("form .icon");
+    exchangeIcon.addEventListener("click", () => {
+        let tempCode = fromCurrency.value;
+        fromCurrency.value = toCurrency.value;
+        toCurrency.value = tempCode;
+        loadFlag(fromCurrency);
+        loadFlag(toCurrency);
+        getExchangeRate();
+    });
+
+    function getExchangeRate() {
+        const amount = document.querySelector("form input");
+        const exchangeRateTxt = document.querySelector("form .exchange-rate");
+        let amountVal = amount.value;
+
+        // Validate the amount
+        if (amountVal == "" || amountVal == "0") {
+            amount.value = "1";
+            amountVal = 1;
+        }
+
+        exchangeRateTxt.innerText = "Getting exchange rate...";
+
+        // Fetch exchange rate from the Django view
+        let url = `/get-exchange-rate/${fromCurrency.value}/${toCurrency.value}/${amountVal}/`;
+        fetch(url)
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.success) {
+                    let totalExRate = result.exchangeRate.toFixed(2);
+                    exchangeRateTxt.innerText = `${amountVal} ${fromCurrency.value} = ${totalExRate} ${toCurrency.value}`;
+                } else {
+                    exchangeRateTxt.innerText = "Something went wrong";
+                }
+            })
+            .catch(() => {
+                exchangeRateTxt.innerText = "Something went wrong";
+            });
+    }
+</script>
+
 
 
     <footer>
