@@ -65,20 +65,27 @@ def error(request):
 def get_exchange_rate(request, from_currency):
     try:
         # Define your API key (replace with your actual API key)
-        api_key = "1400ea97-a782-4685-81f3-d9ad1ef83928"
+        exchange_rate_api_key = "3ba44afda43062f9ffa4fa5a"
 
         # Define headers with your API key
         headers = {
-            'X-CMC_PRO_API_KEY': api_key,
+            'X-RapidAPI-Key': exchange_rate_api_key,
         }
 
         # Make the API request
-        url = f'https://v6.exchangerate-api.com/v6/{api_key}/latest/{from_currency}'
+        url = f'https://v6.exchangerate-api.com/v6/{exchange_rate_api_key}/latest/{from_currency}'
         response = requests.get(url, headers=headers)
         response.raise_for_status()  # Raise an error for bad responses
 
+        response_json = response.json()
+        response = JsonResponse(response_json)
+        response["Access-Control-Allow-Origin"] = "http://127.0.0.1:8000"
+        response["Access-Control-Allow-Methods"] = "GET, OPTIONS"
+        response["Access-Control-Max-Age"] = "1000"
+        response["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
+
         # Return the response to the frontend
-        return JsonResponse(response.json())
+        return response
 
     except requests.exceptions.HTTPError as errh:
         return JsonResponse({'error': f"HTTP Error: {errh}"}, status=500)
