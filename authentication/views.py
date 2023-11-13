@@ -1,6 +1,6 @@
 # userauth/views.py
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import UserCreationForm
+from .forms import CustomUserCreationForm, UserProfileForm
 from django.shortcuts import render, redirect
 from .models import UserProfile
 from django.contrib import messages
@@ -9,14 +9,19 @@ def signup(request):
     if request.method == 'POST':
         print(f"Received a POST request to the 'signup' view")
 
-        form = UserCreationForm(request.POST,request.FILES)
-        if form.is_valid():
+        form = CustomUserCreationForm(request.POST)
+        profile_form = UserProfileForm(request.POST, request.FILES)
+        if form.is_valid() and profile_form.is_valid():
             user = form.save()
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            profile.save()
             print(user)
-            # login(request, user)
+            login(request, user)
             return redirect('login')
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
+        profile_form = UserProfileForm()
     return render(request, 'authentication/signup.html', {'form': form})
 
 def user_profile(request):
