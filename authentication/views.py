@@ -1,5 +1,5 @@
 # userauth/views.py
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from .models import UserProfile
@@ -38,5 +38,10 @@ def login_view(request):
             return redirect('crypto_list')
         else:
             error_message = "Invalid username or password. Please try again."
-            return render(request, 'login.html', {'error_message': error_message})
+            return render(request, 'coinmarketapp/error.html', {'error_message': error_message})
     return render(request, 'authentication/login.html')
+
+def custom_logout(request):
+        logout(request)
+
+        return redirect('login')

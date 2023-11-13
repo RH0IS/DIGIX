@@ -13,7 +13,7 @@ from .forms import RowSelectionForm
 stripe.api_key = 'sk_test_Hrs6SAopgFPF0bZXSN3f6ELN'
 
 
-
+@login_required(login_url='login')  
 def crypto_list(request):
     # Define the CoinMarketCap API URL
     form = RowSelectionForm(request.GET or None)
