@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from .models import UserProfile
+from django.contrib import messages
 
 def signup(request):
     if request.method == 'POST':
@@ -37,8 +38,9 @@ def login_view(request):
             login(request, user)
             return redirect('crypto_list')
         else:
-            error_message = "Invalid username or password. Please try again."
-            return render(request, 'coinmarketapp/error.html', {'error_message': error_message})
+            error_message = "Invalid username or password. Please try again!"
+            messages.error(request, error_message)
+            return render(request, 'authentication/login.html')
     return render(request, 'authentication/login.html')
 
 def custom_logout(request):
