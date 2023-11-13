@@ -4,6 +4,22 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from .models import CryptoCurrency
 
+
+def get_exchange_rates(request):
+    api_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+    api_key = "1400ea97-a782-4685-81f3-d9ad1ef83928"
+
+    headers = {
+        "Accepts": "application/json",
+        "X-CMC_PRO_API_KEY": api_key,
+    }
+
+    response = requests.get(api_url, headers=headers)
+    data = response.json()
+
+    return JsonResponse(data)
+
+
 def crypto_list(request):
     # Define the CoinMarketCap API URL
     api_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
@@ -56,13 +72,15 @@ def crypto_list(request):
 
 
 def demo(request):
-    return render(request,'coinmarketapp/demo-page.html')
+    return render(request, 'coinmarketapp/demo-page.html')
+
 
 def error(request):
     return render(request, 'coinmarketapp/error.html')
 
 
 def get_exchange_rate(request, from_currency):
+    print('hello')
     try:
         # Define your API key (replace with your actual API key)
         exchange_rate_api_key = "3ba44afda43062f9ffa4fa5a"
@@ -74,7 +92,9 @@ def get_exchange_rate(request, from_currency):
 
         # Make the API request
         url = f'https://v6.exchangerate-api.com/v6/{exchange_rate_api_key}/latest/{from_currency}'
+        print('hey')
         response = requests.get(url, headers=headers)
+        print("res:", response)
         response.raise_for_status()  # Raise an error for bad responses
 
         response_json = response.json()
@@ -170,15 +190,34 @@ def exchange(request):
         'X-CMC_PRO_API_KEY': api_key,
     }
 
-    # Make the API request
-    response = requests.get(api_url, params=params, headers=headers)
+    try:
+        # Make the API request
+        response = requests.get(api_url, params=params, headers=headers)
+        response.raise_for_status()  # Raise an error for bad responses
 
-    if response.status_code == 200:
-        # Parse the JSON response
-        data = response.json()
-    currency = []
-    for crypto in data['data']:
-        name = crypto['name']
-        currency.append(name)
+        if response.status_code == 200:
+            # Parse the JSON response
+            data = response.json()
 
-    return render(request, 'coinmarketapp/exchange.html', {'name': currency})
+            # Extract relevant information
+            cryptocurrencies = []
+            for crypto in data['data']:
+                name = crypto['name']
+                symbol = crypto['symbol']
+                price = crypto['quote']['USD']['price']
+
+                cryptocurrency = {
+                    'name': name,
+                    'symbol': symbol,
+                    'price': price,
+                }
+
+                cryptocurrencies.append(cryptocurrency)
+
+            return render(request, 'coinmarketapp/exchange.html', {'cryptocurrencies': cryptocurrencies})
+
+        else:
+            return JsonResponse({'error': 'Failed to fetch cryptocurrency data'}, status=response.status_code)
+
+    except requests.exceptions.RequestException as err:
+        return JsonResponse({'error': f"Something went wrong: {err}"}, status=500)
