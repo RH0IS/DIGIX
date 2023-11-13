@@ -9,7 +9,7 @@ def signup(request):
     if request.method == 'POST':
         print(f"Received a POST request to the 'signup' view")
 
-        form = UserCreationForm(request.POST)
+        form = UserCreationForm(request.POST,request.FILES)
         if form.is_valid():
             user = form.save()
             print(user)
