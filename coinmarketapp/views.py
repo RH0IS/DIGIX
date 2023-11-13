@@ -4,7 +4,6 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from .models import CryptoCurrency
 
-
 def get_exchange_rates(request):
     api_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
     api_key = "1400ea97-a782-4685-81f3-d9ad1ef83928"
@@ -18,7 +17,6 @@ def get_exchange_rates(request):
     data = response.json()
 
     return JsonResponse(data)
-
 
 def crypto_list(request):
     # Define the CoinMarketCap API URL
@@ -72,8 +70,7 @@ def crypto_list(request):
 
 
 def demo(request):
-    return render(request, 'coinmarketapp/demo-page.html')
-
+    return render(request,'coinmarketapp/demo-page.html')
 
 def error(request):
     return render(request, 'coinmarketapp/error.html')
@@ -94,7 +91,7 @@ def get_exchange_rate(request, from_currency):
         url = f'https://v6.exchangerate-api.com/v6/{exchange_rate_api_key}/latest/{from_currency}'
         print('hey')
         response = requests.get(url, headers=headers)
-        print("res:", response)
+        print("res:",response)
         response.raise_for_status()  # Raise an error for bad responses
 
         response_json = response.json()
