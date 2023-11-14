@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from .models import CryptoCurrency, UserWallet
 from .forms import RowSelectionForm
 
-stripe.api_key = 'sk_test_Hrs6SAopgFPF0bZXSN3f6ELN'
+stripe.api_key = 'sk_test_51O4pjuHl9Bqmml9jt2gupSLgAY6JjnvhQ9YaHuNHWZJOZZVZdeZHD67aG6WOkxXxIyy7OBQQKNdrWH90U3qaAVhO00tHqCFiRH'
 
 
 
@@ -134,15 +134,17 @@ def trends_view(request):
 
 
 @csrf_exempt
-def create_payment(request):
+def create_order(request) -> HttpResponse:
+    """
+    :param request: Http Request
+    :return: client sceret that Stripe needed
+    """
     try:
         # Create a PaymentIntent with the order amount and currency
         intent = stripe.PaymentIntent.create(
             amount=1400,
             currency='usd',
-            automatic_payment_methods={
-                'enabled': True,
-            },
+            automatic_payment_methods={'enabled': True, },
         )
         return HttpResponse(json.dumps({'clientSecret': intent['client_secret']}), content_type='application/json')
         # return jsonify({
@@ -154,6 +156,28 @@ def create_payment(request):
 
 
 def payment_result(request):
+    payload = request.body
+    event = None
+    try:
+        event = stripe.Event.construct_from(
+            json.loads(payload), stripe.api_key
+        )
+    except ValueError as e:
+        # Invalid payload
+        return HttpResponse(status=400)
+
+    # Handle the event
+    if event.type == 'payment_intent.succeeded':
+        print(event.data.object)  # contains a stripe.PaymentIntent
+        print(request.GET.get('payment_intent'))
+        print(request.GET.get('payment_intent_client_secret'))
+        print('PaymentIntent was successful!')
+    elif event.type == 'payment_method.attached':
+        payment_method = event.data.object  # contains a stripe.PaymentMethod
+        print('PaymentMethod was attached to a Customer!')
+    # ... handle other event types
+    else:
+        print('Unhandled event type {}'.format(event.type))
     return render(request, 'coinmarketapp/return.html')
 
 

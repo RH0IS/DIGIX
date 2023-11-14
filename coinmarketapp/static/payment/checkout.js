@@ -1,7 +1,4 @@
-// This is a public sample test API key.
-// Don’t submit any personally identifiable information in requests made with this key.
-// Sign in to see your own test API key embedded in code samples.
-const stripe = Stripe("pk_test_A7jK4iCYHL045qgjjfzAfPxu");
+const stripe = Stripe("pk_test_51O4pjuHl9Bqmml9jPpA17vmslVW141KmpRfae2j5Yg1VdOBlleiuO9jtM3QSvmkesgvxVb3b5L9v5jaPsJlyOSfc00HUdEXorn");
 
 // The items the customer wants to buy
 const items = [{id: "xl-tshirt"}];
@@ -23,6 +20,7 @@ async function initialize() {
         body: JSON.stringify({items}),
     });
     const {clientSecret} = await response.json();
+    console.log(clientSecret)
     const appearance = {
         theme: 'stripe',
     };
