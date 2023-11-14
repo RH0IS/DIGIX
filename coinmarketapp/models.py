@@ -1,5 +1,5 @@
 # coinmarketapp/models.py
-
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -12,6 +12,7 @@ class CryptoCurrency(models.Model):
 
     def __str__(self):
         return self.name
+
 
 
 class Order(models.Model):
@@ -37,10 +38,13 @@ class Order(models.Model):
         return self.user_id + ': ' + self.payment_intent + '(' + str(self.order_status) + ')'
 
 
-class Wallet(models.Model):
-    user_id = models.CharField(max_length=50)
-    currency = models.CharField(max_length=10)
+
+
+class UserWallet(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    currencies = models.ManyToManyField(CryptoCurrency)
     amount = models.DecimalField(max_digits=12, decimal_places=6)
 
     def __str__(self):
-        return self.user_id + ': ' + self.currency + '(' + str(self.amount) + ')'
+        return self.user.username + "'s Wallet"
+

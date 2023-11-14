@@ -1,5 +1,7 @@
 from django import forms
 
+
+
 from coinmarketapp.models import Order
 
 
@@ -13,3 +15,15 @@ class OrderForm(forms.ModelForm):
         }
 
     email = forms.EmailField(required=True)
+
+    
+class RowSelectionForm(forms.Form):
+    ROW_CHOICES = [
+        (10, '10'),
+        (20, '20'),
+        (50, '50'),
+    ]
+
+    number_of_rows = forms.ChoiceField(choices=ROW_CHOICES, initial=10)
+
+    
