@@ -17,7 +17,6 @@ def signup(request):
             profile.user = user
             profile.save()
             print(user)
-            login(request, user)
             return redirect('login')
     else:
         form = CustomUserCreationForm()
