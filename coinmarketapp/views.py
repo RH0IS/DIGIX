@@ -10,50 +10,45 @@ from django.contrib.auth.decorators import login_required
 from .models import CryptoCurrency, UserWallet
 from .forms import RowSelectionForm
 
-stripe.api_key = 'sk_test_Hrs6SAopgFPF0bZXSN3f6ELN'
+stripe.api_key = 'sk_test_51O4pjuHl9Bqmml9jt2gupSLgAY6JjnvhQ9YaHuNHWZJOZZVZdeZHD67aG6WOkxXxIyy7OBQQKNdrWH90U3qaAVhO00tHqCFiRH'
 
 
 @login_required(login_url='login')  
 def crypto_list(request):
-    # Define the CoinMarketCap API URL
     form = RowSelectionForm(request.GET or None)
-    number_of_rows = 10
 
     if form.is_valid():
         number_of_rows = form.cleaned_data['number_of_rows']
-    api_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+    else:
+        number_of_rows = 10
 
-    # Define your API key (replace with your actual CoinMarketCap API key)
+    api_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
     api_key = "1400ea97-a782-4685-81f3-d9ad1ef83928"
 
-    # Define parameters for the API request
     params = {
-        'start': 1,  # Starting record
-        'limit': number_of_rows,  # Number of cryptocurrencies to retrieve
-        'convert': 'USD',  # Convert prices to USD
+        'start': 1,
+        'limit': number_of_rows,
+        'convert': 'USD',
     }
 
-    # Define headers with your API key
     headers = {
         'X-CMC_PRO_API_KEY': api_key,
     }
 
-    # Make the API request
     response = requests.get(api_url, params=params, headers=headers)
 
     if response.status_code == 200:
-        # Parse the JSON response
         data = response.json()
 
         # Extract relevant data from the API response
         CryptoCurrency.objects.all().delete()
-
+        cryptocurrencies = []
         for crypto in data['data']:
             name = crypto['name']
             symbol = crypto['symbol']
             market_cap = crypto['quote']['USD']['market_cap']
             price = crypto['quote']['USD']['price']
-            volume_24h = crypto['quote']['USD']['percent_change_1h']
+            volume_24h = crypto['quote']['USD']['percent_change_1h']  # Verify the correct key
 
             crypto_obj = CryptoCurrency(
                 name=name,
@@ -63,14 +58,15 @@ def crypto_list(request):
                 volume_24h=volume_24h
             )
             crypto_obj.save()
+            cryptocurrencies= CryptoCurrency.objects.all()
 
-        # Pass the cryptocurrency data to the template
-        cryptocurrencies = CryptoCurrency.objects.all()
-        return render(request, 'coinmarketapp/crypto_list.html', {'cryptocurrencies': cryptocurrencies,
-                                                                  'form':form
-                                                                  })
+        search_query = request.GET.get('search')
+        if search_query:
+            cryptocurrencies = CryptoCurrency.objects.filter(name__icontains=search_query)
+
+        return render(request, 'coinmarketapp/crypto_list.html', {'cryptocurrencies': cryptocurrencies, 'form': form, 'search_query': search_query})
+
     else:
-        # Handle API request error
         return render(request, 'coinmarketapp/error.html')
 
 
@@ -109,13 +105,14 @@ def trends_view(request):
         data = response.json()
 
         # Extract relevant data from the API response
+        CryptoCurrency.objects.all().delete()
         cryptocurrencies = []
         for crypto in data['data']:
             name = crypto['name']
             symbol = crypto['symbol']
             market_cap = crypto['quote']['USD']['market_cap']
             price = crypto['quote']['USD']['price']
-            volume_24h = crypto['quote']['USD']['volume_change_24h']
+            volume_24h = crypto['quote']['USD']['percent_change_1h']
 
             crypto_obj = CryptoCurrency(
                 name=name,
@@ -124,7 +121,8 @@ def trends_view(request):
                 price=price,
                 volume_24h=volume_24h
             )
-            cryptocurrencies.append(crypto_obj)
+            crypto_obj.save()
+            cryptocurrencies= CryptoCurrency.objects.all()
 
         # Pass the cryptocurrency data to the template
         return render(request, 'coinmarketapp/trends.html', {'cryptocurrencies': cryptocurrencies})
@@ -134,15 +132,17 @@ def trends_view(request):
 
 
 @csrf_exempt
-def create_payment(request):
+def create_order(request) -> HttpResponse:
+    """
+    :param request: Http Request
+    :return: client sceret that Stripe needed
+    """
     try:
         # Create a PaymentIntent with the order amount and currency
         intent = stripe.PaymentIntent.create(
             amount=1400,
             currency='usd',
-            automatic_payment_methods={
-                'enabled': True,
-            },
+            automatic_payment_methods={'enabled': True, },
         )
         return HttpResponse(json.dumps({'clientSecret': intent['client_secret']}), content_type='application/json')
         # return jsonify({
@@ -154,6 +154,28 @@ def create_payment(request):
 
 
 def payment_result(request):
+    payload = request.body
+    event = None
+    try:
+        event = stripe.Event.construct_from(
+            json.loads(payload), stripe.api_key
+        )
+    except ValueError as e:
+        # Invalid payload
+        return HttpResponse(status=400)
+
+    # Handle the event
+    if event.type == 'payment_intent.succeeded':
+        print(event.data.object)  # contains a stripe.PaymentIntent
+        print(request.GET.get('payment_intent'))
+        print(request.GET.get('payment_intent_client_secret'))
+        print('PaymentIntent was successful!')
+    elif event.type == 'payment_method.attached':
+        payment_method = event.data.object  # contains a stripe.PaymentMethod
+        print('PaymentMethod was attached to a Customer!')
+    # ... handle other event types
+    else:
+        print('Unhandled event type {}'.format(event.type))
     return render(request, 'coinmarketapp/return.html')
 
 

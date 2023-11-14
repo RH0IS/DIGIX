@@ -9,21 +9,17 @@ async function initialize() {
     const clientSecret = urlParams.get('payment_intent_client_secret');
     stripe.retrievePaymentIntent(clientSecret).then(({paymentIntent}) => {
         const message = document.querySelector('#message')
-        // Inspect the PaymentIntent `status` to indicate the status of the payment
-        // to your customer.
-        //
-        // Some payment methods will [immediately succeed or fail][0] upon
-        // confirmation, while others will first enter a `processing` state.
-        //
-        // [0]: https://stripe.com/docs/payments/payment-methods#payment-notification
+        message.classList.remove('hidden')
         console.log(paymentIntent)
         switch (paymentIntent.status) {
             case 'succeeded':
-                message.innerText = 'Success! Payment received(Paid ' + paymentIntent.amount + paymentIntent.currency + ').';
+                message.innerText = 'We appreciate your business!';
+                document.getElementById('customer-email').textContent = session.customer_email
+                //  Payment received(Paid ' + paymentIntent.amount + paymentIntent.currency + ').
                 break;
 
             case 'processing':
-                message.innerText = "Payment processing. We'll update you when payment is received.";
+                message.innerText = "Payment processing. We'll update you when payment is received. You can close this page now.";
                 break;
 
             case 'requires_payment_method':
