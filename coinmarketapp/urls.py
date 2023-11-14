@@ -13,4 +13,5 @@ urlpatterns = [
     path('checkout', views.payment_test, name='payment_test_page'),
     path('create-payment-intent', views.create_order, name='create-payment-intent'),
     path('payment-result', views.payment_result, name='payment-result'),
+    path('currencies/<str:currname>/', views.cypto_by_name, name='cypto_by_name'),
 ]

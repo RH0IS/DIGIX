@@ -70,7 +70,7 @@
           <th>24h Volume</th>
         </tr>
         {% for cryptocurrency in cryptocurrencies %}
-        <tr>
+        <tr style="cursor: pointer;"  data-crypto-name="{{ cryptocurrency.name }}" onclick="redirectToDetailsPage(this)">
           <td>{{ cryptocurrency.name }}</td>
           <td>{{ cryptocurrency.symbol }}</td>
           <td>${{ cryptocurrency.market_cap }}</td>
@@ -86,4 +86,11 @@
     </div>
   </div>
 </section>
+<script>
+  function redirectToDetailsPage(row) {
+      var cryptoName = row.getAttribute('data-crypto-name');
+      var detailsPageUrl = '/currencies/' + cryptoName + '/';  // Use the Django URL pattern
+      window.location.href = detailsPageUrl;
+  }
+</script>
 {% endblock %}
