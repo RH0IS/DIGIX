@@ -1,0 +1,22 @@
+<!-- coinmarketapp/templates/coinmarketapp/user_profile.html -->
+
+{% extends 'coinmarketapp/base.html' %}
+{% block content %}
+    <main>
+        <section class="user-profile">
+            <h1>{{ user_wallet.user.username }}'s Profile</h1>
+            <div>
+                <h2>Wallet Information</h2>
+                <p>Total Currencies: {{ user_wallet.currencies.count }}</p>
+            </div>
+            <div>
+                <h2>Wallet Contents</h2>
+                <ul>
+                    {% for cryptocurrency in cryptocurrencies %}
+                        <li>{{ cryptocurrency.name }} ({{ cryptocurrency.symbol }})</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+    </main>
+{% endblock %}

@@ -1,20 +1,26 @@
 <!-- demo page -->
-{% extends "coinmarketapp/base.html" %}
-{% load static %}
-{% block content %}
-    <body class="demo-background">
-        <section class="crypto-list">
-            <div class="u-position-center u-center-text">
-                <span class="u-color-white">
-                    <h1 class="crypto-list h1">Join DIGIX Now!</h1>
-                    <p>Get the latest updates in Crypto trends and the best exchange rates!</p>
-                </span>
-                <a href="#signup" class="sign-up-btn">Sign Up</a>
-            </div>
-        </section>
-        <!-- Add more sections as needed (About, Features, Testimonials, etc.) -->
-        <section id="about" class="about-section">
-            <!-- Content for the About section -->
-        </section>
-    </body>
+{% extends "coinmarketapp/base.html" %} {% load static %} {% block content %}
+<body class="demo-background">
+  <section class="crypto-list">
+    <div class="u-position-center u-center-text">
+      <span class="demo-text-container u-color-white">
+        <h1 class="crypto-list h1">Join DIGIX Now!</h1>
+        <p>
+          Get the latest updates in Crypto trends and the best exchange rates!
+        </p>
+      </span>
+      <button
+        onclick="location.href = '/signup';"
+        class="btn-highlights-toggle"
+      >
+        Sign Up
+      </button>
+      <!-- <a href="/signup" class="sign-up-btn">Sign Up</a> -->
+    </div>
+  </section>
+  <!-- Add more sections as needed (About, Features, Testimonials, etc.) -->
+  <section id="about" class="about-section">
+    <!-- Content for the About section -->
+  </section>
+</body>
 {% endblock %}
