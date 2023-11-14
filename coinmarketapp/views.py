@@ -138,29 +138,30 @@ def render_payment_page(request) -> HttpResponse:
         form = OrderForm(request.POST or None)
         if form.is_valid():
             try:
-                # unit_price = CryptoCurrency.objects.get(symbol=form.cleaned_data['crypto_currency']).price
+                unit_price = CryptoCurrency.objects.get(id=form.cleaned_data['crypto_currency'].id).price
                 order = form.save(commit=False)
+                order.amount = int(form.cleaned_data['crypto_amount'] * unit_price * 100)
+                print(order.amount)
+                order.currency = 'cad'
                 order.user = request.user
                 order.email = form.cleaned_data['email']
                 order.save()
-                # order.wallet = UserWallet.objects.get_or_create(user=request.user)[0]
-                # print(order)
-                # order.save()
+                print(order)
                 # Create a PaymentIntent with the order amount and currency
-                # intent = stripe.PaymentIntent.create(
-                #     amount=form.cleaned_data['amount'] * unit_price,
-                #     currency='cad',
-                #     automatic_payment_methods={'enabled': True, },
-                # )
-                return HttpResponse(json.dumps({'code': '200', 'msg': 'ok'}), content_type='application/json')
-                # return HttpResponse(json.dumps({'clientSecret': intent['client_secret']}),
-                #                     content_type='application/json')
+                intent = stripe.PaymentIntent.create(
+                    amount=order.amount,
+                    currency='cad',
+                    automatic_payment_methods={'enabled': True, },
+                )
+                # return HttpResponse(json.dumps({'code': '200', 'msg': 'ok'}), content_type='application/json')
+                return render(request, 'coinmarketapp/checkout.html',
+                              {'clientSecret': json.dumps({'clientSecret': intent['client_secret']})})
             except Exception as e:
                 print(e)
                 return HttpResponse(json.dumps({'code': '400', 'msg': 'fail'}), content_type='application/json')
     form = OrderForm()
     form.set(email=request.user.email)
-    return render(request, 'coinmarketapp/checkout.html', {'form': form})
+    return render(request, 'coinmarketapp/create_order.html', {'form': form})
     # order = form.save(commit=False)
     # order.wallet = UserWallet.objects.get_or_create(user=request.user)[0]
     # order.save()

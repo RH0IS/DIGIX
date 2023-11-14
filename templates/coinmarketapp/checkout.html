@@ -8,21 +8,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" type="text/css" href="{% static 'payment/checkout.css' %}">
     <script src="https://js.stripe.com/v3/"></script>
-    <script src="{% static 'payment/checkout.js' %}" defer></script>
 </head>
 <body>
 <!--success: 4242424242424242-->
 <!--need to valid: 4000002500003155-->
 <!--reject: 4000000000009995-->
+<script type="text/javascript">
+<!--    this script must show up before payment/checkout.js-->
+    var {clientSecret} = {{clientSecret|safe}}
+</script>
+<script src="{% static 'payment/checkout.js' %}" defer></script>
 <div style="margin-top: 5%">
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
-    <br/>
-    <br/>
-    <form id="payment-form" class="hidden">
+    <h3 class="modal-title">Pay the bill</h3>
+    <form id="payment-form">
         <div id="payment-element">
             <!--Stripe.js injects the Payment Element-->
         </div>

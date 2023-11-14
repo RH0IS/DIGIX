@@ -5,22 +5,15 @@ const items = [{id: "xl-tshirt"}];
 
 let elements;
 
-// initialize();
+initialize();
 // checkStatus();
 
 document
     .querySelector("#payment-form")
     .addEventListener("submit", handleSubmit);
 
-// Fetches a payment intent and captures the client secret
 async function initialize() {
-    const response = await fetch("create-payment-intent", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({items}),
-    });
-    const {clientSecret} = await response.json();
-    console.log(clientSecret)
+    console.log('clientSecret', clientSecret);
     const appearance = {
         theme: 'stripe',
     };

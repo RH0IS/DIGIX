@@ -15,8 +15,8 @@ class CryptoCurrency(models.Model):
 
 
 class UserWallet(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    currency = models.ForeignKey(CryptoCurrency, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=False)
+    currency = models.ForeignKey(CryptoCurrency, on_delete=models.CASCADE, unique=False)
     amount = models.DecimalField(max_digits=12, decimal_places=6, default=0.0)
 
     def __str__(self):
@@ -35,7 +35,7 @@ class Order(models.Model):
     crypto_currency = models.ForeignKey(CryptoCurrency, on_delete=models.PROTECT)
     crypto_amount = models.DecimalField(max_digits=10, decimal_places=6)
     # what user paid
-    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    amount = models.PositiveIntegerField(default=1)  # in cents not dollars
     currency = models.CharField(max_length=10, default='')
     # order information
     created = models.DateTimeField(auto_now_add=True)
@@ -44,4 +44,5 @@ class Order(models.Model):
                                                 (3, 'Cancelled')])
 
     def __str__(self):
-        return str(self.user.id) + 'buy(' + str(self.amount) + str(self.crypto_currency) + ')'
+        return (str(self.user.id) + ' (use ' + str(self.amount) + str(self.currency) + ' to buy ' +
+                str(self.crypto_amount) + ' ' + str(self.crypto_currency.symbol) + ')')
