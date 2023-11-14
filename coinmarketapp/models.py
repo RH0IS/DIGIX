@@ -26,7 +26,7 @@ class Order(models.Model):
     crypto_currency = models.ForeignKey(CryptoCurrency, on_delete=models.PROTECT)
     crypto_amount = models.DecimalField(max_digits=10, decimal_places=6)
     # what user paid
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.DecimalField(max_digits=10, decimal_places=2,null=True, blank=True, default=None )
     currency = models.CharField(max_length=10)
     # order information
     created = models.DateTimeField(auto_now_add=True)

@@ -39,6 +39,7 @@
   </div>
   <div class="crypto-list">
     <h1>Cryptocurrency Market</h1>
+    <div style="display: flex; align-items: center;">
     <form method="GET" class="form-inline">
       <div class="form-group">
         <label>Rows:</label>
@@ -52,6 +53,13 @@
         </button>
       </div>
     </form>
+    <form method="GET" class="form-inline">
+    <div class="form-group">
+    <input type="text" name="search" placeholder="Search by name" value="{{ search_query }}">
+    <button type="submit">Search</button>
+    </div>
+    </form>
+    </div>
     <div class="table-container">
       <table>
         <tr>
