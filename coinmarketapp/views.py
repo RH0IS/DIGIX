@@ -40,6 +40,10 @@ def crypto_list(request):
     if response.status_code == 200:
         data = response.json()
 
+        # Clear existing data
+        # for crypto in CryptoCurrency.objects.all():
+        #     crypto.delete()
+
         # Extract relevant data from the API response
         cryptocurrencies = []
         for crypto in data['data']:
@@ -56,8 +60,10 @@ def crypto_list(request):
                 price=price,
                 volume_24h=volume_24h
             )
-            crypto_obj.save()
             cryptocurrencies.append(crypto_obj)
+
+        # Save the new data
+        CryptoCurrency.objects.bulk_create(cryptocurrencies)
 
         search_query = request.GET.get('search')
         if search_query:
@@ -78,6 +84,12 @@ def error(request):
 
 
 def trends_view(request):
+    form = RowSelectionForm(request.GET or None)
+
+    if form.is_valid():
+        number_of_rows = form.cleaned_data['number_of_rows']
+    else:
+        number_of_rows = 10
     # Define the CoinMarketCap API URL
     api_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
 
@@ -87,7 +99,7 @@ def trends_view(request):
     # Define parameters for the API request
     params = {
         'start': 1,  # Starting record
-        'limit': 10,  # Number of cryptocurrencies to retrieve
+        'limit': number_of_rows,  # Number of cryptocurrencies to retrieve
         'convert': 'USD',  # Convert prices to USD
     }
 
@@ -121,8 +133,11 @@ def trends_view(request):
             )
             cryptocurrencies.append(crypto_obj)
 
+        search_query = request.GET.get('search')
+        if search_query:
+            cryptocurrencies = CryptoCurrency.objects.filter(name__icontains=search_query)
         # Pass the cryptocurrency data to the template
-        return render(request, 'coinmarketapp/trends.html', {'cryptocurrencies': cryptocurrencies})
+        return render(request, 'coinmarketapp/trends.html', {'cryptocurrencies': cryptocurrencies, 'form':form, 'search_query': search_query})
     else:
         # Handle API request error
         return render(request, 'coinmarketapp/error.html')
