@@ -55,7 +55,7 @@
     </form>
     <form method="GET" class="form-inline">
     <div class="form-group">
-    <input type="text" name="search" placeholder="Search by name" value="{{ search_query }}">
+    <input type="text" name="search" placeholder="Search by name" value="{% if search_query %}{{ search_query }}{% endif %}">
     <button type="submit">Search</button>
     </div>
     </form>
