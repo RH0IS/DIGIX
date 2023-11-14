@@ -10,7 +10,7 @@ urlpatterns = [
     path('trends/', views.trends_view, name='trends_view'),
     path('user_profile/', views.user_profile, name='user_profile'),
     path('error', views.error, name='error'),
-    path('checkout', views.payment_test, name='payment_test_page'),
+    path('checkout', views.render_payment_page, name='render_payment_page'),
     path('create-payment-intent', views.create_order, name='create-payment-intent'),
     path('payment-result', views.payment_result, name='payment-result'),
 ]

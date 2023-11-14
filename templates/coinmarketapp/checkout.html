@@ -14,16 +14,24 @@
 <!--success: 4242424242424242-->
 <!--need to valid: 4000002500003155-->
 <!--reject: 4000000000009995-->
-<!-- Display a payment form -->
-<form id="payment-form">
-    <div id="payment-element">
-        <!--Stripe.js injects the Payment Element-->
-    </div>
-    <button id="submit">
-        <div class="spinner hidden" id="spinner"></div>
-        <span id="button-text">Pay now</span>
-    </button>
-    <div id="payment-message" class="hidden"></div>
-</form>
+<div style="margin-top: 5%">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+    <br/>
+    <br/>
+    <form id="payment-form" class="hidden">
+        <div id="payment-element">
+            <!--Stripe.js injects the Payment Element-->
+        </div>
+        <button id="submit">
+            <div class="spinner hidden" id="spinner"></div>
+            <span id="button-text">Pay now</span>
+        </button>
+        <div id="payment-message" class="hidden"></div>
+    </form>
+</div>
 </body>
 </html>

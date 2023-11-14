@@ -7,11 +7,10 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 
-from .models import CryptoCurrency, UserWallet
-from .forms import RowSelectionForm
+from .models import CryptoCurrency
+from .forms import RowSelectionForm, OrderForm
 
 stripe.api_key = 'sk_test_51O4pjuHl9Bqmml9jt2gupSLgAY6JjnvhQ9YaHuNHWZJOZZVZdeZHD67aG6WOkxXxIyy7OBQQKNdrWH90U3qaAVhO00tHqCFiRH'
-
 
 
 def crypto_list(request):
@@ -67,7 +66,7 @@ def crypto_list(request):
         # Pass the cryptocurrency data to the template
         cryptocurrencies = CryptoCurrency.objects.all()
         return render(request, 'coinmarketapp/crypto_list.html', {'cryptocurrencies': cryptocurrencies,
-                                                                  'form':form
+                                                                  'form': form
                                                                   })
     else:
         # Handle API request error
@@ -133,23 +132,53 @@ def trends_view(request):
         return render(request, 'coinmarketapp/error.html')
 
 
+@login_required
+def render_payment_page(request) -> HttpResponse:
+    if request.method == 'POST':
+        form = OrderForm(request.POST or None)
+        if form.is_valid():
+            try:
+                # unit_price = CryptoCurrency.objects.get(symbol=form.cleaned_data['crypto_currency']).price
+                order = form.save(commit=False)
+                order.user = request.user
+                order.email = form.cleaned_data['email']
+                order.save()
+                # order.wallet = UserWallet.objects.get_or_create(user=request.user)[0]
+                # print(order)
+                # order.save()
+                # Create a PaymentIntent with the order amount and currency
+                # intent = stripe.PaymentIntent.create(
+                #     amount=form.cleaned_data['amount'] * unit_price,
+                #     currency='cad',
+                #     automatic_payment_methods={'enabled': True, },
+                # )
+                return HttpResponse(json.dumps({'code': '200', 'msg': 'ok'}), content_type='application/json')
+                # return HttpResponse(json.dumps({'clientSecret': intent['client_secret']}),
+                #                     content_type='application/json')
+            except Exception as e:
+                print(e)
+                return HttpResponse(json.dumps({'code': '400', 'msg': 'fail'}), content_type='application/json')
+    form = OrderForm()
+    form.set(email=request.user.email)
+    return render(request, 'coinmarketapp/checkout.html', {'form': form})
+    # order = form.save(commit=False)
+    # order.wallet = UserWallet.objects.get_or_create(user=request.user)[0]
+    # order.save()
+    # return render(request, 'coinmarketapp/checkout.html', {'form': form})
+    # return render(request, 'coinmarketapp/checkout.html')
+
+
 @csrf_exempt
+@login_required
 def create_order(request) -> HttpResponse:
-    """
-    :param request: Http Request
-    :return: client sceret that Stripe needed
-    """
     try:
         # Create a PaymentIntent with the order amount and currency
         intent = stripe.PaymentIntent.create(
             amount=1400,
-            currency='usd',
+            currency='cad',
             automatic_payment_methods={'enabled': True, },
         )
         return HttpResponse(json.dumps({'clientSecret': intent['client_secret']}), content_type='application/json')
-        # return jsonify({
-        #     'clientSecret': intent['client_secret']
-        # })
     except Exception as e:
         print(e)
         return HttpResponse(json.dumps({'code': '400', 'msg': 'fail'}), content_type='application/json')
@@ -181,11 +210,10 @@ def payment_result(request):
     return render(request, 'coinmarketapp/return.html')
 
 
-# Create your views here.
-def payment_test(request) -> HttpResponse:
-    return render(request, 'coinmarketapp/checkout.html')
 @login_required
 def user_profile(request):
-    user_wallet = UserWallet.objects.get_or_create(user=request.user)[0]
-    cryptocurrencies = user_wallet.currencies.all()
-    return render(request, 'coinmarketapp/user_profile.html', {'user_wallet': user_wallet, 'cryptocurrencies': cryptocurrencies})
+    # user_wallet = UserWallet.objects.get_or_create(user=request.user)[0]
+    # cryptocurrencies = user_wallet.currencies.all()
+    return render(request, 'coinmarketapp/user_profile.html')
+    # return render(request, 'coinmarketapp/user_profile.html',
+    #               {'user_wallet': user_wallet, 'cryptocurrencies': cryptocurrencies})

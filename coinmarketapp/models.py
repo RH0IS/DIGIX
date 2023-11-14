@@ -14,20 +14,29 @@ class CryptoCurrency(models.Model):
         return self.name
 
 
+class UserWallet(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    currency = models.ForeignKey(CryptoCurrency, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=12, decimal_places=6, default=0.0)
+
+    def __str__(self):
+        return self.user.username + "'s Wallet"
+
 
 class Order(models.Model):
+    id = models.BigAutoField(primary_key=True, auto_created=True)
     # user information
-    user_id = models.CharField(max_length=50)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=False)
     email = models.EmailField()
     # payment information that Stripe returns
-    payment_intent = models.CharField(max_length=50)
-    clientSecret = models.CharField(max_length=50)
+    payment_intent = models.CharField(max_length=50, default='')
+    clientSecret = models.CharField(max_length=50, default='')
     # what user bought
     crypto_currency = models.ForeignKey(CryptoCurrency, on_delete=models.PROTECT)
     crypto_amount = models.DecimalField(max_digits=10, decimal_places=6)
     # what user paid
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    currency = models.CharField(max_length=10)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    currency = models.CharField(max_length=10, default='')
     # order information
     created = models.DateTimeField(auto_now_add=True)
     order_status = models.IntegerField(default=0,
@@ -35,16 +44,4 @@ class Order(models.Model):
                                                 (3, 'Cancelled')])
 
     def __str__(self):
-        return self.user_id + ': ' + self.payment_intent + '(' + str(self.order_status) + ')'
-
-
-
-
-class UserWallet(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    currencies = models.ManyToManyField(CryptoCurrency)
-    amount = models.DecimalField(max_digits=12, decimal_places=6)
-
-    def __str__(self):
-        return self.user.username + "'s Wallet"
-
+        return str(self.user.id) + 'buy(' + str(self.amount) + str(self.crypto_currency) + ')'

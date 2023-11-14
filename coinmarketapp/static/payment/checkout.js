@@ -5,8 +5,8 @@ const items = [{id: "xl-tshirt"}];
 
 let elements;
 
-initialize();
-checkStatus();
+// initialize();
+// checkStatus();
 
 document
     .querySelector("#payment-form")
