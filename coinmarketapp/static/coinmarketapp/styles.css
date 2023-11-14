@@ -559,3 +559,10 @@ select {
 .latest .span {
   color: #a72121;
 }
+
+
+.profile-pic img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
