@@ -58,8 +58,9 @@
 
         <nav>
           <ul>
-            {% if user.is_authenticated %}
+            
             <li><a href="/home">Home</a></li>
+            {% if user.is_authenticated %}
             <li><a href="#">Cryptocurrencies</a></li>
             <li><a href="#">Exchanges</a></li>
             <li><a href="#">Markets</a></li>

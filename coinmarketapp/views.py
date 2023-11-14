@@ -13,7 +13,7 @@ from .forms import RowSelectionForm
 stripe.api_key = 'sk_test_51O4pjuHl9Bqmml9jt2gupSLgAY6JjnvhQ9YaHuNHWZJOZZVZdeZHD67aG6WOkxXxIyy7OBQQKNdrWH90U3qaAVhO00tHqCFiRH'
 
 
-@login_required(login_url='login')  
+#@login_required(login_url='login')  
 def crypto_list(request):
     form = RowSelectionForm(request.GET or None)
 
