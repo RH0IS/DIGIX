@@ -1,8 +1,12 @@
 # userauth/views.py
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
+from django.db import transaction
 from django.shortcuts import render, redirect
+
+# from coinmarketapp.models import UserWallet
 from .models import UserProfile
+
 
 def signup(request):
     if request.method == 'POST':
@@ -12,11 +16,11 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             print(user)
-            # login(request, user)
             return redirect('login')
     else:
         form = UserCreationForm()
     return render(request, 'authentication/signup.html', {'form': form})
+
 
 def user_profile(request):
     if request.user.is_authenticated:
@@ -28,6 +32,7 @@ def user_profile(request):
             pass
     return render(request, 'authentication/registered_user.html')
 
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -38,5 +43,10 @@ def login_view(request):
             return redirect('crypto_list')
         else:
             error_message = "Invalid username or password. Please try again."
-            return render(request, 'login.html', {'error_message': error_message})
+            return render(request, 'authentication/login.html', {'error_message': error_message})
     return render(request, 'authentication/login.html')
+
+
+def user_logout(request):
+    logout(request)
+    return render(request, 'authentication/login.html', {'error_message': 'you have logged out'})
