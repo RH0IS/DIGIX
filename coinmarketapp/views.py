@@ -3,12 +3,13 @@ import json
 import requests
 import stripe
 from django.contrib import messages
+from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 
-from .models import CryptoCurrency
+from .models import CryptoCurrency, Order, UserWallet
 from .forms import RowSelectionForm, OrderForm
 
 stripe.api_key = 'sk_test_51O4pjuHl9Bqmml9jt2gupSLgAY6JjnvhQ9YaHuNHWZJOZZVZdeZHD67aG6WOkxXxIyy7OBQQKNdrWH90U3qaAVhO00tHqCFiRH'
@@ -157,7 +158,7 @@ def render_payment_page(request) -> HttpResponse:
                 )
                 return render(request, 'coinmarketapp/checkout.html', {
                     'clientSecret': intent['client_secret'],
-                    'url': 'http://' + request.get_host() + '/pay-result',
+                    'url': 'http://' + request.get_host() + '/pay-result?order_id=' + str(order.id),
                     'email': order.email
                 })
             except Exception as e:
@@ -172,8 +173,20 @@ def render_payment_page(request) -> HttpResponse:
 def pay_reslut(request):
     is_success = request.GET.get('redirect_status')
     if is_success == 'succeeded':
-        print(request.GET.get('payment_intent'))
-        print(request.GET.get('payment_intent_client_secret'))
+        try:
+            order = Order.objects.get(id=request.GET.get('order_id'))
+            order.payment_intent = request.GET.get('payment_intent')
+            order.payment_intent_client_secret = request.GET.get('payment_intent_client_secret')
+            if order.order_status == Order.CREATED:  # only update the order status when it is created
+                order.order_status = Order.PAID
+                with transaction.atomic():
+                    order.save()
+                    UserWallet.objects.create(user=request.user,
+                                              currency=order.crypto_currency,
+                                              amount=order.crypto_amount)
+        except Exception as e:
+            print(e)
+            return render(request, 'coinmarketapp/return.html')
     else:
         print('PaymentIntent faild: {}'.format(is_success))
     return render(request, 'coinmarketapp/return.html')

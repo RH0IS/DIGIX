@@ -24,6 +24,11 @@ class UserWallet(models.Model):
 
 
 class Order(models.Model):
+    REFUNDED = -1
+    CREATED = 0
+    PAID = 1
+    COMPLETED = 2
+    CANCELLED = 3
     id = models.BigAutoField(primary_key=True, auto_created=True)
     # user information
     user = models.ForeignKey(User, on_delete=models.CASCADE, unique=False)
@@ -39,9 +44,11 @@ class Order(models.Model):
     currency = models.CharField(max_length=10, default='')
     # order information
     created = models.DateTimeField(auto_now_add=True)
-    order_status = models.IntegerField(default=0,
-                                       choices=[(-1, 'Refunded'), (0, 'Created'), (1, 'paid'), (2, 'Completed'),
-                                                (3, 'Cancelled')])
+    order_status = models.IntegerField(default=0, choices=[(REFUNDED, 'Refunded'),
+                                                           (CREATED, 'Created'),
+                                                           (PAID, 'Paid'),
+                                                           (COMPLETED, 'Completed'),
+                                                           (CANCELLED, 'Cancelled')])
 
     def __str__(self):
         return (str(self.user.id) + ' (use ' + str(self.amount) + str(self.currency) + ' to buy ' +
