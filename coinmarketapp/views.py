@@ -2,6 +2,7 @@
 import json
 import requests
 import stripe
+from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -65,9 +66,10 @@ def crypto_list(request):
 
         # Pass the cryptocurrency data to the template
         cryptocurrencies = CryptoCurrency.objects.all()
-        return render(request, 'coinmarketapp/crypto_list.html', {'cryptocurrencies': cryptocurrencies,
-                                                                  'form': form
-                                                                  })
+        return render(request, 'coinmarketapp/crypto_list.html', {
+            'cryptocurrencies': cryptocurrencies,
+            'form': form
+        })
     else:
         # Handle API request error
         return render(request, 'coinmarketapp/error.html')
@@ -141,73 +143,39 @@ def render_payment_page(request) -> HttpResponse:
                 unit_price = CryptoCurrency.objects.get(id=form.cleaned_data['crypto_currency'].id).price
                 order = form.save(commit=False)
                 order.amount = int(form.cleaned_data['crypto_amount'] * unit_price * 100)
-                print(order.amount)
+                if order.amount <= 0:
+                    raise Exception('the price should be more than 0')
                 order.currency = 'cad'
                 order.user = request.user
                 order.email = form.cleaned_data['email']
                 order.save()
-                print(order)
                 # Create a PaymentIntent with the order amount and currency
                 intent = stripe.PaymentIntent.create(
                     amount=order.amount,
                     currency='cad',
                     automatic_payment_methods={'enabled': True, },
                 )
-                # return HttpResponse(json.dumps({'code': '200', 'msg': 'ok'}), content_type='application/json')
-                return render(request, 'coinmarketapp/checkout.html',
-                              {'clientSecret': json.dumps({'clientSecret': intent['client_secret']})})
+                return render(request, 'coinmarketapp/checkout.html', {
+                    'clientSecret': intent['client_secret'],
+                    'url': 'http://' + request.get_host() + '/pay-result',
+                    'email': order.email
+                })
             except Exception as e:
-                print(e)
-                return HttpResponse(json.dumps({'code': '400', 'msg': 'fail'}), content_type='application/json')
+                messages.error(request, e)
+                return HttpResponse("fail to create order")
     form = OrderForm()
     form.set(email=request.user.email)
     return render(request, 'coinmarketapp/create_order.html', {'form': form})
-    # order = form.save(commit=False)
-    # order.wallet = UserWallet.objects.get_or_create(user=request.user)[0]
-    # order.save()
-    # return render(request, 'coinmarketapp/checkout.html', {'form': form})
-    # return render(request, 'coinmarketapp/checkout.html')
 
 
-@csrf_exempt
 @login_required
-def create_order(request) -> HttpResponse:
-    try:
-        # Create a PaymentIntent with the order amount and currency
-        intent = stripe.PaymentIntent.create(
-            amount=1400,
-            currency='cad',
-            automatic_payment_methods={'enabled': True, },
-        )
-        return HttpResponse(json.dumps({'clientSecret': intent['client_secret']}), content_type='application/json')
-    except Exception as e:
-        print(e)
-        return HttpResponse(json.dumps({'code': '400', 'msg': 'fail'}), content_type='application/json')
-
-
-def payment_result(request):
-    payload = request.body
-    event = None
-    try:
-        event = stripe.Event.construct_from(
-            json.loads(payload), stripe.api_key
-        )
-    except ValueError as e:
-        # Invalid payload
-        return HttpResponse(status=400)
-
-    # Handle the event
-    if event.type == 'payment_intent.succeeded':
-        print(event.data.object)  # contains a stripe.PaymentIntent
+def pay_reslut(request):
+    is_success = request.GET.get('redirect_status')
+    if is_success == 'succeeded':
         print(request.GET.get('payment_intent'))
         print(request.GET.get('payment_intent_client_secret'))
-        print('PaymentIntent was successful!')
-    elif event.type == 'payment_method.attached':
-        payment_method = event.data.object  # contains a stripe.PaymentMethod
-        print('PaymentMethod was attached to a Customer!')
-    # ... handle other event types
     else:
-        print('Unhandled event type {}'.format(event.type))
+        print('PaymentIntent faild: {}'.format(is_success))
     return render(request, 'coinmarketapp/return.html')
 
 

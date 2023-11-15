@@ -15,7 +15,9 @@
 <!--reject: 4000000000009995-->
 <script type="text/javascript">
 <!--    this script must show up before payment/checkout.js-->
-    var {clientSecret} = {{clientSecret|safe}}
+    var clientSecret = "{{clientSecret|safe}}"
+    var url = "{{url|safe}}"
+    var email = "{{email|safe}}"
 </script>
 <script src="{% static 'payment/checkout.js' %}" defer></script>
 <div style="margin-top: 5%">

@@ -35,8 +35,8 @@ async function handleSubmit(e) {
         elements,
         confirmParams: {
             // Make sure to change this to your payment completion page
-            return_url: "http://localhost:8000/payment-result",
-            receipt_email: "lin5b@uwindsor.ca",
+            return_url: url.trim(),
+            receipt_email: email.trim(),
         },
     });
 
