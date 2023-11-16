@@ -208,7 +208,14 @@ footer {
   position: relative;
 }
 
-/* #======== trending section ========# */
+/*.desktop .section-trending {*/
+/*  position: absolute;*/
+/*  width: 1167px;*/
+/*  height: 306px;*/
+/*  top: 241px;*/
+/*  left: 150px;*/
+/*}*/
+
 .section-trending{
   background-color:rgba(48, 49, 53, 1);
   display: flex;
@@ -256,12 +263,10 @@ footer {
   letter-spacing: 0;
   line-height: normal;
   white-space: nowrap;
-  margin-bottom: 2rem;
 }
 
 .text-wrapper{
   width: 100%;
-  margin-bottom: 0;
 }
 
 .u-text-color-green{
@@ -284,7 +289,7 @@ footer {
 }
 
 .indicator-text{
-  top: 40%;
+  top: 30%;
 }
 
 .u-text-size-large{
@@ -292,11 +297,11 @@ footer {
 }
 
 .meter{
-  margin-top: 3rem;
+  margin-top: 2rem;
 }
 
 .indicator{
-  margin-top: 5rem;
+  margin-top: 4rem;
   margin-left: 4rem;
 }
 
