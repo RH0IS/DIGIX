@@ -2,11 +2,14 @@
 from django.contrib.auth import login, authenticate, logout
 from .forms import CustomUserCreationForm, UserProfileForm
 from django.shortcuts import render, redirect
+
+# from coinmarketapp.models import UserWallet
 from .models import UserProfile
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
+
 
 
 
@@ -29,6 +32,7 @@ def signup(request):
         profile_form = UserProfileForm()
     return render(request, 'authentication/signup.html', {'form': form})
 
+
 def user_profile(request):
     if request.user.is_authenticated:
         try:
@@ -38,6 +42,7 @@ def user_profile(request):
         except UserProfile.DoesNotExist:
             pass
     return render(request, 'authentication/registered_user.html')
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -55,7 +60,6 @@ def login_view(request):
 
 def custom_logout(request):
         logout(request)
-
         return redirect('login')
 
 
@@ -74,3 +78,4 @@ def change_password(request):
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'authentication/change_password.html', {'form': form})
+  

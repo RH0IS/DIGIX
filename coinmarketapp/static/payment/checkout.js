@@ -6,21 +6,14 @@ const items = [{id: "xl-tshirt"}];
 let elements;
 
 initialize();
-checkStatus();
+// checkStatus();
 
 document
     .querySelector("#payment-form")
     .addEventListener("submit", handleSubmit);
 
-// Fetches a payment intent and captures the client secret
 async function initialize() {
-    const response = await fetch("create-payment-intent", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({items}),
-    });
-    const {clientSecret} = await response.json();
-    console.log(clientSecret)
+    console.log('clientSecret', clientSecret);
     const appearance = {
         theme: 'stripe',
     };
@@ -42,8 +35,8 @@ async function handleSubmit(e) {
         elements,
         confirmParams: {
             // Make sure to change this to your payment completion page
-            return_url: "http://localhost:8000/payment-result",
-            receipt_email: "lin5b@uwindsor.ca",
+            return_url: url.trim(),
+            receipt_email: email.trim(),
         },
     });
 

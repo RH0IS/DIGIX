@@ -8,22 +8,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" type="text/css" href="{% static 'payment/checkout.css' %}">
     <script src="https://js.stripe.com/v3/"></script>
-    <script src="{% static 'payment/checkout.js' %}" defer></script>
 </head>
 <body>
 <!--success: 4242424242424242-->
 <!--need to valid: 4000002500003155-->
 <!--reject: 4000000000009995-->
-<!-- Display a payment form -->
-<form id="payment-form">
-    <div id="payment-element">
-        <!--Stripe.js injects the Payment Element-->
-    </div>
-    <button id="submit">
-        <div class="spinner hidden" id="spinner"></div>
-        <span id="button-text">Pay now</span>
-    </button>
-    <div id="payment-message" class="hidden"></div>
-</form>
+<script type="text/javascript">
+<!--    this script must show up before payment/checkout.js-->
+    var clientSecret = "{{clientSecret|safe}}"
+    var url = "{{url|safe}}"
+    var email = "{{email|safe}}"
+</script>
+<script src="{% static 'payment/checkout.js' %}" defer></script>
+<div style="margin-top: 5%">
+    <h3 class="modal-title">Pay the bill</h3>
+    <form id="payment-form">
+        <div id="payment-element">
+            <!--Stripe.js injects the Payment Element-->
+        </div>
+        <button id="submit">
+            <div class="spinner hidden" id="spinner"></div>
+            <span id="button-text">Pay now</span>
+        </button>
+        <div id="payment-message" class="hidden"></div>
+    </form>
+</div>
 </body>
 </html>
