@@ -13,7 +13,7 @@
     <div class="login-container">
         <div class="form-box">
             <h1 id="title">Sign Up</h1>
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 {% if form.errors %}
     <div class="alert alert-danger">
         <strong>Error:</strong> Please correct the errors below.
@@ -39,12 +39,24 @@
                             <label for="id_password2">Confirm Password:</label>
                             <input type="password" name="password2" required id="id_password2">
                         </div>
+
+                         <div class="input-field" id="profile-picture-field">
+                            <label for="id_profile_picture">Profile Picture:</label>
+                            {{ form.profile_picture }}
+                            <input type="file" name="profile_picture" accept="image/png, image/jpeg">
+                            
+                        </div> 
+
+                        
                         <div class="btn-field">
                             <button type="submit">Sign Up</button>
                         </div>
             </div>
-            </form>
+            <br><br><br><br>
             <p class="base-line">Already have an account? <a href="{% url 'login' %}">Log In</a></p>
+
+            </form>
+            <br><br>
         </div>
     </div>
 </body>

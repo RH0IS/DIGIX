@@ -40,6 +40,7 @@ class Order(models.Model):
     crypto_currency = models.ForeignKey(CryptoCurrency, on_delete=models.PROTECT)
     crypto_amount = models.DecimalField(max_digits=10, decimal_places=6)
     # what user paid
+
     amount = models.PositiveIntegerField(default=1)  # in cents not dollars
     currency = models.CharField(max_length=10, default='')
     # order information
