@@ -41,6 +41,7 @@ def crypto_list(request):
         data = response.json()
 
         # Extract relevant data from the API response
+        CryptoCurrency.objects.all().delete()
         cryptocurrencies = []
         for crypto in data['data']:
             name = crypto['name']
@@ -57,7 +58,7 @@ def crypto_list(request):
                 volume_24h=volume_24h
             )
             crypto_obj.save()
-            cryptocurrencies.append(crypto_obj)
+            cryptocurrencies= CryptoCurrency.objects.all()
 
         search_query = request.GET.get('search')
         if search_query:
@@ -104,13 +105,14 @@ def trends_view(request):
         data = response.json()
 
         # Extract relevant data from the API response
+        CryptoCurrency.objects.all().delete()
         cryptocurrencies = []
         for crypto in data['data']:
             name = crypto['name']
             symbol = crypto['symbol']
             market_cap = crypto['quote']['USD']['market_cap']
             price = crypto['quote']['USD']['price']
-            volume_24h = crypto['quote']['USD']['volume_change_24h']
+            volume_24h = crypto['quote']['USD']['percent_change_1h']
 
             crypto_obj = CryptoCurrency(
                 name=name,
@@ -119,7 +121,8 @@ def trends_view(request):
                 price=price,
                 volume_24h=volume_24h
             )
-            cryptocurrencies.append(crypto_obj)
+            crypto_obj.save()
+            cryptocurrencies= CryptoCurrency.objects.all()
 
         # Pass the cryptocurrency data to the template
         return render(request, 'coinmarketapp/trends.html', {'cryptocurrencies': cryptocurrencies})
