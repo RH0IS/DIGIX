@@ -13,6 +13,15 @@
     <div class="login-container">
         <div class="form-box">
             <h1 id="title">Login</h1>
+
+             <!-- Display messages here -->
+             {% if messages %}
+             <div class="messages">
+                 {% for message in messages %}
+                     <p class="{{ message.tags }}">{{ message }}</p>
+                 {% endfor %}
+             </div>
+         {% endif %}
         <form method="post">
             {% csrf_token %}
             {% if error_message %}
