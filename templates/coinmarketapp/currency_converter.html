@@ -116,6 +116,22 @@ form .drop-list {
   font-size: 10px; /* Set font size to 10px */
 }
 
+.select-box select option {
+  color: black; /* Set text color to black */
+}
+
+.select-box::before {
+  content: ''; /* Create a pseudo-element for background */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white; /* Set background color to white */
+  z-index: -1; /* Move behind the select box */
+}
+
+
 .drop-list .select-box {
   display: flex;
   width: 100%;
