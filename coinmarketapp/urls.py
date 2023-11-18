@@ -11,5 +11,5 @@ urlpatterns = [
     path('trends/', views.trends_view, name='trends_view'),
     path('error',views.error, name='error' ),
     path('exchange', views.exchange, name='exchange'),
-    path('get_exchange_rates/', get_exchange_rates, name='get_exchange_rates'),
+    path('get_exchange_rate/<str:from_currency>/<str:to_currency>/', views.get_exchange_rate, name='get_exchange_rate'),
 ]

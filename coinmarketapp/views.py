@@ -76,33 +76,48 @@ def error(request):
     return render(request, 'coinmarketapp/error.html')
 
 
-def get_exchange_rate(request, from_currency):
-    print('hello')
+def get_exchange_rate(request, from_currency, to_currency):
     try:
-        # Define your API key (replace with your actual API key)
-        exchange_rate_api_key = "3ba44afda43062f9ffa4fa5a"
+        # Replace this with your actual CoinMarketCap API key
+        coinmarketcap_api_key = "1400ea97-a782-4685-81f3-d9ad1ef83928"
 
-        # Define headers with your API key
+        # Define headers with your CoinMarketCap API key
         headers = {
-            'X-RapidAPI-Key': exchange_rate_api_key,
+            'X-CMC_PRO_API_KEY': coinmarketcap_api_key,
         }
 
-        # Make the API request
-        url = f'https://v6.exchangerate-api.com/v6/{exchange_rate_api_key}/latest/{from_currency}'
-        print('hey')
-        response = requests.get(url, headers=headers)
-        print("res:",response)
+        # Define parameters for the CoinMarketCap API request
+        params = {
+            'start': 1,  # Starting record
+            'limit': 10,  # Number of cryptocurrencies to retrieve
+            'convert': to_currency,  # Convert prices to the target currency
+        }
+
+        # Make the CoinMarketCap API request
+        url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+        response = requests.get(url, params=params, headers=headers)
         response.raise_for_status()  # Raise an error for bad responses
 
         response_json = response.json()
-        response = JsonResponse(response_json)
-        response["Access-Control-Allow-Origin"] = "http://127.0.0.1:8000"
-        response["Access-Control-Allow-Methods"] = "GET, OPTIONS"
-        response["Access-Control-Max-Age"] = "1000"
-        response["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
 
-        # Return the response to the frontend
-        return response
+        # Check if 'data' is present in the response
+        if 'data' in response_json:
+            data = response_json['data']
+
+            # Find the requested cryptocurrency in the response
+            crypto_info = next((crypto for crypto in data if crypto['symbol'] == from_currency), None)
+
+            if crypto_info:
+                # Extract the price in the target currency
+                price = crypto_info['quote'][to_currency]['price']
+
+                return JsonResponse({'rate': price})
+
+            else:
+                return JsonResponse({'error': f'Cryptocurrency with symbol {from_currency} not found'}, status=400)
+
+        else:
+            return JsonResponse({'error': 'Failed to fetch cryptocurrency data'}, status=500)
 
     except requests.exceptions.HTTPError as errh:
         return JsonResponse({'error': f"HTTP Error: {errh}"}, status=500)
@@ -211,7 +226,7 @@ def exchange(request):
 
                 cryptocurrencies.append(cryptocurrency)
 
-            return render(request, 'coinmarketapp/exchange.html', {'cryptocurrencies': cryptocurrencies})
+            return render(request, 'coinmarketapp/currency_converter.html', {'cryptocurrencies': cryptocurrencies})
 
         else:
             return JsonResponse({'error': 'Failed to fetch cryptocurrency data'}, status=response.status_code)

@@ -54,6 +54,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",  # Allow the Django development server
+    "http://127.0.0.1:8000",
 
 ]
 
