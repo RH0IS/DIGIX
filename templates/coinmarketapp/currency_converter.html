@@ -10,17 +10,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-<correct-hash>" crossorigin="anonymous">
     <style>
         body {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          height: 100vh;
-          margin: 0;
-        }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-image: url('https://www.shutterstock.com/image-photo/crypto-currency-background-various-shiny-260nw-1434643079.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #fff; /* Set text color to white */
+    flex-direction: column; /* Align items vertically */
+}
 
-        header, footer {
-          width: 100%;
+header, footer {
+    width: 100%;
+    padding-bottom: 0;
+    position: fixed; /* Fixed position to stay at the top and bottom */
+}
 
-        }
+header {
+    top: 0;
+    background: rgba(0, 0, 0, 0.8); /* Semi-transparent black background for better visibility */
+}
+
+footer {
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8); /* Semi-transparent black background for better visibility */
+}
 
         .wrapper {
   width: 370px;
@@ -31,14 +47,18 @@
   margin-top: 20px;
 }
 
-.wrapper header {
-  font-size: 28px;
-  font-weight: 500;
-  text-align: center;
-  background: #000; /* Set background color to black */
-  color: #fff; /* Set text color to white */
-  padding: 10px; /* Add padding for better visibility */
-}
+h1 {
+            font-size: 28px;
+            font-weight: 500;
+            background: #000; /* Set background color to black */
+            color: #fff; /* Set text color to white */
+            padding: 10px; /* Add padding for better visibility */
+            margin: 0; /* Remove margin to avoid space above h1 */
+        }
+
+/*form {*/
+/*            margin-top: 20px;*/
+/*        }*/
 
 
 .wrapper form {
@@ -58,9 +78,11 @@ form :where(input, select, button) {
   border: none;
 }
 
-form p {
-  font-size: 18px;
-  margin-bottom: 5px;
+form label {
+    font-size: 18px;
+    margin-bottom: 5px;
+    display: block; /* Ensures the label is on a new line */
+    color: #1b1b1b;
 }
 
 form input {
@@ -82,6 +104,16 @@ form .drop-list {
   justify-content: space-between;
 }
 
+.drop-list .from,
+.drop-list .to {
+  flex: 1; /* Equal flex distribution */
+  margin-right: 10px; /* Adjust margin for better spacing */
+}
+
+.select-box select {
+  width: 100%; /* Make the select box take 100% width of the parent container */
+}
+
 .drop-list .select-box {
   display: flex;
   width: 100%;
@@ -97,11 +129,11 @@ form .drop-list {
   margin-right: 10px;
 }
 
-.select-box select {
-  flex: 1;
-  font-size: 16px;
-  background: none;
-}
+/*.select-box select {*/
+/*  flex: 1;*/
+/*  font-size: 16px;*/
+/*  background: none;*/
+/*}*/
 
 .select-box select::-webkit-scrollbar {
   width: 8px;
@@ -125,6 +157,7 @@ form .drop-list {
 form .exchange-rate {
   font-size: 17px;
   margin: 20px 0 30px;
+    color: black;
 }
 
 form button {
@@ -163,15 +196,15 @@ form button:hover {
     </header>
 
     <div class="wrapper">
-        <header>Currency Converter</header>
+        <h1>Currency Converter</h1>
         <form>
             <div class="amount">
-                <p>Enter Amount</p>
+                <label for="amount">Enter Amount</label>
                 <input type="number" id="amount" value="1">
             </div>
             <div class="drop-list">
                 <div class="from">
-                    <p>From</p>
+                    <label>From</label>
                     <div class="select-box">
                         <select id="fromCurrency">
                             {% for crypto in cryptocurrencies %}
@@ -182,7 +215,7 @@ form button:hover {
                 </div>
                 <div class="icon"><i class="fas fa-exchange-alt"></i></div>
                 <div class="to">
-                    <p>To</p>
+                    <label>To</label>
                     <div class="select-box">
                         <select id="toCurrency">
                             <option value="USD" selected>USD</option>
