@@ -15,8 +15,24 @@ from .forms import RowSelectionForm, OrderForm
 stripe.api_key = 'sk_test_51O4pjuHl9Bqmml9jt2gupSLgAY6JjnvhQ9YaHuNHWZJOZZVZdeZHD67aG6WOkxXxIyy7OBQQKNdrWH90U3qaAVhO00tHqCFiRH'
 
 
+def __update_crypto_currency(data) -> None:
+    for crypto in data['data']:
+        name = crypto['name']
+        symbol = crypto['symbol']
+        market_cap = crypto['quote']['USD']['market_cap']
+        price = crypto['quote']['USD']['price']
+        volume_24h = crypto['quote']['USD']['percent_change_1h']  # Verify the correct key
+        CryptoCurrency.objects.update_or_create(name=name,
+                                                defaults={
+                                                    'name': name,
+                                                    'symbol': symbol,
+                                                    'market_cap': market_cap,
+                                                    'price': price,
+                                                    'volume_24h': volume_24h
+                                                })
 
-@login_required(login_url='login')  
+
+@login_required(login_url='login')
 def crypto_list(request):
     form = RowSelectionForm(request.GET or None)
 
@@ -41,33 +57,37 @@ def crypto_list(request):
     response = requests.get(api_url, params=params, headers=headers)
 
     if response.status_code == 200:
-        data = response.json()
+        __update_crypto_currency(response.json())
 
+        # data = response.json()
         # Extract relevant data from the API response
-        CryptoCurrency.objects.all().delete()
-        cryptocurrencies = []
-        for crypto in data['data']:
-            name = crypto['name']
-            symbol = crypto['symbol']
-            market_cap = crypto['quote']['USD']['market_cap']
-            price = crypto['quote']['USD']['price']
-            volume_24h = crypto['quote']['USD']['percent_change_1h']  # Verify the correct key
-
-            crypto_obj = CryptoCurrency(
-                name=name,
-                symbol=symbol,
-                market_cap=market_cap,
-                price=price,
-                volume_24h=volume_24h
-            )
-            crypto_obj.save()
-            cryptocurrencies= CryptoCurrency.objects.all()
+        # CryptoCurrency.objects.all().delete()
+        # cryptocurrencies = []
+        # for crypto in data['data']:
+        #     name = crypto['name']
+        #     symbol = crypto['symbol']
+        #     market_cap = crypto['quote']['USD']['market_cap']
+        #     price = crypto['quote']['USD']['price']
+        #     volume_24h = crypto['quote']['USD']['percent_change_1h']  # Verify the correct key
+        #
+        #     crypto_obj = CryptoCurrency(
+        #         name=name,
+        #         symbol=symbol,
+        #         market_cap=market_cap,
+        #         price=price,
+        #         volume_24h=volume_24h
+        #     )
+        #     crypto_obj.save()
+        #     cryptocurrencies = CryptoCurrency.objects.all()
 
         search_query = request.GET.get('search')
         if search_query:
             cryptocurrencies = CryptoCurrency.objects.filter(name__icontains=search_query)
+        else:
+            cryptocurrencies = CryptoCurrency.objects.all()
 
-        return render(request, 'coinmarketapp/crypto_list.html', {'cryptocurrencies': cryptocurrencies, 'form': form, 'search_query': search_query})
+        return render(request, 'coinmarketapp/crypto_list.html',
+                      {'cryptocurrencies': cryptocurrencies, 'form': form, 'search_query': search_query})
     else:
         return render(request, 'coinmarketapp/error.html')
 
@@ -104,30 +124,30 @@ def trends_view(request):
 
     if response.status_code == 200:
         # Parse the JSON response
-        data = response.json()
-
+        __update_crypto_currency(response.json())
+        # data = response.json()
         # Extract relevant data from the API response
-        CryptoCurrency.objects.all().delete()
-        cryptocurrencies = []
-        for crypto in data['data']:
-            name = crypto['name']
-            symbol = crypto['symbol']
-            market_cap = crypto['quote']['USD']['market_cap']
-            price = crypto['quote']['USD']['price']
-            volume_24h = crypto['quote']['USD']['percent_change_1h']
-
-            crypto_obj = CryptoCurrency(
-                name=name,
-                symbol=symbol,
-                market_cap=market_cap,
-                price=price,
-                volume_24h=volume_24h
-            )
-            crypto_obj.save()
-            cryptocurrencies= CryptoCurrency.objects.all()
+        # CryptoCurrency.objects.all().delete()
+        # cryptocurrencies = []
+        # for crypto in data['data']:
+        #     name = crypto['name']
+        #     symbol = crypto['symbol']
+        #     market_cap = crypto['quote']['USD']['market_cap']
+        #     price = crypto['quote']['USD']['price']
+        #     volume_24h = crypto['quote']['USD']['percent_change_1h']
+        #
+        #     crypto_obj = CryptoCurrency(
+        #         name=name,
+        #         symbol=symbol,
+        #         market_cap=market_cap,
+        #         price=price,
+        #         volume_24h=volume_24h
+        #     )
+        #     crypto_obj.save()
+        #     cryptocurrencies = CryptoCurrency.objects.all()
 
         # Pass the cryptocurrency data to the template
-        return render(request, 'coinmarketapp/trends.html', {'cryptocurrencies': cryptocurrencies})
+        return render(request, 'coinmarketapp/trends.html', {'cryptocurrencies': CryptoCurrency.objects.all()})
     else:
         # Handle API request error
         return render(request, 'coinmarketapp/error.html')
@@ -176,7 +196,7 @@ def pay_reslut(request):
             order.payment_intent = request.GET.get('payment_intent')
             order.payment_intent_client_secret = request.GET.get('payment_intent_client_secret')
             if order.order_status == Order.CREATED:  # only update the order status when it is created
-                order.order_status = Order.PAID
+                order.order_status = Order.COMPLETED
                 with transaction.atomic():
                     order.save()
                     UserWallet.objects.create(user=request.user,
@@ -192,8 +212,7 @@ def pay_reslut(request):
 
 @login_required
 def user_profile(request):
-    # user_wallet = UserWallet.objects.get_or_create(user=request.user)[0]
-    # cryptocurrencies = user_wallet.currencies.all()
-    return render(request, 'coinmarketapp/user_profile.html')
-    # return render(request, 'coinmarketapp/user_profile.html',
-    #               {'user_wallet': user_wallet, 'cryptocurrencies': cryptocurrencies})
+    return render(request, 'coinmarketapp/user_profile.html', {
+        'wallets': UserWallet.objects.filter(user=request.user),
+        'orders': Order.objects.filter(user=request.user)
+    })
