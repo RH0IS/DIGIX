@@ -2,21 +2,38 @@
 
 {% extends 'coinmarketapp/base.html' %}
 {% block content %}
-    <main>
-        <section class="user-profile">
-            <h1>{{ user_wallet.user.username }}'s Profile</h1>
-            <div>
-                <h2>Wallet Information</h2>
-                <p>Total Currencies: {{ user_wallet.currencies.count }}</p>
-            </div>
-            <div>
-                <h2>Wallet Contents</h2>
-                <ul>
-                    {% for cryptocurrency in cryptocurrencies %}
-                        <li>{{ cryptocurrency.name }} ({{ cryptocurrency.symbol }})</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </section>
-    </main>
+<main>
+    <section class="user-profile" style="color: white">
+        <!--            <h1>{{ user_wallet.user.username }}'s Profile</h1>-->
+<!--        <div>-->
+<!--            <h2>Wallet Information</h2>-->
+<!--            &lt;!&ndash;                <p>Total Currencies: {{ user_wallet.currencies.count }}</p>&ndash;&gt;-->
+<!--        </div>-->
+        <p>{{ msg }}</p>
+        <div>
+            <h2>Wallet Contents</h2>
+            {% if wallets %}
+            <ul>
+                {% for wallet in wallets %}
+                <li>{{ wallet.currency.name }}: &nbsp; {{ wallet.amount }}{{ wallet.currency.symbol }} </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+         <h2>Order History</h2>
+        {% if orders %}
+            {% for order in orders %}
+                <div>
+                    <ul>
+                        <li>Order &nbsp; ID: Order#{{ order.id }}</li>
+                        <li>Order &nbsp; Total: {{ order.amount }}{{ order.currency }}</li>
+                        <li>Order &nbsp; Detail: {{ order.crypto_amount }}{{ order.crypto_currency.symbol }}</li>
+                        <li>Order &nbsp; Status: {{ order.get_order_status_display }}</li>
+                        <li>Order &nbsp; Date: {{ order.created }}</li>
+                    </ul>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </section>
+</main>
 {% endblock %}
