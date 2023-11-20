@@ -31,7 +31,7 @@ class Order(models.Model):
     CANCELLED = 3
     id = models.BigAutoField(primary_key=True, auto_created=True)
     # user information
-    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=False, default=1)
     email = models.EmailField()
     # payment information that Stripe returns
     payment_intent = models.CharField(max_length=50, default='')
