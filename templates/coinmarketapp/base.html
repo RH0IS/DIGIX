@@ -57,12 +57,13 @@
         </a>
 
         <nav>
+
           <ul>
             
             <li><a href="/home">Home</a></li>
             {% if user.is_authenticated %}
             <li><a href="#">Cryptocurrencies</a></li>
-            <li><a href="#">Exchanges</a></li>
+            <li><a href="/exchange">Exchanges</a></li>
             <li><a href="#">Markets</a></li>
             <a href="{% url 'change_password' %}">Change Password</a>
 
@@ -74,6 +75,13 @@
                <li><a href="{% url 'signup' %}">Sign Up</a></li>
              {% endif %}
           </ul>
+
+{#            <ul>#}
+{#                <li><a href="/home">Home</a></li>#}
+{#                <li><a href="#">Cryptocurrencies</a></li>#}
+{#                <li><a href="/exchange">Exchanges</a></li>#}
+{#                <li><a href="#">Markets</a></li>#}
+{#            </ul>#}
         </nav>
       </div>
     </header>
