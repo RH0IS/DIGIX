@@ -92,6 +92,14 @@ def crypto_list(request):
         return render(request, 'coinmarketapp/error.html')
 
 
+def cypto_by_name(request, currname):
+    crypto_by_name = CryptoCurrency.objects.get(name=currname)
+
+    return render(request, 'coinmarketapp/crypto_page.html', {
+        "cpt": crypto_by_name
+    })
+
+
 def demo(request):
     return render(request, 'coinmarketapp/demo-page.html')
 

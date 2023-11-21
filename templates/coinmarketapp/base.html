@@ -24,24 +24,24 @@
   </head>
   <body>
     <header class="header">
-      <div class="latest">
-        <p class="bitcoin">
+      <div class="d-flex">
+        <p class="bitcoin me-2">
           <span class="text-wrapper">Bitcoin: </span>
           <span class="u-color-red">-1.78%</span>
         </p>
-        <p class="dogecoin">
+        <p class="dogecoin me-2">
           <span class="text-wrapper">Dogecoin: </span>
           <span class="u-color-green">+1.15%</span>
         </p>
-        <p class="ethereum">
+        <p class="ethereum me-2">
           <span class="text-wrapper">Ethereum: </span>
           <span class="u-color-green">+5.04%</span>
         </p>
-        <p class="pepe">
+        <p class="pepe me-2">
           <span class="text-wrapper">Pepe: </span>
           <span class="u-color-green">+0.49%</span>
         </p>
-        <p class="shiba-inu">
+        <p class="shiba-inu me-2">
           <span class="text-wrapper">Shiba inu: </span>
           <span class="u-color-red">-1.36%</span>
         </p>
@@ -58,8 +58,9 @@
 
         <nav>
           <ul>
-            {% if user.is_authenticated %}
+            
             <li><a href="/home">Home</a></li>
+            {% if user.is_authenticated %}
             <li><a href="#">Cryptocurrencies</a></li>
             <li><a href="#">Exchanges</a></li>
             <li><a href="#">Markets</a></li>

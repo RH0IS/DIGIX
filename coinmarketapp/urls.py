@@ -4,6 +4,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    # path('home/', views.crypto_list, name='crypto_list'),
     path("", views.demo, name="demo"),
     path("demo", views.demo, name="demo"),
     path("home/", views.trends_view, name="crypto_list"),
@@ -15,4 +16,5 @@ urlpatterns = [
     path('checkout', views.render_payment_page, name='render_payment_page'),
     # path('create-payment-intent', views.create_order, name='create-payment-intent'),
     path('pay-result', views.pay_reslut, name='pay-result'),
+    path('currencies/<str:currname>/', views.cypto_by_name, name='cypto_by_name'),
 ]
