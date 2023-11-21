@@ -1,5 +1,5 @@
 {% extends 'coinmarketapp/base.html' %}
-{% extends 'coinmarketapp/trends.html'%}
+
 {% load static %}
 {% block content %}
 
@@ -10,10 +10,10 @@
       <button type="submit" class="btn-highlights-toggle">Highlights</button>
     </form> -->
     <div class="toggle-highlights" id="accordion">
-        <div class="card" style="background-color: #303135;
-      color: white; display: flex; justify-content: right; border-color: transparent;">
-            <div class="card-header" id="headingOne" style="background-color: #303135; display: flex;
-        justify-content: flex-end; border-color: transparent;">
+        <div class="card"
+             style="background-color: #303135; color: white; display: flex; justify-content: right; border-color: transparent;">
+            <div class="card-header" id="headingOne"
+                 style="background-color: #303135; display: flex; justify-content: flex-end; border-color: transparent;">
                 <h5 class="mb-0">
                     <div class="form-check form-switch">
                         <input class="form-check-input" data-toggle="collapse"
@@ -48,63 +48,44 @@
     <div id="dynamic-content-container">
         <!-- Content loaded dynamically will appear here -->
     </div>
-    <div class="table-container">
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Symbol</th>
-                <th>Market Cap</th>
-                <th>Price</th>
-                <th>24h Volume</th>
-            </tr>
-            {% for cryptocurrency in cryptocurrencies %}
-            <tr style="cursor: pointer;" data-crypto-name="{{ cryptocurrency.name }}"
-                onclick="redirectToDetailsPage(this)">
-                <td>{{ cryptocurrency.name }}</td>
-                <td>{{ cryptocurrency.symbol }}</td>
-                <td>${{ cryptocurrency.market_cap }}</td>
-                <td>${{ cryptocurrency.price }}</td>
-                <td class="{% if cryptocurrency.volume_24h < 0 %}text-danger{% else %}text-success{% endif %}">
-                    {{ cryptocurrency.volume_24h }}%
-                </td>
-                <!--    <div class="crypto-list">-->
-                <!--      <h1>Cryptocurrency Market</h1>-->
-                <!--      <form method="GET" class="form-inline">-->
-                <!--        <div class="form-group">-->
-                <!--          <label>Rows:</label>-->
-                <!--          {{ form.number_of_rows }}-->
-                <!--          <button-->
-                <!--            type="submit"-->
-                <!--            class="btn btn-primary"-->
-                <!--            style="font-size: 12px; padding: 3px 6px"-->
-                <!--          >Select</button>-->
-                <!--        </div>-->
-                <!--      </form>-->
-                <!--      <div class="table-container">-->
-                <!--        <table>-->
-                <!--          <tr>-->
-                <!--            <th>Name</th>-->
-                <!--            <th>Symbol</th>-->
-                <!--            <th>Market Cap</th>-->
-                <!--            <th>Price</th>-->
-                <!--            <th>24h Volume</th>-->
-                <!--          </tr>-->
-                <!--          {% for cryptocurrency in cryptocurrencies %}-->
-                <!--            <tr>-->
-                <!--              <td>{{ cryptocurrency.name }}</td>-->
-                <!--              <td>{{ cryptocurrency.symbol }}</td>-->
-                <!--              <td>${{ cryptocurrency.market_cap }}</td>-->
-                <!--              <td>${{ cryptocurrency.price }}</td>-->
-                <!--              <td-->
-                <!--                class="{% if cryptocurrency.volume_24h < 0 %}text-danger{% else %}text-success{% endif %}"-->
-                <!--              >-->
-                <!--                {{ cryptocurrency.volume_24h }}%-->
-                <!--              </td>-->
-            </tr>
-            {% endfor %}
-        </table>
+    <div class="crypto-list">
+        <h1>Cryptocurrency Market</h1>
+        <form method="GET" class="form-inline">
+            <div class="form-group">
+                <label>Rows:</label>
+                {{ form.number_of_rows }}
+                <button
+                        type="submit"
+                        class="btn btn-primary"
+                        style="font-size: 12px; padding: 3px 6px"
+                >Select
+                </button>
+            </div>
+        </form>
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Symbol</th>
+                    <th>Market Cap</th>
+                    <th>Price</th>
+                    <th>24h Volume</th>
+                </tr>
+                {% for cryptocurrency in cryptocurrencies %}
+                <tr style="cursor: pointer;" data-crypto-name="{{ cryptocurrency.name }}"
+                    onclick="redirectToDetailsPage(this)">
+                    <td>{{ cryptocurrency.name }}</td>
+                    <td>{{ cryptocurrency.symbol }}</td>
+                    <td>${{ cryptocurrency.market_cap }}</td>
+                    <td>${{ cryptocurrency.price }}</td>
+                    <td class="{% if cryptocurrency.volume_24h < 0 %}text-danger{% else %}text-success{% endif %}">
+                        {{ cryptocurrency.volume_24h }}%
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
-    <!--    </div>-->
     <!--    </div>-->
 </section>
 
