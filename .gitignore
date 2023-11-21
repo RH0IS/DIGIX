@@ -1,5 +1,6 @@
-
+.idea
 *.pyc
+db.sqlite3
 coinmarketapp/__pycache__/admin.cpython-311.pyc
 coinmarketapp/__pycache__/__init__.cpython-311.pyc
 coinmarketapp/__pycache__/apps.cpython-311.pyc
@@ -11,8 +12,6 @@ coinmarketapp/migrations/__pycache__/__init__.cpython-311.pyc
 Digix/__pycache__/__init__.cpython-311.pyc
 Digix/__pycache__/settings.cpython-311.pyc
 Digix/__pycache__/urls.cpython-311.pyc
-*.pyc
-db.sqlite3
 coinmarketapp/__pycache__/__init__.cpython-312.pyc
 coinmarketapp/__pycache__/admin.cpython-312.pyc
 coinmarketapp/__pycache__/apps.cpython-312.pyc
