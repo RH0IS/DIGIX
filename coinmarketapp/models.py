@@ -21,3 +21,14 @@ class UserWallet(models.Model):
 
     def __str__(self):
         return self.user.username + "'s Wallet"
+
+class trending_crypto(models.Model):
+    name = models.CharField(max_length=100)
+    symbol = models.CharField(max_length=10)
+    rank = models.IntegerField()
+    image = models.ImageField(upload_to='crypto_images/')  # Change 'crypto_images/' to your desired upload path
+    price = models.DecimalField(decimal_places=2,max_digits=12,default=0)
+    price_change_percentage_24h = models.DecimalField(decimal_places=2, max_digits=12)
+
+    def __str__(self):
+        return self.name
