@@ -63,15 +63,16 @@
             <li><a href="#">Cryptocurrencies</a></li>
             <li><a href="#">Exchanges</a></li>
             <li><a href="#">Markets</a></li>
+            <li><a href="{% url 'user_profile' %}">User Profile</a></li>
            <li> <a href="{% url 'change_password' %}">Change Password</a></li>
 
-           {% with user_profile=user.userprofile %}
+           {% comment %} {% with user_profile=user.userprofile %}
            {% if user_profile.profile_picture %}
                <li class="profile-pic">
                    <img src="{{ user_profile.profile_picture.url }}" alt="Profile" />
                </li>
            {% endif %}
-       {% endwith %}
+       {% endwith %} {% endcomment %}
 
             <li><a href="{% url 'logout' %}">Logout</a></li>
             {% else %}
