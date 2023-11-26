@@ -91,13 +91,55 @@ def crypto_list(request):
     else:
         return render(request, 'coinmarketapp/error.html')
 
+def top_crypto_list(request):
+    crypto_visits = {}  # Dictionary to store crypto visit counts
 
+    # Loop through cookies to gather visit counts for each crypto
+    for key, value in request.COOKIES.items():
+        if key != 'csrftoken':  # Exclude CSRF token
+            try:
+                crypto_visits[key] = int(value)
+            except ValueError:
+            # Handle the case where the value is not an integer
+                crypto_visits[key] = 0
+
+    # Sort crypto_visits by visit count in descending order
+    sorted_crypto_visits = sorted(crypto_visits.items(), key=lambda x: x[1], reverse=True)
+
+    # Retrieve CryptoCurrency objects based on sorted crypto names
+    top_crypto_list = []
+    for crypto_name, _ in sorted_crypto_visits:
+        try:
+            crypto = CryptoCurrency.objects.get(name=crypto_name)
+            top_crypto_list.append(crypto)
+        except CryptoCurrency.DoesNotExist:
+            pass  # Handle case where CryptoCurrency doesn't exist for the given name
+
+    # Render the top crypto list in a template
+    return top_crypto_list
+    
 def cypto_by_name(request, currname):
     crypto_by_name = CryptoCurrency.objects.get(name=currname)
-
-    return render(request, 'coinmarketapp/crypto_page.html', {
-        "cpt": crypto_by_name
+    cookie = request.COOKIES.get(currname)
+    #print(cookie)
+    clist=top_crypto_list(request)
+    response = render(request, 'coinmarketapp/crypto_page.html', {
+        "cpt": crypto_by_name,
+        "clist":clist
     })
+    if not cookie:
+        if currname =='Tether USDt':
+            response.set_cookie('USDT','1')
+        else:
+            response.set_cookie(currname,'1')
+    else:
+        cookie=int(cookie)+1
+        if currname =='Tether USDt':
+            response.set_cookie('USDT',cookie)
+        else:
+            response.set_cookie(currname,cookie)
+    #print(clist)
+    return response
 
 
 def demo(request):
