@@ -574,6 +574,11 @@ select {
 .latest .span {
   color: #a72121;
 }
+.form-inline {
+    display: flex;
+    gap: 10px; /* Adjust the gap as needed */
+}
+
 
 .form-inline {
   display: flex;

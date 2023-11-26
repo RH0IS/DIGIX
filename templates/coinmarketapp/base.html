@@ -25,7 +25,7 @@
   <body>
     <header class="header">
       <div class="latest">
-        {% for crypto in trending_currencies %}
+        {% for crypto in trending_currencies %} {% if forloop.counter <= 3 %}
         <p class="{{ crypto.name }}">
           <span class="text-wrapper">{{ crypto.name }}: </span>
           <span
@@ -33,13 +33,11 @@
             >{{ crypto.price_change_percentage_24h }}%</span
           >
         </p>
-        {% endfor %}
-        <!--        <p> Total: {{total_cryptos}}</p>-->
-        {% if trending_currencies %}
-          <p>Highest ranked: <strong>{{highest_ranked_crypto}}</strong></p>
-          <p>Lowest ranked: <strong>{{lowest_ranked_crypto}}</strong></p>
+        <!-- Add other information you want to display -->
+        {% endif %} {% endfor %} {% if trending_currencies %}
+        <p>Highest ranked: <strong>{{highest_ranked_crypto}}</strong></p>
+        <p>Lowest ranked: <strong>{{lowest_ranked_crypto}}</strong></p>
         {% endif %}
-
       </div>
       <div class="navbar">
         <a href="{% url 'demo' %}">
@@ -53,7 +51,6 @@
 
         <nav>
           <ul>
-
             <li><a href="/home">Home</a></li>
             {% if user.is_authenticated %}
             <li><a href="{% url 'render_payment_page' %}">Buy Crypto</a></li>
@@ -69,7 +66,6 @@
             <li><a href="{% url 'signup' %}">Sign Up</a></li>
             {% endif %}
           </ul>
-
         </nav>
       </div>
     </header>
