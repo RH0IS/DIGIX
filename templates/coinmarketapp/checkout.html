@@ -1,7 +1,7 @@
 {% extends 'coinmarketapp/base.html' %}{% load static %}
 {% block content %}
-    <main>
-        <link rel="stylesheet" type="text/css" href="{% static 'payment/checkout.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'payment/checkout.css' %}">
+    <section>
         <script src="https://js.stripe.com/v3/"></script>
         <script type="text/javascript">
             <!--    this script must show up before payment/checkout.js-->
@@ -11,8 +11,8 @@
         </script>
         <script src="{% static 'payment/checkout.js' %}" defer></script>
         <div style="margin-top: 5%">
-            <h3 class="modal-title">Pay the bill</h3>
-            <form id="payment-form">
+            <h3 class="card-title">Pay the bill</h3>
+            <form id="payment-form" class="card-content">
                 <div id="payment-element">
                     <!--Stripe.js injects the Payment Element-->
                 </div>
@@ -23,5 +23,5 @@
                 <div id="payment-message" class="hidden"></div>
             </form>
         </div>
-    </main>
+    </section>
 {% endblock %}

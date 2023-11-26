@@ -17,9 +17,11 @@ class OrderForm(forms.ModelForm):
     def set(self, email=None, currency=None):
         self.fields['crypto_amount'].label = "Crypto Amount"
         self.fields['crypto_currency'].label = "Crypto Currency"
-        self.fields['crypto_currency'].initial = currency
+        if currency is not None:
+            self.fields['crypto_currency'].initial = currency
         self.fields['email'].label = "Email"
-        self.fields['email'].initial = email
+        if email is not None:
+            self.fields['email'].initial = email
 
 
 class RowSelectionForm(forms.Form):
