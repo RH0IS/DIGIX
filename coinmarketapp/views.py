@@ -83,8 +83,58 @@ def error(request):
 
 
 def trends_view(request):
+    form = RowSelectionForm(request.GET or None)
+    number_of_rows = 10
+
+    if form.is_valid():
+        number_of_rows = form.cleaned_data['number_of_rows']
+    market_api_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+
+    # Define your API key (replace with your actual CoinMarketCap API key)
+    api_key = "1400ea97-a782-4685-81f3-d9ad1ef83928"
+
+    # Define parameters for the API request
+    params = {
+        'start': 1,  # Starting record
+        'limit': number_of_rows,  # Number of cryptocurrencies to retrieve
+        'convert': 'USD',  # Convert prices to USD
+    }
+
+    # Define headers with your API key
+    headers = {
+        'X-CMC_PRO_API_KEY': api_key,
+    }
+
+    # Make the API request
+    response = requests.get(market_api_url, params=params, headers=headers)
+
+    if response.status_code == 200:
+        # Parse the JSON response
+        data = response.json()
+
+        # Extract relevant data from the API response
+        CryptoCurrency.objects.all().delete()
+
+        for crypto in data['data']:
+            name = crypto['name']
+            symbol = crypto['symbol']
+            market_cap = crypto['quote']['USD']['market_cap']
+            price = crypto['quote']['USD']['price']
+            volume_24h = crypto['quote']['USD']['percent_change_1h']
+
+            crypto_obj = CryptoCurrency(
+                name=name,
+                symbol=symbol,
+                market_cap=market_cap,
+                price=price,
+                volume_24h=volume_24h
+            )
+            crypto_obj.save()
+
+        # Pass the cryptocurrency data to the template
+        cryptocurrencies = CryptoCurrency.objects.all()
     # Define the CoinGecko API URL
-    api_url = "https://api.coingecko.com/api/v3/coins/markets"
+    trending_api_url = "https://api.coingecko.com/api/v3/coins/markets"
 
     # Define parameters for the API request
     params = {
@@ -97,7 +147,7 @@ def trends_view(request):
     }
 
     # Make the API request
-    response = requests.get(api_url, params=params)
+    response = requests.get(trending_api_url, params=params)
 
     if response.status_code == 200:
         # Parse the JSON response
@@ -130,7 +180,7 @@ def trends_view(request):
         lowest_ranked_crypto = min(trending_currencies, key=lambda x: x.rank)
 
         # Pass the cryptocurrency data and additional data to the template
-        return render(request, 'coinmarketapp/trends.html', {
+        return render(request, 'coinmarketapp/trends.html', {'cryptocurrencies':cryptocurrencies,
             'trending_currencies': trending_currencies,
             'total_cryptos': total_cryptos,
             'highest_ranked_crypto': highest_ranked_crypto,

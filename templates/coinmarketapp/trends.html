@@ -4,21 +4,6 @@
 <section class="section-trending">
   <div class="trending-box">
     <div class="trending-header">Trending</div>
-<!--    <ul>-->
-<!--        {% for crypto in trending_currencies %}-->
-<!--            <li>-->
-<!--                <strong>{{ crypto.name }}</strong>-->
-<!--                <br>-->
-<!--                Symbol: {{ crypto.symbol }}-->
-<!--                <br>-->
-<!--                Rank: {{ crypto.rank }}-->
-<!--                <br>-->
-<!--                Price Change (24h): {{ crypto.price_change_percentage_24h }}%-->
-<!--                <br>-->
-<!--                <img src="{{ crypto.image }}" alt="{{ crypto.name }} Logo">-->
-<!--            </li>-->
-<!--        {% endfor %}-->
-<!--    </ul>-->
     <div class="frame">
                 {% for crypto in trending_currencies %}
                         <div class="trending-item">
@@ -29,7 +14,7 @@
                             />
                         </div>
                         <p class="text-wrapper">
-                          {{ crypto.rank }} {{ crypto.name }} {{ crypto.symbol }}
+                          {{ crypto.rank }} {{ crypto.name }} <span class="u-text-upper">{{ crypto.symbol }}</span>
                           <span class="u-float-right {% if crypto.price_change_percentage_24h < 0 %}text-danger{% else %}text-success{% endif %}">{{ crypto.price_change_percentage_24h }}%</span>
                         </p>
                       </div>
