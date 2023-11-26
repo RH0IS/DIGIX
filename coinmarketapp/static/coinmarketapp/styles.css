@@ -126,7 +126,17 @@ table th, table td {
     background-size: contain;
     background-color: #303135;
 }
-
+.crypto-page{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* width: 75%; */
+  margin-bottom: 2rem;
+}
+.crypto-page h1 {
+  font-size: 24px;
+  margin-bottom: 1rem;
+}
 .demo-background {
     background-image: url("hero.jpg");
     background-size: cover;
@@ -139,6 +149,10 @@ table th, table td {
 
 .u-center-text{
     text-align: center;
+}
+
+.u-text-upper{
+    text-transform: uppercase;
 }
 
 .u-position-center{
@@ -263,6 +277,7 @@ footer {
   letter-spacing: 0;
   line-height: normal;
   white-space: nowrap;
+    margin-bottom: 2rem;
 }
 
 .text-wrapper{
@@ -558,5 +573,15 @@ select {
 
 .latest .span {
   color: #a72121;
+}
+.form-inline {
+    display: flex;
+    gap: 10px; /* Adjust the gap as needed */
+}
+
+
+.form-inline {
+  display: flex;
+  gap: 10px; /* Adjust the gap as needed */
 }
 

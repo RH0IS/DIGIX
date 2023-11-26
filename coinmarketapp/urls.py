@@ -2,6 +2,7 @@
 
 from django.urls import path
 from . import views
+from .views import get_exchange_rates
 
 urlpatterns = [
     # path('home/', views.crypto_list, name='crypto_list'),
@@ -17,4 +18,7 @@ urlpatterns = [
     # path('create-payment-intent', views.create_order, name='create-payment-intent'),
     path('pay-result', views.pay_reslut, name='pay-result'),
     path('currencies/<str:currname>/', views.cypto_by_name, name='cypto_by_name'),
+    path('exchange', views.exchange, name='exchange'),
+    path('get_exchange_rate/<str:from_currency>/<str:to_currency>/', views.get_exchange_rate, name='get_exchange_rate'),
+
 ]
