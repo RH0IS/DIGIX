@@ -9,12 +9,15 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from rest_framework.decorators import api_view, throttle_classes
 from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle
 from rest_framework.views import APIView
 from .models import CryptoCurrency, UserWallet, Order, trending_crypto
 from .forms import RowSelectionForm, OrderForm
+from django.shortcuts import get_object_or_404
+
 
 def get_exchange_rates(request):
     api_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
@@ -30,8 +33,8 @@ def get_exchange_rates(request):
 
     return JsonResponse(data)
 
-stripe.api_key = "sk_test_51O4pjuHl9Bqmml9jt2gupSLgAY6JjnvhQ9YaHuNHWZJOZZVZdeZHD67aG6WOkxXxIyy7OBQQKNdrWH90U3qaAVhO00tHqCFiRH"
 
+stripe.api_key = "sk_test_51O4pjuHl9Bqmml9jt2gupSLgAY6JjnvhQ9YaHuNHWZJOZZVZdeZHD67aG6WOkxXxIyy7OBQQKNdrWH90U3qaAVhO00tHqCFiRH"
 
 
 def __update_crypto_currency(data) -> None:
@@ -58,7 +61,6 @@ def __update_crypto_currency(data) -> None:
 @api_view(["GET"])
 @throttle_classes([UserRateThrottle])
 def crypto_list(request):
-    #CryptoCurrency.objects.all().delete()
     form = RowSelectionForm(request.GET or None)
 
     if form.is_valid():
@@ -84,27 +86,6 @@ def crypto_list(request):
     if response.status_code == 200:
         __update_crypto_currency(response.json())
 
-        # data = response.json()
-        # Extract relevant data from the API response
-        #CryptoCurrency.objects.all().delete()
-        # cryptocurrencies = []
-        # for crypto in data['data']:
-        #     name = crypto['name']
-        #     symbol = crypto['symbol']
-        #     market_cap = crypto['quote']['USD']['market_cap']
-        #     price = crypto['quote']['USD']['price']
-        #     volume_24h = crypto['quote']['USD']['percent_change_1h']  # Verify the correct key
-        #
-        #     crypto_obj = CryptoCurrency(
-        #         name=name,
-        #         symbol=symbol,
-        #         market_cap=market_cap,
-        #         price=price,
-        #         volume_24h=volume_24h
-        #     )
-        #     crypto_obj.save()
-        #     cryptocurrencies = CryptoCurrency.objects.all()
-
         search_query = request.GET.get("search")
         if search_query:
             cryptocurrencies = CryptoCurrency.objects.filter(
@@ -125,6 +106,7 @@ def crypto_list(request):
     else:
         return render(request, "coinmarketapp/error.html")
 
+
 def top_crypto_list(request):
     crypto_visits = {}  # Dictionary to store crypto visit counts
 
@@ -134,7 +116,7 @@ def top_crypto_list(request):
             try:
                 crypto_visits[key] = int(value)
             except ValueError:
-            # Handle the case where the value is not an integer
+                # Handle the case where the value is not an integer
                 crypto_visits[key] = 0
 
     # Sort crypto_visits by visit count in descending order
@@ -152,33 +134,33 @@ def top_crypto_list(request):
     # Render the top crypto list in a template
     return top_crypto_list
 
+
 def cypto_by_name(request, currname):
     crypto_by_name = CryptoCurrency.objects.get(name=currname)
-    symbol=crypto_by_name.symbol
+    symbol = crypto_by_name.symbol
     cookie = request.COOKIES.get(symbol)
-    #print(symbol)
-    clist=top_crypto_list(request)
-    trending_currencies=trending_crypto.objects.all()
-    tlist=trending_currencies[:3]
+    # print(symbol)
+    clist = top_crypto_list(request)
+    trending_currencies = trending_crypto.objects.all()
+    tlist = trending_currencies[:3]
     total_cryptos = len(trending_currencies)
     highest_ranked_crypto = max(trending_currencies, key=lambda x: x.rank)
     lowest_ranked_crypto = min(trending_currencies, key=lambda x: x.rank)
     response = render(request, 'coinmarketapp/crypto_page.html', {
         "cpt": crypto_by_name,
-        "clist":clist,
+        "clist": clist,
         "trending_currencies": tlist,
         "total_cryptos": total_cryptos,
         "highest_ranked_crypto": highest_ranked_crypto,
         "lowest_ranked_crypto": lowest_ranked_crypto,
     })
     if not cookie:
-        response.set_cookie(symbol,'1')
+        response.set_cookie(symbol, '1')
     else:
-        cookie=int(cookie)+1
-        response.set_cookie(symbol,cookie)
-    #print(clist)
+        cookie = int(cookie) + 1
+        response.set_cookie(symbol, cookie)
+    # print(clist)
     return response
-
 
 
 @api_view(["GET"])
@@ -249,6 +231,7 @@ def demo(request):
 def error(request):
     return render(request, "coinmarketapp/error.html")
 
+
 @api_view(["GET"])
 @throttle_classes([UserRateThrottle])
 def get_exchange_rate(request, from_currency, to_currency):
@@ -306,13 +289,14 @@ def get_exchange_rate(request, from_currency, to_currency):
     except requests.exceptions.RequestException as err:
         return JsonResponse({'error': f"Something went wrong: {err}"}, status=500)
 
+
 def trends_view(request):
     form = RowSelectionForm(request.GET or None)
     number_of_rows = 10
 
     if form.is_valid():
         number_of_rows = form.cleaned_data["number_of_rows"]
-        
+
     market_api_url = (
         "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
     )
@@ -336,28 +320,7 @@ def trends_view(request):
     response = requests.get(market_api_url, params=params, headers=headers)
 
     if response.status_code == 200:
-        # Parse the JSON response
         __update_crypto_currency(response.json())
-        data = response.json()
-        # Extract relevant data from the API response
-        #CryptoCurrency.objects.all().delete()
-
-        # for crypto in data["data"]:
-        #     name = crypto["name"]
-        #     symbol = crypto["symbol"]
-        #     market_cap = crypto["quote"]["USD"]["market_cap"]
-        #     price = crypto["quote"]["USD"]["price"]
-        #     volume_24h = crypto["quote"]["USD"]["percent_change_1h"]
-        #
-        #     crypto_obj = CryptoCurrency(
-        #         name=name,
-        #         symbol=symbol,
-        #         market_cap=market_cap,
-        #         price=price,
-        #         volume_24h=volume_24h,
-        #     )
-        #     crypto_obj.save()
-
         # Pass the cryptocurrency data to the template
         cryptocurrencies = CryptoCurrency.objects.all()
     # Define the CoinGecko API URL
@@ -437,6 +400,10 @@ def render_payment_page(request) -> HttpResponse:
         form = OrderForm(request.POST or None)
         if form.is_valid():
             try:
+                if request.user.email is not None:
+                    user = get_object_or_404(User, pk=request.user.id)
+                    user.email = form.cleaned_data["email"]
+                    user.save()
                 unit_price = CryptoCurrency.objects.get(
                     id=form.cleaned_data["crypto_currency"].id
                 ).price
@@ -446,14 +413,14 @@ def render_payment_page(request) -> HttpResponse:
                 )
                 if order.amount <= 0:
                     raise Exception("the price should be more than 0")
-                order.currency = "cad"
+                order.currency = "usd"
                 order.user = request.user
                 order.email = form.cleaned_data["email"]
                 order.save()
                 # Create a PaymentIntent with the order amount and currency
                 intent = stripe.PaymentIntent.create(
                     amount=order.amount,
-                    currency="cad",
+                    currency="usd",
                     automatic_payment_methods={
                         "enabled": True,
                     },
@@ -464,17 +431,24 @@ def render_payment_page(request) -> HttpResponse:
                     {
                         "clientSecret": intent["client_secret"],
                         "url": "http://"
-                        + request.get_host()
-                        + "/pay-result?order_id="
-                        + str(order.id),
+                               + request.get_host()
+                               + "/pay-result?order_id="
+                               + str(order.id),
                         "email": order.email,
                     },
                 )
             except Exception as e:
-                messages.error(request, e)
+                print(e)
                 return HttpResponse("fail to create order")
     form = OrderForm()
     form.set(email=request.user.email)
+    crypto_type = request.GET.get('crypto', '-1')
+    try:
+        if crypto_type != '-1':
+            crypto_type = int(crypto_type)
+            form.set(currency=CryptoCurrency.objects.get(id=crypto_type))
+    except Exception as e:
+        print(e)
     return render(request, "coinmarketapp/create_order.html", {"form": form})
 
 
@@ -489,7 +463,7 @@ def pay_reslut(request):
                 "payment_intent_client_secret"
             )
             if (
-                order.order_status == Order.CREATED
+                    order.order_status == Order.CREATED
             ):  # only update the order status when it is created
                 order.order_status = Order.COMPLETED
                 with transaction.atomic():
@@ -569,4 +543,3 @@ def exchange(request):
 
     except requests.exceptions.RequestException as err:
         return JsonResponse({'error': f"Something went wrong: {err}"}, status=500)
-

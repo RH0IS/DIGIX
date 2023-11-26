@@ -1,22 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-{% load static %}
-<head>
-    <meta charset="utf-8"/>
-    <title>Accept a payment</title>
-    <meta name="description" content="A demo of a payment on Stripe"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'payment/checkout.css' %}">
-</head>
-<body>
+{% extends 'coinmarketapp/base.html' %}{% load static %}{% block content %}
+<section>
+<link rel="stylesheet" type="text/css" href="{% static 'payment/checkout.css' %}">
 <div style="margin-top: 5%">
-    <h3 class="modal-title">Set the Currency you want to buy</h3>
-    <form method="post">
+    <h3 class="card-title">Select the Currency you want to buy</h3>
+    <form method="post" class="card-content">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Submit</button>
     </form>
     <br/>
 </div>
-</body>
-</html>
+</section>
+{% endblock %}
