@@ -1,11 +1,6 @@
 {% extends 'coinmarketapp/base.html' %} {% load static %} {% block content %}
 
 <section class="section-crypto-list">
-  <!-- Add a form with a button to trigger the server-side rendering -->
-  <!-- <form method="POST" action="{% url 'trends_view' %}">
-      {% csrf_token %}
-      <button type="submit" class="btn-highlights-toggle">Highlights</button>
-    </form> -->
   <div class="toggle-highlights" id="accordion">
     <div
       class="card"
@@ -45,15 +40,7 @@
               >Highlights</label
             >
           </div>
-          <!-- <button
-                      class="btn btn-link"
-                      data-toggle="collapse"
-                      data-target="#collapseOne"
-                      aria-expanded="true"
-                      aria-controls="collapseOne"
-                    >
-                      Highlights
-                    </button> -->
+
         </h5>
       </div>
 
@@ -117,7 +104,6 @@
       </table>
     </div>
   </div>
-  <!--    </div>-->
 </section>
 
 <script>

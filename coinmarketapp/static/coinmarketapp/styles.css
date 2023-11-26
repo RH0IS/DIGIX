@@ -267,6 +267,7 @@ footer {
   letter-spacing: 0;
   line-height: normal;
   white-space: nowrap;
+    margin-bottom: 2rem;
 }
 
 .text-wrapper{
