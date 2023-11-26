@@ -3,7 +3,20 @@
 
 {% block content %}
 
-{% if cpt %}
+{% if clist%}
+<div class="top-class" style="margin-left: 7rem; margin-top: 2rem;">
+    <div class="text-white">
+        <h1>Recently browsed cryptos</h1>
+        {% for item in clist%}
+            <p>{{ item.name }}</p>
+        {% endfor %}
+</div>
+{% endif %}
+
+    
+
+<div class='crypto-list' > 
+    {% if cpt %}
 <div class="text-white">
     <h1>{{ cpt.name }} Details</h1>
     <p>Symbol: {{ cpt.symbol }}</p>
@@ -17,5 +30,9 @@
 {% else %}
 <h1>No Crypto found by this name</h1>
 {% endif %}
+    </div>
+    
+</div>
+
 
 {% endblock %}
