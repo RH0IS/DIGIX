@@ -53,7 +53,7 @@
           <ul>
             <li><a href="/home">Home</a></li>
             {% if user.is_authenticated %}
-            <li><a href="{% url 'render_payment_page' %}">Buy Crypto</a></li>
+            <li><a href="{% url 'render_payment_page' %}">My Account</a></li>
             <li><a href="{% url 'exchange' %}">Exchanges</a></li>
             <li><a href="#">Markets</a></li>
             <a href="{% url 'change_password' %}">Change Password</a>
