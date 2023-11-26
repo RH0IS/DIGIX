@@ -190,34 +190,38 @@ def top_crypto_list(request):
     top_crypto_list = []
     for crypto_name, _ in sorted_crypto_visits:
         try:
-            crypto = CryptoCurrency.objects.get(name=crypto_name)
+            crypto = CryptoCurrency.objects.get(symbol=crypto_name)
             top_crypto_list.append(crypto)
         except CryptoCurrency.DoesNotExist:
             pass  # Handle case where CryptoCurrency doesn't exist for the given name
 
     # Render the top crypto list in a template
     return top_crypto_list
-    
+
 def cypto_by_name(request, currname):
     crypto_by_name = CryptoCurrency.objects.get(name=currname)
-    cookie = request.COOKIES.get(currname)
-    #print(cookie)
+    symbol=crypto_by_name.symbol
+    cookie = request.COOKIES.get(symbol)
+    #print(symbol)
     clist=top_crypto_list(request)
+    trending_currencies=trending_crypto.objects.all()
+    tlist=trending_currencies[:4]
+    total_cryptos = len(trending_currencies)
+    highest_ranked_crypto = max(trending_currencies, key=lambda x: x.rank)
+    lowest_ranked_crypto = min(trending_currencies, key=lambda x: x.rank)
     response = render(request, 'coinmarketapp/crypto_page.html', {
         "cpt": crypto_by_name,
-        "clist":clist
+        "clist":clist,
+        "trending_currencies": tlist,
+        "total_cryptos": total_cryptos,
+        "highest_ranked_crypto": highest_ranked_crypto,
+        "lowest_ranked_crypto": lowest_ranked_crypto,
     })
     if not cookie:
-        if currname =='Tether USDt':
-            response.set_cookie('USDT','1')
-        else:
-            response.set_cookie(currname,'1')
+        response.set_cookie(symbol,'1')
     else:
         cookie=int(cookie)+1
-        if currname =='Tether USDt':
-            response.set_cookie('USDT',cookie)
-        else:
-            response.set_cookie(currname,cookie)
+        response.set_cookie(symbol,cookie)
     #print(clist)
     return response
 
@@ -300,6 +304,7 @@ def trends_view(request):
 
     if form.is_valid():
         number_of_rows = form.cleaned_data["number_of_rows"]
+        
     market_api_url = (
         "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
     )
@@ -392,7 +397,13 @@ def trends_view(request):
         total_cryptos = len(trending_currencies)
         highest_ranked_crypto = max(trending_currencies, key=lambda x: x.rank)
         lowest_ranked_crypto = min(trending_currencies, key=lambda x: x.rank)
-
+        search_query = request.GET.get("search")
+        if search_query:
+            cryptocurrencies = CryptoCurrency.objects.filter(
+                name__icontains=search_query
+            )
+        else:
+            cryptocurrencies = CryptoCurrency.objects.all()
         # Pass the cryptocurrency data and additional data to the template
         return render(
             request,
@@ -403,6 +414,8 @@ def trends_view(request):
                 "total_cryptos": total_cryptos,
                 "highest_ranked_crypto": highest_ranked_crypto,
                 "lowest_ranked_crypto": lowest_ranked_crypto,
+                "form": form,
+                "search_query": search_query,
             },
         )
     else:
