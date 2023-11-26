@@ -16,6 +16,7 @@ urlpatterns = [
     # path('create_order', views.render_payment_page, name='create_order'),
     path('checkout', views.render_payment_page, name='render_payment_page'),
     # path('create-payment-intent', views.create_order, name='create-payment-intent'),
+    path('complete_order/<int:order_id>', views.complete_order, name='complete_order'),
     path('pay-result', views.pay_reslut, name='pay-result'),
     path('currencies/<str:currname>/', views.cypto_by_name, name='cypto_by_name'),
     path('exchange', views.exchange, name='exchange'),

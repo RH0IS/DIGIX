@@ -16,6 +16,7 @@ section {
     width: 30vw;
     border: 1px solid rgb(32, 33, 33);
     padding: 10px;
+    overflow-y: scroll;
 }
 
 .hint {
