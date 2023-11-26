@@ -62,19 +62,25 @@
   </div>
   <div class="crypto-list">
     <h1>Cryptocurrency Market</h1>
-    <form method="GET" class="form-inline">
-      <div class="form-group">
-        <label>Rows:</label>
-        {{ form.number_of_rows }}
-        <button
-          type="submit"
-          class="btn btn-primary"
-          style="font-size: 12px; padding: 3px 6px"
-        >
-          Select
-        </button>
-      </div>
-    </form>
+    <div class="form-inline">
+      <form method="GET" class="form-inline">
+        <div class="form-group">
+          <label>Rows:</label>
+          {{ form.number_of_rows }}
+          <button
+            type="submit"
+            class="btn btn-primary"
+            style="font-size: 12px; padding: 3px 6px"
+          >
+            Select
+          </button>
+        </div>
+      </form>
+      <form method="get" >
+      <input type="text" name="search" placeholder="Search...">
+      <button type="submit">Search</button>
+  </form>
+        </div>
     <div class="table-container">
       <table>
         <tr>

@@ -575,3 +575,8 @@ select {
   color: #a72121;
 }
 
+.form-inline {
+  display: flex;
+  gap: 10px; /* Adjust the gap as needed */
+}
+
