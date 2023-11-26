@@ -122,6 +122,7 @@ def __update_crypto_currency(data) -> None:
 @api_view(["GET"])
 @throttle_classes([UserRateThrottle])
 def crypto_list(request):
+    #CryptoCurrency.objects.all().delete()
     form = RowSelectionForm(request.GET or None)
 
     if form.is_valid():
@@ -149,7 +150,7 @@ def crypto_list(request):
 
         # data = response.json()
         # Extract relevant data from the API response
-        # CryptoCurrency.objects.all().delete()
+        #CryptoCurrency.objects.all().delete()
         # cryptocurrencies = []
         # for crypto in data['data']:
         #     name = crypto['name']
@@ -403,23 +404,23 @@ def trends_view(request):
         __update_crypto_currency(response.json())
         data = response.json()
         # Extract relevant data from the API response
-        CryptoCurrency.objects.all().delete()
+        #CryptoCurrency.objects.all().delete()
 
-        for crypto in data["data"]:
-            name = crypto["name"]
-            symbol = crypto["symbol"]
-            market_cap = crypto["quote"]["USD"]["market_cap"]
-            price = crypto["quote"]["USD"]["price"]
-            volume_24h = crypto["quote"]["USD"]["percent_change_1h"]
-
-            crypto_obj = CryptoCurrency(
-                name=name,
-                symbol=symbol,
-                market_cap=market_cap,
-                price=price,
-                volume_24h=volume_24h,
-            )
-            crypto_obj.save()
+        # for crypto in data["data"]:
+        #     name = crypto["name"]
+        #     symbol = crypto["symbol"]
+        #     market_cap = crypto["quote"]["USD"]["market_cap"]
+        #     price = crypto["quote"]["USD"]["price"]
+        #     volume_24h = crypto["quote"]["USD"]["percent_change_1h"]
+        #
+        #     crypto_obj = CryptoCurrency(
+        #         name=name,
+        #         symbol=symbol,
+        #         market_cap=market_cap,
+        #         price=price,
+        #         volume_24h=volume_24h,
+        #     )
+        #     crypto_obj.save()
 
         # Pass the cryptocurrency data to the template
         cryptocurrencies = CryptoCurrency.objects.all()
