@@ -501,11 +501,19 @@ def pay_reslut(request):
 
 @login_required
 def user_profile(request):
+    wallet = UserWallet.objects.filter(user=request.user)
+    result = {}
+    for w in wallet:
+        key = w.currency.name
+        if key not in result:
+            result[key] = w.amount
+        else:
+            result[key] += w.amount
     return render(
         request,
         "coinmarketapp/user_profile.html",
         {
-            "wallets": UserWallet.objects.filter(user=request.user),
+            "wallets": result,
             "orders": Order.objects.filter(user=request.user),
         }
     )

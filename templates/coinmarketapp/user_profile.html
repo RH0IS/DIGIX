@@ -5,13 +5,15 @@
     <link rel="stylesheet" href="{% static 'profile/profile.css' %}">
     <main>
         <section class="user-profile" style="color: white">
-            <p>{{ msg }}</p>
+            {% if msg %}
+                <p>{{ msg }}</p>
+            {% endif %}
             <div>
                 <h2>Your Wallet</h2>
                 {% if wallets %}
                     <ul style="font-size: 18px">
-                        {% for wallet in wallets %}
-                            <li>{{ wallet.currency.name }}: &nbsp; {{ wallet.amount }}{{ wallet.currency.symbol }} </li>
+                        {% for name, amount in wallets.items %}
+                            <li>{{ name }}: &nbsp; {{ amount }}</li>
                         {% endfor %}
                     </ul>
                 {% else %}
