@@ -13,9 +13,9 @@
 </div>
 {% endif %}
 
-    
 
-<div class='crypto-list' > 
+
+<div class='crypto-list' >
     {% if cpt %}
 <div class="text-white">
     <h1>{{ cpt.name }} Details</h1>
@@ -26,12 +26,24 @@
          <span class="{% if cpt.volume_24h < 0 %}text-danger{% else %}text-success{% endif %}">
         {{ cpt.volume_24h }}%
     </span></p>
+    <a href="{% url 'render_payment_page' %}?crypto={{ cpt.id }}"
+    style="
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    "> Buy It Now! </a>
 </div>
 {% else %}
 <h1>No Crypto found by this name</h1>
 {% endif %}
     </div>
-    
+
 </div>
 
 
