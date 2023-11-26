@@ -416,7 +416,6 @@ def render_payment_page(request) -> HttpResponse:
                 order.currency = "usd"
                 order.user = request.user
                 order.email = form.cleaned_data["email"]
-                order.save()
                 # Create a PaymentIntent with the order amount and currency
                 intent = stripe.PaymentIntent.create(
                     amount=order.amount,
@@ -425,6 +424,8 @@ def render_payment_page(request) -> HttpResponse:
                         "enabled": True,
                     },
                 )
+                order.clientSecret = intent["client_secret"]
+                order.save()
                 return render(
                     request,
                     "coinmarketapp/checkout.html",
@@ -450,6 +451,23 @@ def render_payment_page(request) -> HttpResponse:
     except Exception as e:
         print(e)
     return render(request, "coinmarketapp/create_order.html", {"form": form})
+
+
+@login_required
+def complete_order(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    return render(
+        request,
+        "coinmarketapp/checkout.html",
+        {
+            "clientSecret": order.clientSecret,
+            "url": "http://"
+                   + request.get_host()
+                   + "/pay-result?order_id="
+                   + str(order.id),
+            "email": order.email,
+        },
+    )
 
 
 @login_required
