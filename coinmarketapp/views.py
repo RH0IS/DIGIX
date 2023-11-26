@@ -12,6 +12,62 @@ from .forms import RowSelectionForm
 
 stripe.api_key = 'sk_test_Hrs6SAopgFPF0bZXSN3f6ELN'
 
+def ticker_base(request):
+    trending_api_url = "https://api.coingecko.com/api/v3/coins/markets"
+
+    # Define parameters for the API request
+    params = {
+        'vs_currency': 'usd',
+        'order': 'market_cap_desc',
+        'per_page': 3,
+        'page': 1,
+        'sparkline': False,
+        'locale': 'en'
+    }
+
+    # Make the API request
+    response = requests.get(trending_api_url, params=params)
+
+    if response.status_code == 200:
+        # Parse the JSON response
+        data = response.json()
+        # Extract relevant data from the API response
+        trending_currencies = []
+
+        for crypto in data:
+            name = crypto['name']
+            symbol = crypto['symbol']
+            rank = crypto['market_cap_rank']
+            price_change_percentage_24h = crypto['price_change_percentage_24h']
+            image = crypto['image']
+
+            # Create a trending_crypto object
+            trending_obj = trending_crypto(
+                name=name,
+                symbol=symbol,
+                rank=rank,
+                price_change_percentage_24h=price_change_percentage_24h,
+                image=image
+            )
+            # Save the object to the database
+            trending_obj.save()
+            trending_currencies.append(trending_obj)
+
+        # Additional data or functionality
+        total_cryptos = len(trending_currencies)
+        highest_ranked_crypto = max(trending_currencies, key=lambda x: x.rank)
+        lowest_ranked_crypto = min(trending_currencies, key=lambda x: x.rank)
+
+        # Pass the cryptocurrency data and additional data to the template
+        return render(request, 'coinmarketapp/base.html', {
+                                                             'trending_currencies': trending_currencies,
+                                                             'total_cryptos': total_cryptos,
+                                                             'highest_ranked_crypto': highest_ranked_crypto,
+                                                             'lowest_ranked_crypto': lowest_ranked_crypto
+                                                             })
+    else:
+        # Handle API request error
+        return render(request, 'coinmarketapp/error.html')
 
 
 def crypto_list(request):
@@ -75,7 +131,62 @@ def crypto_list(request):
 
 
 def demo(request):
-    return render(request, 'coinmarketapp/demo-page.html')
+    trending_api_url = "https://api.coingecko.com/api/v3/coins/markets"
+
+    # Define parameters for the API request
+    params = {
+        'vs_currency': 'usd',
+        'order': 'market_cap_desc',
+        'per_page': 3,
+        'page': 1,
+        'sparkline': False,
+        'locale': 'en'
+    }
+
+    # Make the API request
+    response = requests.get(trending_api_url, params=params)
+
+    if response.status_code == 200:
+        # Parse the JSON response
+        data = response.json()
+        # Extract relevant data from the API response
+        trending_currencies = []
+
+        for crypto in data:
+            name = crypto['name']
+            symbol = crypto['symbol']
+            rank = crypto['market_cap_rank']
+            price_change_percentage_24h = crypto['price_change_percentage_24h']
+            image = crypto['image']
+
+            # Create a trending_crypto object
+            trending_obj = trending_crypto(
+                name=name,
+                symbol=symbol,
+                rank=rank,
+                price_change_percentage_24h=price_change_percentage_24h,
+                image=image
+            )
+            # Save the object to the database
+            trending_obj.save()
+            trending_currencies.append(trending_obj)
+
+        # Additional data or functionality
+        total_cryptos = len(trending_currencies)
+        highest_ranked_crypto = max(trending_currencies, key=lambda x: x.rank)
+        lowest_ranked_crypto = min(trending_currencies, key=lambda x: x.rank)
+
+        # Pass the cryptocurrency data and additional data to the template
+        return render(request, 'coinmarketapp/demo-page.html', {
+            'trending_currencies': trending_currencies,
+            'total_cryptos': total_cryptos,
+            'highest_ranked_crypto': highest_ranked_crypto,
+            'lowest_ranked_crypto': lowest_ranked_crypto
+        })
+    else:
+        # Handle API request error
+        return render(request, 'coinmarketapp/error.html')
+    # return render(request, 'coinmarketapp/demo-page.html')
 
 
 def error(request):

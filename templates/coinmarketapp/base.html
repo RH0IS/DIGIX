@@ -25,26 +25,16 @@
   <body>
     <header class="header">
       <div class="latest">
-        <p class="bitcoin">
-          <span class="text-wrapper">Bitcoin: </span>
-          <span class="u-color-red">-1.78%</span>
-        </p>
-        <p class="dogecoin">
-          <span class="text-wrapper">Dogecoin: </span>
-          <span class="u-color-green">+1.15%</span>
-        </p>
-        <p class="ethereum">
-          <span class="text-wrapper">Ethereum: </span>
-          <span class="u-color-green">+5.04%</span>
-        </p>
-        <p class="pepe">
-          <span class="text-wrapper">Pepe: </span>
-          <span class="u-color-green">+0.49%</span>
-        </p>
-        <p class="shiba-inu">
-          <span class="text-wrapper">Shiba inu: </span>
-          <span class="u-color-red">-1.36%</span>
-        </p>
+        {% for crypto in trending_currencies %}
+          <p class="{{ crypto.name }}">
+            <span class="text-wrapper">{{ crypto.name }}: </span>
+            <span class="{% if crypto.price_change_percentage_24h < 0 %}text-danger{% else %}text-success{% endif %}">{{ crypto.price_change_percentage_24h }}%</span>
+          </p>
+        {% endfor %}
+<!--        <p> Total: {{total_cryptos}}</p>-->
+        <p> Highest ranked: <strong>{{highest_ranked_crypto}}</strong> </p>
+        <p> Lowest ranked: <strong>{{lowest_ranked_crypto}}</strong> </p>
+
       </div>
       <div class="navbar">
         <a href="{% url 'demo' %}">
