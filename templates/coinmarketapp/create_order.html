@@ -2,19 +2,8 @@
 <section>
 <link rel="stylesheet" type="text/css" href="{% static 'payment/checkout.css' %}">
 <div style="margin-top: 5%">
-    <h3 class="modal-title" style="
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    min-height: 56px;
-    margin-bottom: -1px;
-    padding: 0 24px;
-    color: rgba(0, 0, 0, 0.88);
-    font-weight: 600;
-    background-color: rgba(112,155,196,0.82);
-    border-radius: 8px 8px 0 0;
-">Select the Currency you want to buy</h3>
-    <form method="post">
+    <h3 class="card-title">Select the Currency you want to buy</h3>
+    <form method="post" class="card-content">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Submit</button>

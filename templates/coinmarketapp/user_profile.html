@@ -1,34 +1,41 @@
 <!-- coinmarketapp/templates/coinmarketapp/user_profile.html -->
 
-{% extends 'coinmarketapp/base.html' %}
+{% extends 'coinmarketapp/base.html' %}{% load static %}
 {% block content %}
-<main>
-    <section class="user-profile" style="color: white">
-        <p>{{ msg }}</p>
-        <div>
-            <h2>Wallet Contents</h2>
-            {% if wallets %}
-            <ul>
-                {% for wallet in wallets %}
-                <li>{{ wallet.currency.name }}: &nbsp; {{ wallet.amount }}{{ wallet.currency.symbol }} </li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        </div>
-         <h2>Order History</h2>
-        {% if orders %}
-            {% for order in orders %}
-                <div>
-                    <ul>
-                        <li>Order &nbsp; ID: Order#{{ order.id }}</li>
-                        <li>Order &nbsp; Total: {{ order.amount }}{{ order.currency }}</li>
-                        <li>Order &nbsp; Detail: {{ order.crypto_amount }}{{ order.crypto_currency.symbol }}</li>
-                        <li>Order &nbsp; Status: {{ order.get_order_status_display }}</li>
-                        <li>Order &nbsp; Date: {{ order.created }}</li>
+    <link rel="stylesheet" href="{% static 'profile/profile.css' %}">
+    <main>
+        <section class="user-profile" style="color: white">
+            <p>{{ msg }}</p>
+            <div>
+                <h2>Your Wallet</h2>
+                {% if wallets %}
+                    <ul style="font-size: 18px">
+                        {% for wallet in wallets %}
+                            <li>{{ wallet.currency.name }}: &nbsp; {{ wallet.amount }}{{ wallet.currency.symbol }} </li>
+                        {% endfor %}
                     </ul>
-                </div>
-            {% endfor %}
-        {% endif %}
-    </section>
-</main>
+                {% else %}
+                    <p class="hint"><strong>You haven't bought anything yet</strong></p>
+                {% endif %}
+            <p> Want to buy cryptocurrency? <a href="{% url 'render_payment_page' %}"> click me.</a> </p>
+            </div>
+            <h2>Order History</h2>
+            {% if orders %}
+                {% for order in orders %}
+                    <div style="font-size: 18px">
+                        <div>Order &nbsp; #{{ forloop.counter }}</div>
+                        <ul>
+                            <li>Order &nbsp; ID: {{ order.id }}</li>
+                            <li>Order &nbsp; Total: {{ order.amount }}{{ order.currency }}</li>
+                            <li>Order &nbsp; Detail: {{ order.crypto_amount }}{{ order.crypto_currency.symbol }}</li>
+                            <li>Order &nbsp; Status: {{ order.get_order_status_display }}</li>
+                            <li>Order &nbsp; Date: {{ order.created }}</li>
+                        </ul>
+                    </div>
+                {% endfor %}
+                {% else %}
+                    <p class="hint"><strong>You don't have any ordered yet</strong></p>
+            {% endif %}
+        </section>
+    </main>
 {% endblock %}
