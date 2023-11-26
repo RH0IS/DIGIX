@@ -1,0 +1,14 @@
+:root {
+  --variable-collection-color-red: rgba(167, 33, 33, 1);
+  --variable-collection-color-green: rgba(33, 167, 130, 1);
+  --variable-collection-color-grey: rgba(48, 49, 53, 1);
+}
+
+.u-color-red{
+  color: #a72121;
+}
+
+.u-color-green{
+    color: #21a782;
+
+}

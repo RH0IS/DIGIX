@@ -1,0 +1,21 @@
+{% extends 'coinmarketapp/base.html' %}
+{%  load static %}
+
+{% block content %}
+
+{% if cpt %}
+<div class="text-white">
+    <h1>{{ cpt.name }} Details</h1>
+    <p>Symbol: {{ cpt.symbol }}</p>
+    <p>Market Cap: ${{ cpt.market_cap }}</p>
+    <p>Price: ${{ cpt.price }}</p>
+    <p>24h Volume:
+         <span class="{% if cpt.volume_24h < 0 %}text-danger{% else %}text-success{% endif %}">
+        {{ cpt.volume_24h }}%
+    </span></p>
+</div>
+{% else %}
+<h1>No Crypto found by this name</h1>
+{% endif %}
+
+{% endblock %}
