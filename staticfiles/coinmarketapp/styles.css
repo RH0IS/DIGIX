@@ -1,0 +1,144 @@
+/* Reset some default styles */
+{% load static %}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #20232a;
+    color: white;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    width: 150px;
+    height: auto;
+}
+
+.trend img{
+    width: 800px;
+    height: auto;
+}
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav li {
+    margin: 0 1rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+}
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.crypto-list h1 {
+    font-size: 24px;
+    margin-bottom: 1rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+.content {
+    flex: 1;
+    /*max-width: 800px;*/
+    /*margin: 0 auto;*/
+    /*padding: 2rem;*/
+    /*background-image: url("hero.jpg");*/
+    background-size: contain;
+}
+
+.demo-background {
+    background-image: url("hero.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.u-color-white{
+    color: white;
+}
+
+.u-center-text{
+    text-align: center;
+}
+
+.u-position-center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+footer {
+    background-color: #20232a;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.sign-up-btn {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: #007BFF;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 18px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+
+/* Default styles */
+.background-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%; /* Full width */
+    height: 300px; /* A fixed height that works for your design */
+    color: black;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Responsive styles for larger screens */
+@media (min-width: 768px) {
+    .background-image {
+        height: 720px; /* Match the image height on larger screens */
+    }
+}
+
+
+/* exchange page styling */

@@ -24,3 +24,5 @@ Digix/__pycache__/__init__.cpython-312.pyc
 Digix/__pycache__/settings.cpython-312.pyc
 Digix/__pycache__/urls.cpython-312.pyc
 Digix/__pycache__/wsgi.cpython-312.pyc
+db.sqlite3
+venv/pyvenv.cfg
