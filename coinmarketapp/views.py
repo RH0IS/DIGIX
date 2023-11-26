@@ -280,7 +280,7 @@ def trends_view(request):
     if response.status_code == 200:
         # Parse the JSON response
         __update_crypto_currency(response.json())
-        # data = response.json()
+        data = response.json()
         # Extract relevant data from the API response
         CryptoCurrency.objects.all().delete()
 
