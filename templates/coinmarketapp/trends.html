@@ -1,48 +1,28 @@
-{% extends 'coinmarketapp/crypto_list.html' %}
-
-{% load static %}
-{% block trending %}
+{% extends 'coinmarketapp/crypto_list.html' %} {% load static %} {% block
+trending %}
 <section class="section-trending">
   <div class="trending-box">
     <div class="trending-header">Trending</div>
     <div class="frame">
+      {% for crypto in trending_currencies %}
       <div class="trending-item">
         <div class="trending-item--logo-container">
           <img
             class="trending-item--logo"
-            src="https://c.animaapp.com/tDQH8n4L/img/frame-1.svg"
+            src="{{ crypto.image }}"
+            alt="{{ crypto.name }} Logo"
           />
         </div>
         <p class="text-wrapper">
-          1 Ethereum ETH
-          <span class="u-text-color-green u-float-right">+5.04%</span>
+          {{ crypto.rank }} {{ crypto.name }}
+          <span class="u-text-upper">{{ crypto.symbol }}</span>
+          <span
+            class="u-float-right {% if crypto.price_change_percentage_24h < 0 %}text-danger{% else %}text-success{% endif %}"
+            >{{ crypto.price_change_percentage_24h }}%</span
+          >
         </p>
       </div>
-      <div class="trending-item">
-        <div class="trending-item--logo-container">
-          <img
-            class="trending-item--logo"
-            src="https://c.animaapp.com/tDQH8n4L/img/frame-1.svg"
-          />
-        </div>
-
-        <p class="text-wrapper">
-          2 Bitcoin BTC
-          <span class="u-text-color-red u-float-right">-1.78%</span>
-        </p>
-      </div>
-      <div class="trending-item">
-        <div class="trending-item--logo-container">
-          <img
-            class="trending-item--logo"
-            src="https://c.animaapp.com/tDQH8n4L/img/frame-3.svg"
-          />
-        </div>
-        <p class="text-wrapper">
-          3 Dogecoin DOGE
-          <span class="u-text-color-green u-float-right">+1.15%</span>
-        </p>
-      </div>
+      {% endfor %}
     </div>
   </div>
   <div class="trending-box">
