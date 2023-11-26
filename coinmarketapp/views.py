@@ -6,6 +6,10 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from rest_framework.decorators import api_view, throttle_classes
+from rest_framework.response import Response
+from rest_framework.throttling import UserRateThrottle
+from rest_framework.views import APIView
 
 from .models import CryptoCurrency, UserWallet, trending_crypto
 from .forms import RowSelectionForm
@@ -69,7 +73,8 @@ def ticker_base(request):
         # Handle API request error
         return render(request, 'coinmarketapp/error.html')
 
-
+@api_view(['GET'])
+@throttle_classes([UserRateThrottle])
 def crypto_list(request):
     # Define the CoinMarketCap API URL
     form = RowSelectionForm(request.GET or None)
@@ -129,7 +134,8 @@ def crypto_list(request):
         # Handle API request error
         return render(request, 'coinmarketapp/error.html')
 
-
+@api_view(['GET'])
+@throttle_classes([UserRateThrottle])
 def demo(request):
     trending_api_url = "https://api.coingecko.com/api/v3/coins/markets"
 
@@ -192,7 +198,8 @@ def demo(request):
 def error(request):
     return render(request, 'coinmarketapp/error.html')
 
-
+@api_view(['GET'])
+@throttle_classes([UserRateThrottle])
 def trends_view(request):
     form = RowSelectionForm(request.GET or None)
     number_of_rows = 10
