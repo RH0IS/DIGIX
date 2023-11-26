@@ -580,3 +580,8 @@ select {
 }
 
 
+.form-inline {
+  display: flex;
+  gap: 10px; /* Adjust the gap as needed */
+}
+

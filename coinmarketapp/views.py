@@ -159,7 +159,7 @@ def cypto_by_name(request, currname):
     #print(symbol)
     clist=top_crypto_list(request)
     trending_currencies=trending_crypto.objects.all()
-    tlist=trending_currencies[:4]
+    tlist=trending_currencies[:3]
     total_cryptos = len(trending_currencies)
     highest_ranked_crypto = max(trending_currencies, key=lambda x: x.rank)
     lowest_ranked_crypto = min(trending_currencies, key=lambda x: x.rank)
