@@ -53,6 +53,7 @@
 
         <nav>
           <ul>
+
             <li><a href="/home">Home</a></li>
             {% if user.is_authenticated %}
             <li><a href="#">Cryptocurrencies</a></li>
@@ -68,6 +69,7 @@
             <li><a href="{% url 'signup' %}">Sign Up</a></li>
             {% endif %}
           </ul>
+
         </nav>
       </div>
     </header>
