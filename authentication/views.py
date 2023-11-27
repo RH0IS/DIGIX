@@ -9,9 +9,13 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 
 
-
+def validate_image_file(image):
+    if image:
+        if not image.content_type.startswith('image'):
+            raise ValidationError('File is not an image.')
 
 
 def signup(request):
@@ -24,12 +28,12 @@ def signup(request):
             user = form.save()
             profile = profile_form.save(commit=False)
             profile.user = user
-            profile.save()
+            # profile.save()
             print(user)
             profile_picture = form.cleaned_data.get("profile_picture")
 
             try:
-                validate_image_file(image)
+                validate_image_file(profile_picture)
             except ValidationError as e:
                 form.add_error('image', e)
                 return render(request, "authentication/signup.html", {"form": form})
@@ -70,10 +74,10 @@ def login_view(request):
             return render(request, 'authentication/login.html')
     return render(request, 'authentication/login.html')
 
-def custom_logout(request):
-        logout(request)
-        return redirect('login')
 
+def custom_logout(request):
+    logout(request)
+    return redirect('login')
 
 
 @login_required
@@ -82,7 +86,7 @@ def change_password(request):
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user)  
+            update_session_auth_hash(request, user)
             messages.success(request, 'Your password was successfully updated!')
             return redirect('login')
         else:
@@ -90,4 +94,3 @@ def change_password(request):
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'authentication/change_password.html', {'form': form})
-  

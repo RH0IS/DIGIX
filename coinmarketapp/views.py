@@ -18,6 +18,7 @@ from .models import CryptoCurrency, UserWallet, Order, trending_crypto
 from .forms import RowSelectionForm, OrderForm, ChangeProfilePictureForm
 from django.shortcuts import get_object_or_404
 from authentication.models import UserProfile
+from django.core.exceptions import ValidationError
 
 
 def get_exchange_rates(request):
@@ -576,7 +577,6 @@ def exchange(request):
 
     except requests.exceptions.RequestException as err:
         return JsonResponse({'error': f"Something went wrong: {err}"}, status=500)
-
 
 
 def change_profile_picture(request):
