@@ -437,6 +437,7 @@ def render_payment_page(request) -> HttpResponse:
                                + "/pay-result?order_id="
                                + str(order.id),
                         "email": order.email,
+                        "amount": str(order.amount / 100),
                     },
                 )
             except Exception as e:
@@ -467,6 +468,7 @@ def complete_order(request, order_id):
                    + "/pay-result?order_id="
                    + str(order.id),
             "email": order.email,
+            "amount": str(order.amount / 100),
         },
     )
 
@@ -510,13 +512,16 @@ def user_profile(request):
             result[key] = w.amount
         else:
             result[key] += w.amount
+    orders = Order.objects.filter(user=request.user)
+    for order in orders:
+        order.amount = order.amount / 100
     return render(
         request,
         "coinmarketapp/user_profile.html",
         {
             "profile": UserProfile.objects.get(user=request.user),
             "wallets": result,
-            "orders": Order.objects.filter(user=request.user),
+            "orders": orders,
         }
     )
 
