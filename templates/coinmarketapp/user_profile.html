@@ -1,11 +1,46 @@
-<!-- coinmarketapp/templates/coinmarketapp/user_profile.html -->
-
-{% extends 'coinmarketapp/base.html' %}{% load static %}
+{% extends 'coinmarketapp/base.html' %}
 {% block content %}
-    <link rel="stylesheet" href="{% static 'profile/profile.css' %}">
-    <main>
-        <section class="user-profile" style="color: white">
-            {% if msg %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<style>
+    /* Additional CSS styles for the profile picture container */
+    .profile-picture-container {
+        width: 300px; /* Adjust the width and height based on your preference */
+        height: 300px;
+        overflow: hidden;
+        border-radius: 50%; /* Create a circular shape */
+        border: 2px solid #ccc; /* Add a border */
+    }
+
+    .profile-picture-container img {
+        width: 100%; /* Make the image fill the container */
+        height: auto; /* Maintain aspect ratio */
+    }
+</style>
+<main class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <section class="user-profile" style="color: white">
+                <h2>Welcome, {{profile.user.username}}</h2>
+                <br/>
+                <h2>Profile Picture</h2>
+                {% if profile.profile_picture %}
+                    <div class="profile-picture-container">
+                        <img src="{{profile.profile_picture.url}}" alt="Profile Picture" class="rounded-circle">
+                    </div>
+                {% endif %}
+                <br/>
+                <form method="post" enctype="multipart/form-data" action="{% url 'change_profile_picture' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Change Picture</button>
+                </form>
+                <p>{{ msg }}</p>
+            </section>
+        </div>
+        <div class="col-md-6">
+            <section class="user-profile" style="color: white">
+                {% if msg %}
                 <p>{{ msg }}</p>
             {% endif %}
             <div>
@@ -50,6 +85,8 @@
             {% else %}
                 <p class="hint"><strong>You don't have any ordered yet</strong></p>
             {% endif %}
-        </section>
-    </main>
+            </section>
+        </div>
+    </div>
+</main>
 {% endblock %}

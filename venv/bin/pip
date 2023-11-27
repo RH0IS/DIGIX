@@ -1,4 +1,4 @@
-#!/home/atishay-khanna/PycharmProjects/DIGIX/venv/bin/python3
+#!/Users/ridham_patel/Documents/GitHub/folder/DIGIX/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

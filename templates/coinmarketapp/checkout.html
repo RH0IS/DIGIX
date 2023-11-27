@@ -11,7 +11,7 @@
         </script>
         <script src="{% static 'payment/checkout.js' %}" defer></script>
         <div style="margin-top: 5%">
-            <h3 class="card-title">Pay the bill</h3>
+            <h3 class="card-title">Pay the bill: ${{ amount }}</h3>
             <form id="payment-form" class="card-content">
                 <div id="payment-element">
                     <!--Stripe.js injects the Payment Element-->
