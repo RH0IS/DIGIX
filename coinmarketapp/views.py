@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.db import transaction
 from django.http import HttpResponse
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -15,8 +15,9 @@ from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle
 from rest_framework.views import APIView
 from .models import CryptoCurrency, UserWallet, Order, trending_crypto
-from .forms import RowSelectionForm, OrderForm
+from .forms import RowSelectionForm, OrderForm, ChangeProfilePictureForm
 from django.shortcuts import get_object_or_404
+from authentication.models import UserProfile
 
 
 def get_exchange_rates(request):
@@ -513,6 +514,7 @@ def user_profile(request):
         request,
         "coinmarketapp/user_profile.html",
         {
+            "profile": UserProfile.objects.get(user=request.user),
             "wallets": result,
             "orders": Order.objects.filter(user=request.user),
         }
@@ -569,3 +571,23 @@ def exchange(request):
 
     except requests.exceptions.RequestException as err:
         return JsonResponse({'error': f"Something went wrong: {err}"}, status=500)
+
+
+
+def change_profile_picture(request):
+    if request.method == 'POST':
+        form = ChangeProfilePictureForm(request.POST, request.FILES)
+        if form.is_valid():
+            profile = UserProfile.objects.get(user=request.user)
+            profile.profile_picture = form.cleaned_data['new_profile_picture']
+            profile.save()
+            return redirect('user_profile')
+    else:
+        form = ChangeProfilePictureForm()
+
+    return render(request, 'coinmarketapp/user_profile.html', {
+        "profile": UserProfile.objects.get(user=request.user),
+        "wallets": UserWallet.objects.filter(user=request.user),
+        "orders": Order.objects.filter(user=request.user),
+        'form': form
+    })

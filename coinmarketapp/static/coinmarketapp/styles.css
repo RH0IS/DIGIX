@@ -585,3 +585,15 @@ select {
   gap: 10px; /* Adjust the gap as needed */
 }
 
+.profile-picture-container {
+        width: 300px; /* Adjust the width and height based on your preference */
+        height: 300px;
+        overflow: hidden;
+        border-radius: 50%; /* Create a circular shape */
+        border: 2px solid #ccc; /* Add a border */
+    }
+
+.profile-picture-container img {
+        width: 100%; /* Make the image fill the container */
+        height: auto; /* Maintain aspect ratio */
+    }

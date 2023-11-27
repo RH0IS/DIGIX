@@ -32,3 +32,7 @@ class RowSelectionForm(forms.Form):
     ]
 
     number_of_rows = forms.ChoiceField(choices=ROW_CHOICES, initial=10)
+
+
+class ChangeProfilePictureForm(forms.Form):
+    new_profile_picture = forms.ImageField(label='New Profile Picture')

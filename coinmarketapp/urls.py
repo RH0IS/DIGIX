@@ -20,6 +20,7 @@ urlpatterns = [
     path('pay-result', views.pay_reslut, name='pay-result'),
     path('currencies/<str:currname>/', views.cypto_by_name, name='cypto_by_name'),
     path('exchange', views.exchange, name='exchange'),
+    path('change_profile_picture', views.change_profile_picture, name='change_profile_picture'),
     path('get_exchange_rate/<str:from_currency>/<str:to_currency>/', views.get_exchange_rate, name='get_exchange_rate'),
 
 ]

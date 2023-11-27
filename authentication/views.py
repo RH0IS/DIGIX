@@ -26,6 +26,18 @@ def signup(request):
             profile.user = user
             profile.save()
             print(user)
+            profile_picture = form.cleaned_data.get("profile_picture")
+
+            try:
+                validate_image_file(image)
+            except ValidationError as e:
+                form.add_error('image', e)
+                return render(request, "authentication/signup.html", {"form": form})
+            user_profile = UserProfile(
+                user=user,
+                profile_picture=profile_picture
+            )
+            user_profile.save()
             return redirect('login')
     else:
         form = CustomUserCreationForm()
