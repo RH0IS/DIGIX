@@ -15,7 +15,7 @@ from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle
 from rest_framework.views import APIView
 from .models import CryptoCurrency, UserWallet, Order, trending_crypto
-from .forms import RowSelectionForm, OrderForm, ChangeProfilePictureForm
+from .forms import RowSelectionForm, OrderForm, ChangeProfilePictureForm, SellForm
 from django.shortcuts import get_object_or_404
 from authentication.models import UserProfile
 from django.core.exceptions import ValidationError
@@ -457,6 +457,48 @@ def render_payment_page(request) -> HttpResponse:
 
 
 @login_required
+def render_sell_page(request, wallet_id):
+    wallet = get_object_or_404(UserWallet, pk=wallet_id)
+    if request.method == "POST":
+        form = SellForm(request.POST)
+        print(form.errors)
+        if form.is_valid():
+            unit_price = CryptoCurrency.objects.get(id=wallet.currency.id).price
+            order = Order()
+            order.amount = int(form.cleaned_data["crypto_amount"] * unit_price * 100)
+            if order.amount <= 0:
+                raise Exception("the price should be more than 0")
+            order.currency = "usd"
+            order.user = request.user
+            order.email = form.cleaned_data["email"]
+            order.crypto_currency = wallet.currency
+            order.crypto_amount = form.cleaned_data["crypto_amount"]
+            order.card_number = form.cleaned_data["card_number"]
+            order.order_status = Order.SOLD
+            wallet.amount -= form.cleaned_data["crypto_amount"]
+            if wallet.amount < 0:
+                raise ValidationError("You don't have enough currency to sell")
+            with transaction.atomic():
+                order.save()
+                if wallet.amount == 0:
+                    wallet.delete()
+                else:
+                    wallet.save()
+            return render(request, "coinmarketapp/sell_result.html",
+                          {"name": wallet.currency.name, "amount": order.crypto_amount,
+                           "card": form.cleaned_data["card_number"], "money": str(order.amount / 100) + order.currency})
+    if request.user.id != wallet.user.id:  # check if the wallet belongs to the user
+        return render(request, "coinmarketapp/error.html")
+    form = SellForm()
+    form.set(email=request.user.email,
+             currency=wallet.currency.name,
+             wallet_id=wallet_id,
+             price=wallet.currency.price,
+             max_amount=wallet.amount)
+    return render(request, "coinmarketapp/sell_currency.html", {"form": form})
+
+
+@login_required
 def complete_order(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
     return render(
@@ -484,17 +526,21 @@ def pay_reslut(request):
             order.payment_intent_client_secret = request.GET.get(
                 "payment_intent_client_secret"
             )
-            if (
-                    order.order_status == Order.CREATED
-            ):  # only update the order status when it is created
+            if order.order_status == Order.CREATED:  # only update the order status when it is created
                 order.order_status = Order.COMPLETED
                 with transaction.atomic():
                     order.save()
-                    UserWallet.objects.create(
-                        user=request.user,
-                        currency=order.crypto_currency,
-                        amount=order.crypto_amount,
-                    )
+                    cur = UserWallet.objects.filter(currency=order.crypto_currency)
+                    if cur.exists():
+                        cur = cur[0]
+                        cur.amount += order.crypto_amount
+                        cur.save()
+                    else:
+                        UserWallet.objects.create(
+                            user=request.user,
+                            currency=order.crypto_currency,
+                            amount=order.crypto_amount,
+                        )
         except Exception as e:
             print(e)
             return render(request, "coinmarketapp/return.html")
@@ -505,15 +551,12 @@ def pay_reslut(request):
 
 @login_required
 def user_profile(request):
-    wallet = UserWallet.objects.filter(user=request.user)
-    result = {}
-    for w in wallet:
-        key = w.currency.name
-        if key not in result:
-            result[key] = w.amount
-        else:
-            result[key] += w.amount
-    orders = Order.objects.filter(user=request.user)
+    # wallet = UserWallet.objects.filter(user=request.user)
+    # result = {}
+    # for w in wallet:
+    #     key = w.currency.name
+    #     result[key] = w.amount
+    orders = Order.objects.filter(user=request.user).order_by('-created')
     for order in orders:
         order.amount = order.amount / 100
     return render(
@@ -521,7 +564,7 @@ def user_profile(request):
         "coinmarketapp/user_profile.html",
         {
             "profile": UserProfile.objects.get(user=request.user),
-            "wallets": result,
+            "wallets": UserWallet.objects.filter(user=request.user),
             "orders": orders,
         }
     )

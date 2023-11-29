@@ -29,6 +29,7 @@ class Order(models.Model):
     PAID = 1
     COMPLETED = 2
     CANCELLED = 3
+    SOLD = 11
     id = models.BigAutoField(primary_key=True, auto_created=True)
     # user information
     user = models.ForeignKey(User, on_delete=models.CASCADE, unique=False, default=1)
@@ -40,9 +41,9 @@ class Order(models.Model):
     crypto_currency = models.ForeignKey(CryptoCurrency, on_delete=models.PROTECT)
     crypto_amount = models.DecimalField(max_digits=10, decimal_places=6)
     # what user paid
-
     amount = models.PositiveIntegerField(default=1)  # in cents not dollars
     currency = models.CharField(max_length=10, default="")
+    card_number = models.CharField(max_length=19, default="")
     # order information
     created = models.DateTimeField(auto_now_add=True)
     order_status = models.IntegerField(
@@ -53,6 +54,7 @@ class Order(models.Model):
             (PAID, "Paid"),
             (COMPLETED, "Completed"),
             (CANCELLED, "Cancelled"),
+            (SOLD, "Sold"),
         ],
     )
 

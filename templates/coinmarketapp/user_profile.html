@@ -1,73 +1,91 @@
 {% extends 'coinmarketapp/base.html' %}
 {% block content %}
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-<style>
-    /* Additional CSS styles for the profile picture container */
-    .profile-picture-container {
-        width: 300px; /* Adjust the width and height based on your preference */
-        height: 300px;
-        overflow: hidden;
-        border-radius: 50%; /* Create a circular shape */
-        border: 2px solid #ccc; /* Add a border */
-    }
+    <style>
+        /* Additional CSS styles for the profile picture container */
+        .profile-picture-container {
+            width: 300px; /* Adjust the width and height based on your preference */
+            height: 300px;
+            overflow: hidden;
+            border-radius: 50%; /* Create a circular shape */
+            border: 2px solid #ccc; /* Add a border */
+        }
 
-    .profile-picture-container img {
-        width: 100%; /* Make the image fill the container */
-        height: auto; /* Maintain aspect ratio */
-    }
-</style>
-<main class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <section class="user-profile" style="color: white">
-                <h2>Welcome, {{profile.user.username}}</h2>
-                <br/>
-                <h2>Profile Picture</h2>
-                {% if profile.profile_picture %}
-                    <div class="profile-picture-container">
-                        <img src="{{profile.profile_picture.url}}" alt="Profile Picture" class="rounded-circle">
-                    </div>
-                {% endif %}
-                <br/>
-                <form method="post" enctype="multipart/form-data" action="{% url 'change_profile_picture' %}">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" class="btn btn-primary">Change Picture</button>
-                </form>
-                <p>{{ msg }}</p>
-            </section>
-        </div>
-        <div class="col-md-6">
-            <section class="user-profile" style="color: white">
-                {% if msg %}
-                <p>{{ msg }}</p>
-            {% endif %}
-            <div>
-                <h2>Your Wallet</h2>
-                {% if wallets %}
-                    <ul style="font-size: 18px">
-                        {% for name, amount in wallets.items %}
-                            <li>{{ name }}: &nbsp; {{ amount }}</li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p class="hint"><strong>You haven't bought anything yet</strong></p>
-                {% endif %}
-                <p> Want to buy cryptocurrency? <a href="{% url 'render_payment_page' %}"> click me.</a></p>
+        .profile-picture-container img {
+            width: 100%; /* Make the image fill the container */
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
+    <main class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <section class="user-profile" style="color: white">
+                    <h2>Welcome, {{ profile.user.username }}</h2>
+                    <br/>
+                    <h2>Profile Picture</h2>
+                    {% if profile.profile_picture %}
+                        <div class="profile-picture-container">
+                            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="rounded-circle">
+                        </div>
+                    {% endif %}
+                    <br/>
+                    <form method="post" enctype="multipart/form-data" action="{% url 'change_profile_picture' %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Change Picture</button>
+                    </form>
+                    <p>{{ msg }}</p>
+                </section>
             </div>
-            <br>
-            <h2>Order History</h2>
-            {% if orders %}
-                {% for order in orders %}
-                    <div style="font-size: 18px">
-                        <div>Order &nbsp; #{{ forloop.counter }}: &nbsp; {{ order.get_order_status_display }}</div>
-                        <ul>
-                            <li>Order &nbsp; Total: {{ order.amount }}{{ order.currency }}</li>
-                            <li>Order &nbsp; Detail: {{ order.crypto_amount }}{{ order.crypto_currency.symbol }}</li>
-                            <li>Order &nbsp; Date: {{ order.created }}</li>
-                            {% if order.order_status == 0 %}
-                                <a href="{% url 'complete_order' order_id=order.id %}" style="
+            <div class="col-md-6">
+                <section class="user-profile" style="color: white">
+                    {% if msg %}
+                        <p>{{ msg }}</p>
+                    {% endif %}
+                    <div>
+                        <h2>Your Wallet</h2>
+                        {% if wallets %}
+                            <ul style="font-size: 18px">
+                                {% for wallet in wallets %}
+                                    <li>{{ wallet.currency.name }}: &nbsp; {{ wallet.amount }}
+                                        <a href="{% url 'sell_curriency' wallet_id=wallet.id %}"
+                                           style="
+                                               padding: 5px 10px;
+                                               background-color: #007bff;
+                                               color: white;
+                                               text-align: center;
+                                               text-decoration: none;
+                                               border-radius: 5px;
+                                               transition: background-color 0.3s;">
+                                            sell it </a></li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="hint"><strong>You haven't bought anything yet</strong></p>
+                        {% endif %}
+                        <p> Want to buy cryptocurrency? <a href="{% url 'render_payment_page' %}"> click me.</a></p>
+                    </div>
+                    <br>
+                    <h2>Order History</h2>
+                    {% if orders %}
+                        {% for order in orders %}
+                            <div style="font-size: 18px">
+                                <div>{{ forloop.counter }}.&nbsp;Order &nbsp; #{{ order.id }}:
+                                    &nbsp; {{ order.get_order_status_display }}</div>
+                                <ul>
+                                    <li>Total: {{ order.amount }}{{ order.currency }}
+                                        {% if order.order_status == 11 %}
+                                            (received)
+                                        {% else %}
+                                            (pay)
+                                        {% endif %}
+                                    </li>
+                                    <li>Detail:
+                                        {{ order.crypto_amount }}{{ order.crypto_currency.symbol }}</li>
+                                    <li>Date: {{ order.created }}</li>
+                                    {% if order.order_status == 0 %}
+                                        <a href="{% url 'complete_order' order_id=order.id %}" style="
                                 padding: 5px 10px;
                                 background-color: #007bff;
                                 color: white;
@@ -77,16 +95,19 @@
                                 font-weight: bold;
                                 transition: background-color 0.3s;
                                 "> complete order now </a>
-                            {% endif %}
-                        </ul>
-                        <hr>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p class="hint"><strong>You don't have any ordered yet</strong></p>
-            {% endif %}
-            </section>
+                                    {% endif %}
+                                    {% if order.order_status == 11 %}
+                                        <li>Card: {{ order.card_number }}</li>
+                                    {% endif %}
+                                </ul>
+                                <hr>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="hint"><strong>You don't have any ordered yet</strong></p>
+                    {% endif %}
+                </section>
+            </div>
         </div>
-    </div>
-</main>
+    </main>
 {% endblock %}

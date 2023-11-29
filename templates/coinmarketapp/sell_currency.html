@@ -1,0 +1,22 @@
+{% extends 'coinmarketapp/base.html' %}{% load static %}{% block content %}
+    <section>
+        <link rel="stylesheet" type="text/css" href="{% static 'payment/checkout.css' %}">
+        <div style="margin-top: 5%">
+            <script type="text/javascript">
+                function showPriceChanges() {
+                    const price = document.getElementById("id_price").value;
+                    let amount = document.getElementById("id_crypto_amount").value;
+                    document.getElementById("total").innerHTML = (parseFloat(price) * parseFloat(amount)).toFixed(6);
+                }
+            </script>
+            <h3 class="card-title">Input the amount you want to sell</h3>
+            <form method="post" class="card-content">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <p>Total money you will receive: $<span id="total">0</span></p>
+                <button type="submit">Submit</button>
+            </form>
+            <br/>
+        </div>
+    </section>
+{% endblock %}

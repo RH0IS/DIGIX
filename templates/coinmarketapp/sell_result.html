@@ -1,0 +1,11 @@
+{% extends 'coinmarketapp/base.html' %}{% load static %}{% block content %}
+    <script src="https://js.stripe.com/v3/"></script>
+    <link rel="stylesheet" href="{% static 'payment/return.css' %}">
+    <div class="msg">
+        <section id="success">
+            <div id="message">You have sold {{ amount }} {{ name }} successfully. {{ money }} has been deposite to {{ card }}.</div>
+            If you have any questions, please email <a href="mailto:lin5b@uwindsor.ca">lin5b@uwindsor.ca</a>.
+            <p> you can go back to <a href="{% url 'crypto_list' %}">home</a></p>
+        </section>
+    </div>
+{% endblock %}

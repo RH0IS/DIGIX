@@ -22,5 +22,5 @@ urlpatterns = [
     path('exchange', views.exchange, name='exchange'),
     path('change_profile_picture', views.change_profile_picture, name='change_profile_picture'),
     path('get_exchange_rate/<str:from_currency>/<str:to_currency>/', views.get_exchange_rate, name='get_exchange_rate'),
-
+    path('sell_curriency/<int:wallet_id>', views.render_sell_page, name='sell_curriency'),
 ]
