@@ -92,7 +92,7 @@
           <th>Price</th>
           <th>24h Volume</th>
         </tr>
-        {% for cryptocurrency in cryptocurrencies %}
+        {% for cryptocurrency in cryptocurrencies|slice:number_of_rows %}
         <tr
           style="cursor: pointer"
           data-crypto-name="{{ cryptocurrency.name }}"
@@ -110,6 +110,7 @@
         </tr>
         {% endfor %}
       </table>
+{#    <p>Total Number of Currencies: {{ number_of_rows }}</p>#}
     </div>
   </div>
 </section>

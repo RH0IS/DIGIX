@@ -15,8 +15,7 @@ from django.core.exceptions import ValidationError
 def validate_image_file(image):
     if image:
         if not image.content_type.startswith('image'):
-            raise ValidationError('File is not an image.')
-
+            raise ValidationError('File is not an image')
 
 def signup(request):
     if request.method == 'POST':
@@ -30,7 +29,7 @@ def signup(request):
             profile.user = user
             # profile.save()
             print(user)
-            profile_picture = form.cleaned_data.get("profile_picture")
+            profile_picture = profile_form.cleaned_data.get("profile_picture")
 
             try:
                 validate_image_file(profile_picture)

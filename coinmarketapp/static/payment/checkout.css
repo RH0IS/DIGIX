@@ -56,7 +56,7 @@ section {
 
 /* Buttons and links */
 button {
-    background: #5469d4;
+    background: rgba(60, 161, 141, 1);
     font-family: Arial, sans-serif;
     color: #ffffff;
     border-radius: 4px;

@@ -43,7 +43,7 @@ class SellForm(forms.Form):
     price = forms.DecimalField(widget=forms.HiddenInput(), disabled=True, initial=1)
     crypto_currency_name = forms.CharField(label='Crypto Currency', initial="", disabled=True, required=False)
     crypto_amount = forms.DecimalField(label='Crypto Amount', min_value=0.000001, max_digits=10, decimal_places=6,
-                                       widget=forms.NumberInput(attrs={'onchange': 'showPriceChanges()'}))
+                                       widget=forms.NumberInput())
     email = forms.EmailField(label='Email')
     card_number = forms.CharField(label='Card Number', max_length=19)
 
@@ -58,5 +58,5 @@ class SellForm(forms.Form):
             self.fields['price'].initial = price
         if max_amount is not None:
             self.fields['crypto_amount'].widget = forms.NumberInput(
-                attrs={'min': 0.000001, 'max': max_amount, 'step': 0.000001})
+                attrs={'min': 0.000001, 'max': max_amount, 'step': 0.000001,'onchange': 'showPriceChanges()'})
             self.fields['crypto_amount'].label = "Crypto Amount (Max: " + str(max_amount) + ")"

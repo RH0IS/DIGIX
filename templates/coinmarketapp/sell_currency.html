@@ -6,6 +6,8 @@
                 function showPriceChanges() {
                     const price = document.getElementById("id_price").value;
                     let amount = document.getElementById("id_crypto_amount").value;
+                    console.log("price",price)
+                    console.log(amount)
                     document.getElementById("total").innerHTML = (parseFloat(price) * parseFloat(amount)).toFixed(6);
                 }
             </script>
